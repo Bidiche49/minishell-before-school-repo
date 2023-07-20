@@ -6,14 +6,14 @@
 /*   By: augustindrye <augustindrye@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/20 18:34:03 by augustindry      ###   ########.fr       */
+/*   Updated: 2023/07/20 18:41:45 by augustindry      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-typedef struct Commande 
+typedef struct s_token
 {
 	char *cmd;
 	char *absolut_path;
@@ -24,6 +24,8 @@ typedef struct Commande
 	int nb_args;
 	char *operateur;
 	struct Commande *next;
-}
+}	t_token;
+
+
 
 #endif
