@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   lib_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/20 18:45:37 by ntardy           ###   ########.fr       */
+/*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
+/*   Updated: 2023/07/20 18:44:06 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../minishell.h"
 
-int	ft_strlen(const char *str);
-
-typedef struct Commande
+int	ft_strlen(const char *str)
 {
-	char *cmd;
-	char *absolut_path;
-	char **options;
-	int nb_options;
-	char *redir;
-	char **args;
-	int nb_args;
-	char *operateur;
-	struct Commande *next;
-}
+	int	i;
 
-#endif
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
