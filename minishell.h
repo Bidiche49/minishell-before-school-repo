@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: augustindrye <augustindrye@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/20 18:46:55 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/20 19:12:21 by augustindry      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	ft_strlen(const char *str);
 
-typedef struct Commande
+typedef struct s_token
 {
 	char *cmd;
 	char *absolut_path;
@@ -25,7 +25,9 @@ typedef struct Commande
 	char **args;
 	int nb_args;
 	char *operateur;
-	struct Commande *next;
-}
+	struct token *next;
+}	t_token;
+
+
 
 #endif
