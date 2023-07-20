@@ -6,13 +6,11 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/20 19:16:36 by ntardy           ###   ########.fr        #
+#    Updated: 2023/07/20 19:39:30 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =			minishell
-
-NAME_BONUS =	so_long_bonus
 
 CC =			gcc
 
@@ -30,22 +28,19 @@ SRCS =			minishell.c							\
 
 OBJS =			$(SRCS:.c=.o)
 
-# %.o: %.c
-# 	$(CC)
-
 .PHONY: all
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(CREADLINE)
+	$(CC) $(OBJS) -o $(NAME) $(CREADLINE)
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(OBJS_BONUS)
+	rm -f $(OBJS)
 
 .PHONY: fclean
 fclean: clean
-	rm -f $(NAME) $(NAME_BONUS)
+	rm -f $(NAME)
 
 .PHONY: re
 re: fclean $(NAME)
