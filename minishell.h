@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/21 23:08:41 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/21 23:58:04 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ typedef struct s_token
 	struct s_token *next;
 }	t_token;
 
-t_token	*parsing(char *input);
+t_token	*parsing(char *input, t_token *list_token);
 
 #endif

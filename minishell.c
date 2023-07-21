@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 23:39:34 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/21 23:57:37 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int ft_execute_cmd(t_token *token)
 
 int main(int argc, char **argv) {
 	char	*input;
+	t_token	list_token;
 
 	(void)argv;
 	if (argc != 1)
@@ -48,7 +49,7 @@ int main(int argc, char **argv) {
 		{
 			add_history(input);
 		}
-		parsing(input);
+		parsing(input, &list_token);
 		free(input);
 	}
 
