@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/20 19:14:49 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/21 23:39:34 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,39 @@
 #include <readline/history.h>
 #include "minishell.h"
 
-int main() {
+
+int ft_execute_cmd(t_token *token)
+{
+    extern char **environ; // Importer l'environnement actuel du système
+    int res;
+    char *const opt[] = { "-l", NULL }; // Utilisez un tableau de pointeurs de caractères (tableau de chaînes)
+
+    if (token == NULL)
+        return (1);
+    res = execve(token->absolut_path, opt, environ);
+    if (res == -1)
+        perror("KO\n");
+    return (0);
+}
+
+int main(int argc, char **argv) {
 	char	*input;
 
+	(void)argv;
+	if (argc != 1)
+		return (printf("No arg please, just \"./minishell\"\n"), 1);
 	while(1) {
 		input = readline("Minishell > ");
 		if (input == NULL) {
 			// L'utilisateur a appuyé sur Ctrl+D pour quitter le programme
 			printf("\nFin du programme.\n");
 			break;
-	}
-
-		// Traitez l'entrée de l'utilisateur ici (par exemple, exécutez la commande)
-
-		// Ajoutez l'entrée à l'historique pour que l'utilisateur puisse la rappeler avec les flèches
+		}
 		if (ft_strlen(input) > 0)
+		{
 			add_history(input);
-		// Libérez la mémoire allouée par readline pour l'entrée
+		}
+		parsing(input);
 		free(input);
 	}
 

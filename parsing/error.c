@@ -1,37 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 23:07:36 by ntardy           ###   ########.fr       */
+/*   Created: 2023/07/21 17:29:00 by ntardy            #+#    #+#             */
+/*   Updated: 2023/07/21 17:40:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-// int	mod_input(char *input, char *cmd_line)
-// {
-// 	int	i;
-// 	int	len;
-
-// 	i = 0;
-// 	len = 0;
-// 	while
-// }
-
-t_token	*parsing(char *input)
+int	ft_error(char *error)
 {
-	t_token	list_token;
-	t_data	data;
-
-	init_data(input, &data);
-	// printf("nb token = %d\n", data.nb_token);
-	if (init_token(&data, &list_token) == 1)
-		return (NULL);
-	if (fill_tokens(&data, &list_token) == 1)
-		return (NULL);
-	return (&list_token);
+	write(2, "Error", 5);
+	if (error)
+		write(2, error, ft_strlen(error));
+	write(2, "\n", 1);
+	return (1);
 }

@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/20 19:39:30 by ntardy           ###   ########.fr        #
+#    Updated: 2023/07/21 22:38:32 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,11 @@ EXEC_LOC =		exec/
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
+				$(PARS_LOC)parsing.c				\
+				$(PARS_LOC)error.c					\
+				$(PARS_LOC)fill.c					\
+				$(PARS_LOC)split.c					\
+				$(PARS_LOC)init.c
 
 OBJS =			$(SRCS:.c=.o)
 
