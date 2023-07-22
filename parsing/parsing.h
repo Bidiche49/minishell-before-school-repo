@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 15:42:47 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 17:29:16 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 
 # include <stddef.h>
 # include "../minishell.h"
+
+/*Errors*/
+# define ERR_REDIR_IN_OUT "syntax error near unexpected token `newline'\n"
+# define ERR_QUOTE "not handle by minishell\n"
+# define ERR_MANY_ARG "too many arguments\n"
+# define ERR_HOME "cd: HOME not set\n"
+# define ERR_EXPORT "not a valid identifier\n"
 
 typedef struct s_data
 {
