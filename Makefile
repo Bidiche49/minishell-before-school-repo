@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/21 22:38:32 by ntardy           ###   ########.fr        #
+#    Updated: 2023/07/22 15:42:29 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,8 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)error.c					\
 				$(PARS_LOC)fill.c					\
 				$(PARS_LOC)split.c					\
+				$(PARS_LOC)fill_utils.c				\
+				$(PARS_LOC)check_pars.c				\
 				$(PARS_LOC)init.c
 
 OBJS =			$(SRCS:.c=.o)

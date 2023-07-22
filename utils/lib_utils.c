@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 22:41:40 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 15:38:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,21 @@ char	*ft_strdup(const char *src)
 		str[i] = src[i];
 	str[i] = '\0';
 	return (str);
+}
+
+int	ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (path[i])
+		abs_path[j++] = path[i++];
+	abs_path[j++] = sep;
+	i = 0;
+	while (cmd[i])
+		abs_path[j++] = cmd[i++];
+	abs_path[j] = '\0';
+	return (0);
 }

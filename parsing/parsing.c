@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 23:57:13 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 10:33:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 // 	while
 // }
 
-t_token	*parsing(char *input, t_token *list_token)
+int	parsing(char *input, t_token *list_token)
 {
 	t_data	data;
 
 	init_data(input, &data);
 	// printf("nb token = %d\n", data.nb_token);
 	if (init_token(&data, list_token) == 1)
-		return (NULL);
+		return (1);
 	if (fill_tokens(&data, list_token) == 1)
-		return (NULL);
-	return (list_token);
+		return (1);
+	return (0);
 }

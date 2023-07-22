@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 23:57:37 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:12:07 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,28 @@
 #include <readline/history.h>
 #include "minishell.h"
 
-
-int ft_execute_cmd(t_token *token)
+void	print_token(t_token *list_token)
 {
-    extern char **environ; // Importer l'environnement actuel du système
-    int res;
-    char *const opt[] = { "-l", NULL }; // Utilisez un tableau de pointeurs de caractères (tableau de chaînes)
+	int	i;
 
-    if (token == NULL)
-        return (1);
-    res = execve(token->absolut_path, opt, environ);
-    if (res == -1)
-        perror("KO\n");
-    return (0);
+	i = 1;
+	while (list_token)
+	{
+		printf("list_token(%d)->cmd = %s\n", i, list_token->cmd);
+		printf("list_token(%d)->absolut_path %s\n", i, list_token->absolut_path);
+		printf("list_token(%d)->options %s\n", i, list_token->options);
+		printf("list_token(%d)->operateur = %s\n", i, list_token->operateur);
+		// if (list_token->operateur != NULL)
+		// {
+		// 	if (list_token->next)
+		// 		printf(" %s ", list_token->operateur);
+		// 	else
+		// 		printf(" %s", list_token->operateur);
+		// }
+		list_token = list_token->next;
+		i++;
+	}
+	printf("\n");
 }
 
 int main(int argc, char **argv) {
@@ -49,9 +58,12 @@ int main(int argc, char **argv) {
 		{
 			add_history(input);
 		}
-		parsing(input, &list_token);
+		if (parsing(input, &list_token) == 1)
+			return (1);
+// test
+		print_token(&list_token);
+//test end
 		free(input);
 	}
-
 	return 0;
 }
