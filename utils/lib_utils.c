@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 15:38:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:40:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,33 @@ int	ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep)
 		abs_path[j++] = cmd[i++];
 	abs_path[j] = '\0';
 	return (0);
+}
+
+char	*ft_substr(char const *s, int start, int len)
+{
+	char	*str;
+	int	i;
+	int	y;
+
+	if (s == 0)
+		return (0);
+	if (start > ft_strlen(s))
+		return (ft_strdup(""));
+	if (ft_strlen(s) - start < len)
+		len = ft_strlen(s) - start;
+	str = malloc(sizeof (char) * (len + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	y = 0;
+	while (s[i])
+	{
+		if (i >= start && y < len)
+		{
+			str[y++] = s[i];
+		}
+		i++;
+	}
+	str[y] = '\0';
+	return (str);
 }

@@ -1,42 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   split_pars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 22:13:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 22:49:22 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:40:57 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-char	*ft_substr(char const *s, int start, int len)
-{
-	int		i;
-	char	*tmp_s;
-	char	*res;
-
-	i = 0;
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	tmp_s = (char *)s;
-	if (len > ft_strlen(s))
-		len = ft_strlen(s);
-	if (len + start > ft_strlen(s))
-		len = ft_strlen(s) - start;
-	res = malloc(sizeof(char) * len + 1);
-	if (res == NULL)
-		return (NULL);
-	while ((start + i) < ft_strlen(s) && i < len)
-	{
-		res[i] = tmp_s[start + i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
-}
 
 static int	ft_countword(char const *s, char c)
 {

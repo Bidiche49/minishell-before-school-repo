@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/22 16:28:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:41:24 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		ft_strlen(const char *str);
 int		ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep);
 char	*first_word(char *str);
 char	*ft_strdup(const char *src);
+char	*ft_substr(char const *s, int start, int len);
 char	**ft_split_pars(char const *s, char c);
 
 typedef struct s_token
@@ -35,5 +36,6 @@ typedef struct s_token
 }	t_token;
 
 int	parsing(char *input, t_token *list_token);
+int		general_exe(t_token *token);
 
 #endif

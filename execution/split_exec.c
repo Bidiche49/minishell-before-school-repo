@@ -1,77 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   split_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: augustindrye <augustindrye@student.42.f    +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:18:18 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/22 10:51:39 by augustindry      ###   ########.fr       */
+/*   Updated: 2023/07/22 16:40:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-int ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*str;
-	int		i;
-	int		size;
-
-	size = 0;
-	while (s[size])
-		size++;
-	str = malloc(sizeof (char) * (size + 1));
-	i = 0;
-	if (str == 0)
-		return (NULL);
-	while (i < size)
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*str;
-	size_t	i;
-	size_t	y;
-
-	if (s == 0)
-		return (0);
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	if (ft_strlen(s) - start < len)
-		len = ft_strlen(s) - start;
-	str = malloc(sizeof (char) * (len + 1));
-	if (!str)
-		return (NULL);
-	i = 0;
-	y = 0;
-	while (s[i])
-	{
-		if (i >= start && y < len)
-		{
-			str[y++] = s[i];
-		}
-		i++;
-	}
-	str[y] = '\0';
-	return (str);
-}
 
 static int	ft_count(char const *s, char c)
 {

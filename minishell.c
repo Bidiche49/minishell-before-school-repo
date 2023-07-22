@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 16:12:07 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:33:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int main(int argc, char **argv) {
 // test
 		print_token(&list_token);
 //test end
+		general_exe(&list_token);
 		free(input);
 	}
 	return 0;

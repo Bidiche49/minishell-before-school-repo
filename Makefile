@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/22 15:42:29 by ntardy           ###   ########.fr        #
+#    Updated: 2023/07/22 16:36:50 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS =		-Wall -Werror -Wextra
 
 PARS_LOC =		parsing/
 UTILS_LOC =		utils/
-EXEC_LOC =		exec/
+EXEC_LOC =		execution/
 
 
 SRCS =			minishell.c							\
@@ -28,10 +28,13 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)parsing.c				\
 				$(PARS_LOC)error.c					\
 				$(PARS_LOC)fill.c					\
-				$(PARS_LOC)split.c					\
+				$(PARS_LOC)split_pars.c				\
 				$(PARS_LOC)fill_utils.c				\
 				$(PARS_LOC)check_pars.c				\
-				$(PARS_LOC)init.c
+				$(PARS_LOC)init.c					\
+				$(EXEC_LOC)execution.c				\
+				$(EXEC_LOC)split_exec.c				\
+				$(EXEC_LOC)utils_exe.c
 
 OBJS =			$(SRCS:.c=.o)
 

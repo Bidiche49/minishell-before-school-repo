@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: augustindrye <augustindrye@student.42.f    +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/22 16:12:20 by augustindry      ###   ########.fr       */
+/*   Updated: 2023/07/22 16:35:03 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	general_exe(t_token *token)
 	int	size;
 
 	i = 0;
+	printf("test\n");
 	size = ft_lstsize(token);
 	printf("valeur de size = %d\n", size);
 	if (token == NULL)
@@ -35,7 +36,7 @@ int	general_exe(t_token *token)
 			i++;
 		}
 	}
-	else 
+	else
 		ft_execute_cmd(token);
 	return (0);
 }
@@ -47,7 +48,7 @@ int	ft_execute_cmd(t_token *token)
 	char *const	*argv;
 	char const	*opt;
 	int		res;
-	
+
 	opt = token->options;
 	path = token->absolut_path;
 	argv = (char *const *)ft_split(opt, ' ');
@@ -62,7 +63,7 @@ int	execute_fork_cmd(t_token *token)
 {
 	int	pid;
 	int	p_fd[2];
-	
+
 	if (pipe(p_fd) == -1)
 		return(perror("pipe"), 1);
 	pid = (int)fork();
