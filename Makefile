@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/22 16:36:50 by ntardy           ###   ########.fr        #
+#    Updated: 2023/07/23 13:15:16 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,15 +25,14 @@ EXEC_LOC =		execution/
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
+				$(UTILS_LOC)split.c				\
 				$(PARS_LOC)parsing.c				\
 				$(PARS_LOC)error.c					\
 				$(PARS_LOC)fill.c					\
-				$(PARS_LOC)split_pars.c				\
 				$(PARS_LOC)fill_utils.c				\
 				$(PARS_LOC)check_pars.c				\
 				$(PARS_LOC)init.c					\
 				$(EXEC_LOC)execution.c				\
-				$(EXEC_LOC)split_exec.c				\
 				$(EXEC_LOC)utils_exe.c
 
 OBJS =			$(SRCS:.c=.o)
@@ -42,7 +41,7 @@ OBJS =			$(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) $(CREADLINE)
+	$(CC) $(OBJS) $(CREADLINE) -o $(NAME)
 
 .PHONY: clean
 clean:

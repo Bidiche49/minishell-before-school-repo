@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 15:43:04 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 23:58:11 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,16 @@ int	malloc_option(t_token *list_token, char *input, int i)
 	int	len;
 
 	len = 0;
-	while (input[i] == ' ')
+	if (ft_isspace(input[i]))
 		i++;
 	while (input[i] && input[i] != '|')
 	{
-		if (input[i] == ' ')
-		{
-			while (input[i] == ' ')
-				i++;
-			if (input[i] == '\0' || input[i] == '|')
+		if (ft_isspace(input[i]) && (input[i + 1] == '\0' || input[i + 1] == '|'))
 				break ;
-			len++;
-		}
 		len++;
 		i++;
 	}
+	printf("len malloc_option = %d\n", len);
 	list_token->options = malloc(sizeof(char) * (len + 1));
 	if (list_token->options == NULL)
 		return (ft_error(", malloc KO !"));

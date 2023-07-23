@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:41:47 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 15:59:44 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:15:47 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	is_real_command(t_token *list_token)
 	char	**list_path;
 
 	path = getenv("PATH");
-	list_path = ft_split_pars(path, ':');
+	list_path = ft_split(path, ':');
 	if (list_path == NULL)
 		return (1);
 	if (check_command(list_token, list_path) == 1)

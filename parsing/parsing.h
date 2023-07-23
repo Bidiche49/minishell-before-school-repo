@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 17:29:16 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:15:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ typedef struct s_data
 
 int		init_token(t_data *data, t_token *list_token);
 int		is_real_command(t_token *list_token);
+int		mod_input(char *input, t_data *data);
 int		is_there_operator(char *input, int i, t_token *list_token);
 void	init_data(char *input, t_data *data);
 int		ft_error(char *error);
 int		fill_tokens(t_data *data, t_token *list_token);
 int		malloc_option(t_token *list_token, char *input, int i);
 int		calc_i(char *input, int token_passed);
-char	**ft_split_pars(char const *s, char c);
 
 #endif

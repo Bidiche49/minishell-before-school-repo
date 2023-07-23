@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 16:40:45 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 22:40:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ char	*first_word(char *str)
 	int		i;
 
 	i = 0;
-	while (str[i] && str[i] == ' ')
+	while (str[i] && ft_isspace(str[i]))
 		i++;
-	while (str[i] && str[i] != ' ' && str[i] != '|')
+	while (str[i] && ft_isspace(str[i]) == 0 && str[i] != '|')
 		i++;
 	first_word = malloc(sizeof(char) * (i + 1));
 	if (first_word == NULL)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] == ' ')
+	while (str[i] && ft_isspace(str[i]))
 		i++;
-	while (str[i] && str[i] != ' ' && str[i] != '|')
+	while (str[i] && ft_isspace(str[i]) == 0 && str[i] != '|')
 	{
 		first_word[i] = str[i];
 		i++;

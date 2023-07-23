@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_pars.c                                       :+:      :+:    :+:   */
+/*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 22:13:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 16:40:57 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:14:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "../minishell.h"
 
 static int	ft_countword(char const *s, char c)
 {
@@ -48,7 +48,7 @@ static char	**ft_freemobile(char **res, int k)
 	return (NULL);
 }
 
-char	**ft_split_pars(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**res;
 	int		i;

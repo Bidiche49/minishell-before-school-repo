@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 16:02:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 23:59:09 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,15 @@ int	fill_option(char *input, t_token *list_token, int token_passed)
 		return (1);
 	i = calc_i(input, token_passed);
 	j = 0;
-	while (input[i] == ' ')
-		i++;
 	while (input[i] && input[i] != '|')
 	{
-		if (input[i] == ' ')
-		{
-			while (input[i] == ' ')
-				i++;
-			if (input[i] == '\0' || input[i] == '|')
-				break ;
-			list_token->options[j] = ' ';
-			j++;
-		}
+		if (input[i] == '\0' || input[i] == '|')
+			break ;
 		list_token->options[j] = input[i];
 		j++;
 		i++;
 	}
+	list_token->options[j] = '\0';
 	return (0);
 }
 
@@ -62,7 +54,7 @@ int	fill_tokens(t_data *data, t_token *list_token)
 	tmp = list_token;
 	while (list_token)
 	{
-		while (data->input[i] && data->input[i] == ' ')
+		while (data->input[i] && ft_isspace(data->input[i]))
 			i++;
 		fill_command(data, list_token, i);
 		i = is_there_operator(data->input, i, list_token);

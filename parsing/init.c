@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:07:05 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/21 23:30:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/22 23:10:33 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_token(char *input)
 
 void	init_data(char *input, t_data *data)
 {
-	data->input = input;
+	data->input = NULL;
 	data->nb_token = count_token(input);
 	data->token = NULL;
 }
