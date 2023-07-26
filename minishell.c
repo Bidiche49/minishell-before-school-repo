@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/26 18:00:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/26 22:59:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,11 @@ void print_token(t_token *list_token)
 	i = 1;
 	while (list_token)
 	{
-		printf("list_token(%d)->cmd = %s\n", i, list_token->cmd);
-		printf("list_token(%d)->absolut_path %s\n", i, list_token->absolut_path);
-		printf("list_token(%d)->options %s\n", i, list_token->options);
-		printf("list_token(%d)->operateur = %s\n", i, list_token->operateur);
+		// printf("list_token(%d)->cmd = %s\n", i, list_token->cmd);
+		// printf("list_token(%d)->absolut_path %s\n", i, list_token->absolut_path);
+		// printf("list_token(%d)->options %s\n", i, list_token->options);
+		// printf("list_token(%d)->operateur = %s\n", i, list_token->operateur);
+		printf("token = %s\n", list_token->str);
 		list_token = list_token->next;
 		i++;
 	}
@@ -97,6 +98,7 @@ int main(int argc, char **argv)
 			// test
 			print_token(&list_token); // Affiche les jetons (tokens) analysés à des fins de test.
 			// free_all(&list_token);
+			// free(input); // Libère la mémoire allouée pour stocker l'entrée de l'utilisateur.
 			// exit (0);
 			// test end
 

@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/23 13:15:16 by ntardy           ###   ########.fr        #
+#    Updated: 2023/07/26 23:07:05 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ EXEC_LOC =		execution/
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
-				$(UTILS_LOC)split.c				\
+				$(UTILS_LOC)split.c					\
+				$(UTILS_LOC)free.c					\
 				$(PARS_LOC)parsing.c				\
 				$(PARS_LOC)error.c					\
 				$(PARS_LOC)fill.c					\
