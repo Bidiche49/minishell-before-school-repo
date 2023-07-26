@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 23:39:27 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/26 18:00:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,20 @@ void print_token(t_token *list_token)
 		printf("list_token(%d)->absolut_path %s\n", i, list_token->absolut_path);
 		printf("list_token(%d)->options %s\n", i, list_token->options);
 		printf("list_token(%d)->operateur = %s\n", i, list_token->operateur);
-		// if (list_token->operateur != NULL)
-		// {
-		// 	if (list_token->next)
-		// 		printf(" %s ", list_token->operateur);
-		// 	else
-		// 		printf(" %s", list_token->operateur);
-		// }
 		list_token = list_token->next;
 		i++;
 	}
 	printf("\n");
 }
 
-// void sigint_handler(int signum)
-// {
-// 	(void)signum;
-// 	printf("\n");			// Affiche un message
-// 	rl_on_new_line();		// Place le curseur sur une nouvelle ligne
-// 	rl_replace_line("", 0); // Efface le contenu de la ligne actuelle
-// 	rl_redisplay();			// Affiche le prompt de nouveau
-// }
+void sigint_handler(int signum)
+{
+	(void)signum;
+	printf("\n");			// Affiche un message
+	rl_on_new_line();		// Place le curseur sur une nouvelle ligne
+	rl_replace_line("", 0); // Efface le contenu de la ligne actuelle
+	rl_redisplay();			// Affiche le prompt de nouveau
+}
 
 int main(int argc, char **argv)
 {
@@ -84,7 +77,7 @@ int main(int argc, char **argv)
 	t_token list_token;
 
 	(void)argv; // Cette ligne supprime un avertissement de compilation indiquant que la variable argv n'est pas utilisée.
-	// signal(SIGINT, sigint_handler); // Définit le gestionnaire de signal SIGINT (CTRL-C) avec la fonction sigint_handler.
+	signal(SIGINT, sigint_handler); // Définit le gestionnaire de signal SIGINT (CTRL-C) avec la fonction sigint_handler.
 	if (argc != 1)
 	{
 		printf("No arg please, just \"./minishell\"\n"); // Affiche un message si l'utilisateur a passé des arguments en ligne de commande.
@@ -103,6 +96,8 @@ int main(int argc, char **argv)
 
 			// test
 			print_token(&list_token); // Affiche les jetons (tokens) analysés à des fins de test.
+			// free_all(&list_token);
+			// exit (0);
 			// test end
 
 			general_exe(&list_token); // Appelle la fonction general_exe pour exécuter la commande en utilisant les jetons analysés.
