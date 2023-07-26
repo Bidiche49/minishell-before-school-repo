@@ -1,44 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exe.c                                        :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: augustindrye <augustindrye@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/23 15:37:43 by augustindry      ###   ########.fr       */
+/*   Created: 2023/07/22 22:28:36 by augustindry       #+#    #+#             */
+/*   Updated: 2023/07/23 15:40:05 by augustindry      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	ft_lstsize(t_token *lst)
+void	mini_exit(t_mini *mini, char **cmd)
 {
-	int	i;
-
-	i = 0;
-	while (lst)
+	mini->exit = 1;
+	write(2, "exit\n", 7);
+	if (cmd[1] && cmd[2])
 	{
-		lst = lst->next;
-		i++;
+		mini->ret = 1;
+		write(2, "minishell: exit: too many arguments\n", 37);
 	}
-	return (i);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
+	else if (cmd[1] && ft_strisnum(cmd[1]) == 0)
 	{
-		write(fd, &s[i], 1);
-		i++;
+		mini->ret = 255;
+		write(2, "minishell: exit: \n", 19);
+		ft_putstr_fd(cmd[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
 	}
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	ft_putstr_fd(s, fd);
-	write(fd, "\n", 1);
+	else if (cmd[1])
+		mini->ret = ft_atoi(cmd[1]);
+	else
+		mini->ret = 0;
 }

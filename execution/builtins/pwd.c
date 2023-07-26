@@ -1,44 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exe.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: augustindrye <augustindrye@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/23 15:37:43 by augustindry      ###   ########.fr       */
+/*   Created: 2023/07/22 22:26:12 by augustindry       #+#    #+#             */
+/*   Updated: 2023/07/23 16:11:20 by augustindry      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	ft_lstsize(t_token *lst)
+int		ft_pwd(void)
 {
-	int	i;
-
-	i = 0;
-	while (lst)
+	char	cwd[4096];
+	
+	if (getcwd(cwd, 4096))
 	{
-		lst = lst->next;
-		i++;
+		ft_putendl_fd(cwd, 1);
+		return (0);
 	}
-	return (i);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	ft_putstr_fd(s, fd);
-	write(fd, "\n", 1);
+	else
+		return (1);
 }
