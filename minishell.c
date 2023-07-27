@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/26 22:59:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/27 12:30:51 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,13 @@ int main(int argc, char **argv)
 				return 1;						  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
 
 			// test
-			print_token(&list_token); // Affiche les jetons (tokens) analysés à des fins de test.
+			// print_token(&list_token); // Affiche les jetons (tokens) analysés à des fins de test.
 			// free_all(&list_token);
 			// free(input); // Libère la mémoire allouée pour stocker l'entrée de l'utilisateur.
 			// exit (0);
 			// test end
 
-			general_exe(&list_token); // Appelle la fonction general_exe pour exécuter la commande en utilisant les jetons analysés.
+			// general_exe(&list_token); // Appelle la fonction general_exe pour exécuter la commande en utilisant les jetons analysés.
 		}
 		free(input); // Libère la mémoire allouée pour stocker l'entrée de l'utilisateur.
 	}

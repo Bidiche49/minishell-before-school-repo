@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/26 23:01:07 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/27 12:12:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 # define ERR_HOME "cd: HOME not set\n"
 # define ERR_EXPORT "not a valid identifier\n"
 
-typedef struct s_data
-{
-	int		nb_token;
-	char	*input;
-	t_token	*token;
-}		t_data;
+// typedef struct s_data
+// {
+// 	int		nb_token;
+// 	char	*input;
+// 	t_token	*token;
+// }		t_data;
 
 // int		is_real_command(t_token *list_token);
 // int		mod_input(char *input, t_data *data);
@@ -37,10 +37,10 @@ typedef struct s_data
 int		ft_error(char *error);
 int		fill_tokens(char *input, t_token *list_token);
 int		malloc_option(t_token *list_token, char *input, int i);
+char *ft_strdup_remake(char *str, int type);
 // int		calc_i(char *input, int token_passed);
 int		ft_lstadd_back(t_token **lst, t_token *new);
 void	free_list_token(t_token *token);
-void	init_data(char *input, t_data *data);
 t_token	*ft_newtoken(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/26 22:58:33 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/27 12:30:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	fill_tokens(char *input, t_token *list_token)
 	{
 		if (ft_lstadd_back(&list_token, ft_newtoken(tmp_input)) == 1)
 				return (free_list_token(list_token), 1);
+		while (*tmp_input && !ft_isspace(*tmp_input))
+			tmp_input++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/26 21:40:59 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/27 12:25:04 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,12 @@ int	space_only(char *p)
 
 int	parsing(char *input, t_token *list_token)
 {
-	t_data	data;
-
-	init_data(input, &data);
 	// if (mod_input(input, &data) == 1)
 	// 	return (1);
 	// if (init_token(&data, list_token) == 1)
 		// return (1);
-	if (fill_tokens(&data, list_token) == 1)
+	list_token = NULL;
+	if (fill_tokens(input, list_token) == 1)
 		return (1);
 	return (0);
 }

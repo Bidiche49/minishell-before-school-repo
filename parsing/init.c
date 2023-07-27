@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:07:05 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/26 21:40:42 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/27 11:56:11 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,22 @@ int	count_token(char *input)
 	return (nb_token);
 }
 
-void	init_data(char *input, t_data *data)
-{
-	data->input = NULL;
-	data->nb_token = count_token(input);
-	data->token = NULL;
-}
+// void	init_data(char *input, t_data *data)
+// {
+// 	data->input = NULL;
+// 	data->nb_token = count_token(input);
+// 	data->token = NULL;
+// }
 
-int malloc_token(int nb_token, t_token **list_token)
-{
-	t_token	*tmp;
+// int malloc_token(int nb_token, t_token **list_token)
+// {
+// 	t_token	*tmp;
 
-	tmp = *list_token;
-	list_token = malloc(sizeof(t_token));
-	if (list_token == NULL)
-		return (ft_error(", malloc token KO !"));
-	tmp->next = NULL;
+// 	tmp = *list_token;
+// 	list_token = malloc(sizeof(t_token));
+// 	if (list_token == NULL)
+// 		return (ft_error(", malloc token KO !"));
+// 	tmp->next = NULL;
 
-	return (0);
-}
+// 	return (0);
+// }
