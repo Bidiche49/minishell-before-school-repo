@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/27 12:00:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/29 01:19:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# define SUCCESS 0
+# define ERROR 1
 
 int		ft_strlen(const char *str);
 int		ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep);
@@ -39,7 +42,8 @@ typedef enum e_type
 	OUT,
 	IN,
 	HEREDOC,
-	APPEND
+	APPEND,
+	PIPE
 }	t_type_token;
 
 typedef struct s_token
@@ -50,7 +54,9 @@ typedef struct s_token
 }	t_token;
 
 void	free_all(t_token *lst_token);
-int		parsing(char *input, t_token *list_token);
+int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
+
+void print_token(t_token *list_token);
 
 #endif
