@@ -3,82 +3,109 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/22 16:35:03 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/30 03:09:15 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 #include "../minishell.h"
-#include <stddef.h>
-#include <unistd.h>
-#include <stdio.h>
 
-int	general_exe(t_token *token)
+int	check_cmd(char *src, char env, t_token *token, t_section *section)
 {
+	char	**tmp;
 	int	i;
-	int	size;
-
+	
 	i = 0;
-	printf("test\n");
-	size = ft_lstsize(token);
-	printf("valeur de size = %d\n", size);
-	if (token == NULL)
-		return (1);
-	if (size != 1)
+	tmp = ft_split(env, ':');
+	while (tmp[i])
 	{
-		while (i < size)
+		if (access(tmp[i], F_OK) != -1)
 		{
-			printf("valeur de i = %d\n", i);
-			execute_fork_cmd(token);
-			i++;
+			if (access(tmp[i], X_OK) != -1)
+			{
+				if (ft_strcat_token(tmp[i], src, section) != 0)
+					return (ERROR);
+				if (ft_strcpy_token(src, section) != 0)
+					return (ERROR);
+				return (SUCCES);
+			}
 		}
+		i++;
 	}
-	else
-		ft_execute_cmd(token);
-	return (0);
+	return (SUCCES);
 }
 
-int	ft_execute_cmd(t_token *token)
+void	find_cmd(t_token *token, t_section *section)
 {
-	char	*path;
-	char *const	*envp;
-	char *const	*argv;
-	char const	*opt;
-	int		res;
-
-	opt = token->options;
-	path = token->absolut_path;
-	argv = (char *const *)ft_split(opt, ' ');
-	envp = NULL;
-	res = execve(path, argv, envp);
-	if (res == -1)
-		return (1);
-	return (0);
+	char	*env;
+	
+	env = getenv("PATH");
+	if (token->type == WORD) 
+	{
+		if (check_cmd(token->type, env, token, section) != 0)
+			section->cmd == NULL;
+	}
+	while (token)
+	{
+		if (token->type == PIPE)
+			if (token->type == WORD)
+				if (check_cmd(token->type, env, token, section) != 0)
+					section->cmd == NULL;
+		token = token->next;
+	}
 }
 
-int	execute_fork_cmd(t_token *token)
+int	gathering(t_token *token, t_section *section)
 {
-	int	pid;
-	int	p_fd[2];
+	while (token->type != PIPE)
+	{
+		if (token->type == SEPARATOR)
+			section->option = add_space(section->option);
+		else if (token->type == WORD || token->type == OUT || token->type == IN
+					|| token->type == HEREDOC || token->type == APPEND)
+			if (ft_strcat_exec_sec(section, token->type) != 0)
+				return (ERROR);
+		else if (token->type == S_QUOTES)
+			if (ft_strcat_exec_sec_s(section, token->type) != 0)
+				return (ERROR);
+		else if (token->type == D_QUOTES)
+			if (ft_strcat_exec_sec_d(section, token->type) != 0)
+				return (ERROR);
+		token = token->next;
+	}
+	return (SUCCES);
+}
 
-	if (pipe(p_fd) == -1)
-		return(perror("pipe"), 1);
-	pid = (int)fork();
-	if (pid < 0)
-		return(perror("fork"), 1);
-	if (!pid)
+int	is_clear(t_token *token, t_section *section) // si il ne faut pas faire execve la variable CMD sera initialiser a NULL
+{
+	find_cmd(token, section);
+	while (section)
 	{
-		close(p_fd[0]);
-		dup2(p_fd[1], 1);
-		ft_execute_cmd(token);
+		if (token->type == PIPE)
+			section = section->next;
+		if (section->cmd != NULL)
+			if (gathering(token, section) != 0)
+				return (ERROR);
 	}
-	else
-	{
-		close(p_fd[1]);
-		dup2(p_fd[0], 0);
-	}
-	return (0);
+	return (SUCCES);
+}
+
+int	exec_exe(t_section *section)
+{
+	execve(section->abs_path, section->option, NULL);
+}
+
+int	execution(t_token *token)
+{
+	t_section	list_section;
+
+	init_list_section(token, &list_section);
+	if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
+		return (ERROR); // free la structure
+	if (exec_exe(&list_section) != 0)
+		return (ERROR);
+	return (SUCCES);
 }
