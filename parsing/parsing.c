@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/29 01:48:54 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/29 22:25:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,18 @@ int space_only(char *input)
 		return (0);
 }
 
-int	check_end_token(t_token *lst_token)
+int check_end_token(t_token *lst_token)
 {
 	t_token *tmp;
 
 	tmp = lst_token;
+	if (tmp->next == NULL)
+	{
+		if (is_operator(tmp) || tmp->type == PIPE)
+			return (err_end_token(tmp), NEW_LINE); // FREE
+		else
+			return (SUCCESS);
+	}
 	while (tmp->next->next)
 		tmp = tmp->next;
 	if (tmp->next->type == SEPARATOR)
@@ -46,22 +53,17 @@ int	check_end_token(t_token *lst_token)
 		return (SUCCESS);
 	}
 	if (is_operator(tmp->next) || tmp->next->type == PIPE)
-	{
-		printf(ERR_END_TOKEN);
-		return (ERROR);//ERR_END_TOKEN "syntax error near unexpected token `tmp->next->type'\n"
-	}
+		return (err_end_token(tmp->next), NEW_LINE); // FREE
 	return (SUCCESS);
 }
 
 int parsing(char *input, t_token **list_token)
 {
-	// if (mod_input(input, &data) == 1)
-	// 	return (ERROR);
-	// if (init_token(&data, list_token) == 1)
-	// return (ERROR);
 	*list_token = NULL;
 	if (fill_tokens(input, list_token) == ERROR)
 		return (ERROR);
+	if (input)
+		free(input);
 	if (check_end_token(*list_token) == ERROR)
 		return (ERROR);
 	if (operator_mod(*list_token) == ERROR)

@@ -6,12 +6,14 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/29 01:46:12 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/30 03:09:11 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/ioctl.h>
+
+int	g_error;
 
 void print_token(t_token *list_token)
 {
@@ -47,46 +49,47 @@ void print_token(t_token *list_token)
 	printf("\n");
 }
 
-void sigint_handler(int signum)
+int main(int argc, char **argv, char **envp)
 {
-	(void)signum;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-int main(int argc, char **argv)
-{
-	char *input;
-	t_token *list_token;
+	int		return_ft;
+	char	*input;
+	t_token	*list_token;
 
 	list_token = NULL;
 	(void)argv;
+	(void)envp;
+	config_minishell_signal();
+	input =  NULL;
 	if (argc != 1)
-	{
-		printf("No arg please, just \"./minishell\"\n");
-		return (ERROR);
-	}
+		return (write(0, ERR_MANY_ARG, ft_strlen(ERR_MANY_ARG)), ERROR);
 	while (1)
 	{
 		input = readline("Minishell > ");
 		if (input == NULL)
-			break ;
+			break ;//malloc readline error
 		if (ft_strlen(input) > 0 && space_only(input) == 1)
 		{
 			add_history(input);
-			if (parsing(input, &list_token) == 1)
-				return (ERROR);
-/*----------------------TESTS----------------------*/
+			return_ft = parsing(input, &list_token);
+			if (return_ft != 0)
+			{
+				if (return_ft == ERROR)
+					return (ERROR);
+				// if (return_ft == NEW_LINE)
+				// 	ctrl_c();
+			}
+			/*----------------------TESTS----------------------*/
 			// printf("lst_token->str 1= %s\n", list_token->str);
-			print_token(list_token);
+			// print_token(list_token);
 			// free_all(&list_token);
 			// free(input); // Libère la mémoire allouée pour stocker l'entrée de l'utilisateur.
 			// exit (0);
-/*---------------------TESTS_END----------------------*/
+			/*---------------------TESTS_END----------------------*/
 		}
-		free(input);
+		free_list_token(&list_token);
+		free_list_token(&list_token);
 	}
+	rl_clear_history();
+	write(STDOUT_FILENO, "exit\n", 5);
 	return (SUCCESS);
 }

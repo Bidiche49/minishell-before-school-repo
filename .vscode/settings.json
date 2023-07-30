@@ -3,6 +3,7 @@
 		"parsing.h": "c",
 		"stdio.h": "c",
 		"stdlib.h": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"minishell.h": "c"
 	}
 }

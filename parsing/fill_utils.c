@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/29 02:57:07 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/30 02:17:06 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,21 @@ int ft_strlen_remake(char *str, int type)
 	int i;
 
 	i = 0;
-	if (type == 0)
+	if (type == WORD)
 	{
+		if (str[0] == '$')
+			i++;
 		while (str[i] && !is_sep_op(str[i]))
 			i++;
 	}
 	else
 	{
-		if (type == 1)
+		if (type == S_QUOTES)
 		{
 			while (str[i] && str[i] != '\'')
 				i++;
 		}
-		else if (type == 2)
+		else if (type == D_QUOTES)
 		{
 			while (str[i] && str[i] != '"')
 				i++;
@@ -69,21 +71,21 @@ int ft_strdup_remake(char *str, t_token *new)
 	char c;
 
 	i = 0;
-	if (new->type == 0)
+	if (new->type == WORD )
 		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
-	else if (new->type == 1)
+	else if (new->type == S_QUOTES)
 	{
 		c = '\'';
 		str++;
 	}
-	else if (new->type == 2)
+	else if (new->type == D_QUOTES)
 	{
 		c = '"';
 		str++;
 	}
 	else
 	{
-		new->str = "";
+		new->str = NULL;
 		return (SUCCESS);
 	}
 	len = ft_strlen_remake(str, new->type);
@@ -119,7 +121,7 @@ t_token *ft_newtoken(char *str)
 	return (new);
 }
 
-int ft_lstadd_back(t_token **lst, t_token *new)
+int	ft_lstadd_back(t_token **lst, t_token *new)
 {
 	t_token *actu;
 

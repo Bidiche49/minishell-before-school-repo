@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/29 01:40:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/29 20:23:31 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
 /*Errors*/
 # define ERR_REDIR_IN_OUT "syntax error near unexpected token `newline'\n"
 # define ERR_QUOTE "not handle by minishell\n"
-# define ERR_MANY_ARG "too many arguments\n"
 # define ERR_HOME "cd: HOME not set\n"
 # define ERR_EXPORT "not a valid identifier\n"
-# define ERR_END_TOKEN "syntax error near unexpected token `|'\n"
+# define ERR_END_TOKEN "syntax error near unexpected token `"
 // typedef struct s_data
 // {
 // 	int		nb_token;
@@ -44,7 +43,8 @@ int		ft_lstadd_back(t_token **lst, t_token *new);
 int		operator_mod(t_token *lst_token);
 int		is_operator(t_token *token);
 int		is_word_quote(t_token *token);
-void	free_list_token(t_token *token);
+void	free_list_token(t_token **token);
+void	err_end_token(t_token *token);
 t_token	*ft_newtoken(char *str);
 
 #endif

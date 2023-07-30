@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/07/29 01:19:49 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/30 02:06:42 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,15 @@
 
 # define SUCCESS 0
 # define ERROR 1
+# define NEW_LINE 2
+# define ERR_MANY_ARG "too many arguments\n"
 
-int		ft_strlen(const char *str);
-int		ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep);
-int		ft_isspace(char c);
-int		space_only(char *p);
-char	*first_word(char *str);
-char	*ft_strdup(const char *src);
-char	*ft_substr(char const *s, int start, int len);
-char	**ft_split(char const *s, char c);
+extern int				g_error;
 
-typedef enum e_type
-{
+typedef enum e_type		t_type_token;
+typedef struct s_token	t_token;
+
+enum e_type{
 	WORD,
 	S_QUOTES,
 	D_QUOTES,
@@ -44,19 +41,27 @@ typedef enum e_type
 	HEREDOC,
 	APPEND,
 	PIPE
-}	t_type_token;
+};
 
-typedef struct s_token
-{
+struct s_token{
 	char	*str;
 	int		type;
-	struct s_token *next;
-}	t_token;
+	t_token	*next;
+};
 
+int		ft_strlen(const char *str);
+int		ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep);
+int		ft_isspace(char c);
+int		space_only(char *p);
+char	*first_word(char *str);
+char	*ft_strdup(const char *src);
+char	*ft_substr(char const *s, int start, int len);
+char	**ft_split(char const *s, char c);
 void	free_all(t_token *lst_token);
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
-
-void print_token(t_token *list_token);
+void	config_minishell_signal(void);
+void	free_list_token(t_token **lst_token);
+void	print_token(t_token *list_token);
 
 #endif
