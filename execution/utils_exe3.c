@@ -6,11 +6,12 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 01:03:58 by audrye            #+#    #+#             */
-/*   Updated: 2023/07/30 02:05:42 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/05 19:10:27 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+// #include "execution.h"
+#include "../minishell.h"
 
 // static char const *const g_meta_tab_s = {
 // '*','?','[',']','|','>','<','\'','\"','`',';','&',
@@ -80,7 +81,10 @@ int	ft_strcat_exec_sec(t_section *section, char *exec)
 	if (!tmp)
 		return (ERROR);
 	while (section->option[i])
-		tmp[i] = section->option[i++];
+	{
+		tmp[i] = section->option[i];
+		i++;
+	}
 	while (exec[j])
 	{
 		tmp[i] = exec[j];
@@ -107,7 +111,10 @@ int	ft_strcat_exec_sec_s(t_section *section, char *exec)
 	if (!tmp)
 		return (ERROR);
 	while (section->option[i])
-		tmp[i] = section->option[i++];
+	{
+		tmp[i] = section->option[i];
+		i++;
+	}
 	while (exec[j])
 	{
 		tmp[i] = exec[j];

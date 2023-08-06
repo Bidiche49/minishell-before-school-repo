@@ -6,11 +6,12 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 21:02:37 by audrye            #+#    #+#             */
-/*   Updated: 2023/07/30 01:37:17 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/05 16:42:22 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+// #include "execution.h"
+#include "../minishell.h"
 
 int	ft_strcat_token(char *path, char *cmd, t_section *section)
 {

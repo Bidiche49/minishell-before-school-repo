@@ -6,7 +6,7 @@
 #    By: audrye <audrye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/07/30 03:14:30 by audrye           ###   ########.fr        #
+#    Updated: 2023/08/05 16:01:29 by audrye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,11 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)fill_utils.c				\
 				$(PARS_LOC)check_pars.c				\
 				$(PARS_LOC)init.c					\
-				# $(EXEC_LOC)execution.c				\
-				# $(EXEC_LOC)utils_exe.c
+				$(EXEC_LOC)execution.c				\
+				$(EXEC_LOC)utils_exe.c				\
+				$(EXEC_LOC)utils_exe2.c				\
+				$(EXEC_LOC)utils_exe3.c				\
+				$(EXEC_LOC)utils_exe4.c
 
 OBJS =			$(SRCS:.c=.o)
 

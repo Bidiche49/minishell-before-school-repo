@@ -6,11 +6,12 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:19:32 by audrye            #+#    #+#             */
-/*   Updated: 2023/07/30 02:04:06 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/05 19:10:52 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+// #include "execution.h"
+#include "../minishell.h"
 
 int	ft_strcat_exec_sec_d(t_section *section, char *exec)
 {
@@ -26,7 +27,10 @@ int	ft_strcat_exec_sec_d(t_section *section, char *exec)
 	if (!tmp)
 		return (ERROR);
 	while (section->option[i])
-		tmp[i] = section->option[i++];
+	{
+		tmp[i] = section->option[i];
+		i++;
+	}
 	while (exec[j])
 	{
 		tmp[i] = exec[j];
