@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/27 12:30:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/06 14:52:08 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ int main(int argc, char **argv)
 			add_history(input); // Ajoute l'entrée à l'historique de readline pour qu'elle puisse être rappelée avec les flèches du clavier.
 			if (parsing(input, &list_token) == 1) // Appelle la fonction parsing pour analyser l'entrée et stocker les jetons dans list_token.
 				return 1;						  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
-
+			if (execution(&list_token) == 1)
+				return (ERROR);
 			// test
 			// print_token(&list_token); // Affiche les jetons (tokens) analysés à des fins de test.
 			// free_all(&list_token);
