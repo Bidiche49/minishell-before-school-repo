@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:15:54 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/05 16:41:47 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/06 16:22:40 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 // 	char	*cmd;
 // 	char	*abs_path;
 // 	char	*option;
-// 	struct t_section *next;
+// 	struct s_section *next;
 // }	t_section;
 
 // /* Execution */

@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 01:03:58 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/05 19:10:27 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/06 18:47:03 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,12 @@ int	ft_strcat_exec_sec(t_section *section, char *exec)
 
 	i = 0;
 	j = 0;
-	len = ft_strlen(section->option) + ft_strlen(exec) + 1;
+	
+	len = ft_strlen(section->option) + ft_strlen(exec);
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (ERROR);
-	while (section->option[i])
+	while (section->option != NULL && section->option[i])
 	{
 		tmp[i] = section->option[i];
 		i++;
@@ -94,7 +95,7 @@ int	ft_strcat_exec_sec(t_section *section, char *exec)
 	tmp[i] = '\0';
 	free(section->option);
 	section->option = tmp;
-	return (SUCCES);
+	return (SUCCESS);
 }
 
 int	ft_strcat_exec_sec_s(t_section *section, char *exec)
@@ -110,7 +111,7 @@ int	ft_strcat_exec_sec_s(t_section *section, char *exec)
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (ERROR);
-	while (section->option[i])
+	while (section->option != NULL && section->option[i])
 	{
 		tmp[i] = section->option[i];
 		i++;
@@ -124,22 +125,23 @@ int	ft_strcat_exec_sec_s(t_section *section, char *exec)
 	tmp[i] = '\0';
 	free(section->option);
 	section->option = tmp;
-	return (SUCCES);
+	return (SUCCESS);
 }
 
-char	*add_space(char *section)
+void	add_space(t_section *section)
 {
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	tmp = malloc(sizeof(char) * (ft_strlen(section) + 2));
-	while (section[i])
+	tmp = malloc(sizeof(char) * (ft_strlen(section->option) + 2));
+	while (section->option[i])
 	{
-		tmp[i] = section[i];
+		tmp[i] = section->option[i];
 		i++;
 	}
-	free(section);
+	free(section->option);
 	tmp[i] = ' ';
-	return (tmp);
+	tmp[i + 1] = '\0';
+	section->option = tmp;
 }

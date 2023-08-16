@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:19:32 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/05 19:10:52 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/06 17:26:21 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_strcat_exec_sec_d(t_section *section, char *exec)
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (ERROR);
-	while (section->option[i])
+	while (section->option != NULL && section->option[i])
 	{
 		tmp[i] = section->option[i];
 		i++;
@@ -40,5 +40,5 @@ int	ft_strcat_exec_sec_d(t_section *section, char *exec)
 	tmp[i] = '\0';
 	free(section->option);
 	section->option = tmp;
-	return (SUCCES);
+	return (SUCCESS);
 }

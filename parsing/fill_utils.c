@@ -6,183 +6,135 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/27 12:26:50 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/07/30 02:17:06 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-// int	calc_i(char *input, int token_passed)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token_passed > 0)
-// 	{
-// 		while (input[i])
-// 		{
-// 			i++;
-// 			if (input[i] && input[i - 1] == '|')
-// 			{
-// 				token_passed--;
-// 				break ;
-// 			}
-// 		}
-// 	}
-// 	return (i);
-// }
-
-// int	malloc_option(t_token *list_token, char *input, int i)
-// {
-// 	int	len;
-
-// 	len = 0;
-// 	if (ft_isspace(input[i]))
-// 		i++;
-// 	while (input[i] && input[i] != '|')
-// 	{
-// 		if (ft_isspace(input[i]) && (input[i + 1] == '\0' || input[i + 1] == '|'))
-// 				break ;
-// 		len++;
-// 		i++;
-// 	}
-// 	printf("len malloc_option = %d\n", len);
-// 	list_token->options = malloc(sizeof(char) * (len + 1));
-// 	if (list_token->options == NULL)
-// 		return (ft_error(", malloc KO !"));
-// 	return (0);
-// }
+void	ft_test_type(char *str, t_token *new)
+{
+	if (isspace(*str))
+		new->type = SEPARATOR;
+	else if (*str == '\'' || *str == '"')
+		new->type = (S_QUOTES + (*str == '"'));
+	else if (*str == '<' && *(str + 1) && *(str + 1) == '<')
+		new->type = HEREDOC;
+	else if (*str == '>' && *(str + 1) && *(str + 1) == '>')
+		new->type = APPEND;
+	else if (*str == '<')
+		new->type = IN;
+	else if (*str == '>')
+		new->type = OUT;
+	else if (*str == '|' && *(str +1) == '|')
+		new->type = -1;
+	else if (*str == '|')
+		new->type = PIPE;
+	else
+		new->type = WORD;
+}
 
 int ft_strlen_remake(char *str, int type)
 {
 	int i;
-	char c;
 
 	i = 0;
-	if (type == 0)
-		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
-	if (type == 1)
-		c = '\'';
-	if (type == 2)
-		c = '"';
-	while (str[i] && str[i] != c)
-		i++;
-	return (i);
-}
-
-char *ft_strdup_remake(char *str, int type)
-{
-	int		i;
-	int		len;
-	char	*dest;
-	char	c;
-
-	i = 0;
-	if (type == 0)
-		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
-	if (type == 1)
-		c = '\'';
-	if (type == 2)
-		c = '"';
-	i = 0;
-	len = ft_strlen_remake(str, type);
-	dest = malloc(sizeof(char) * (len + 1));
-	if (dest == NULL)
-		return (NULL);
-	while (*str && i < len && *str != c)
-		dest[i++] = *str++;
-	dest[i] = '\0';
-	return (dest);
-}
-
-int ft_test_type(char *str)
-{
-	int	i;
-
-	i = 0;
-	printf("test_type\n");
-	if (isspace(*str))
+	if (type == WORD)
 	{
-		while (isspace(*str))
+		if (str[0] == '$')
 			i++;
-		*str += i;
-		printf("SEPARATOR\n");
-		return (SEPARATOR);
-	}
-	if (*str == '\'' || *str == '"')
-	{
-		str++; // Augmenter la valeur de str sans retourner de valeur
-		printf("QUOTES\n");
-		return (S_QUOTES + (*str == '"'));
-	}
-	if (*str == '<'&& *(str + 1)  && *(str + 1) == '<')
-	{
-		str += 2; // Augmenter la valeur de str sans retourner de valeur
-		printf("HEREDOC\n");
-		return (HEREDOC);
-	}
-	if (*str == '>' && *(str + 1) && *(str + 1) == '>')
-	{
-		str += 2; // Augmenter la valeur de str sans retourner de valeur
-		printf("APPEND\n");
-		return (APPEND);
-	}
-	if (*str == '<')
-	{
-		str++; // Augmenter la valeur de str sans retourner de valeur
-		printf("IN\n");
-		return (IN);
-	}
-	if (*str == '>')
-	{
-		str++; // Augmenter la valeur de str sans retourner de valeur
-		printf("OUT\n");
-		return (OUT);
+		while (str[i] && !is_sep_op(str[i]))
+			i++;
 	}
 	else
 	{
-		printf("WORD\n");
-		return (WORD);
+		if (type == S_QUOTES)
+		{
+			while (str[i] && str[i] != '\'')
+				i++;
+		}
+		else if (type == D_QUOTES)
+		{
+			while (str[i] && str[i] != '"')
+				i++;
+		}
+		if (!str[i])
+			return (-1);
 	}
+	return (i);
+}
+
+int ft_strdup_remake(char *str, t_token *new)
+{
+	int i;
+	int len;
+	char c;
+
+	i = 0;
+	if (new->type == WORD )
+		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
+	else if (new->type == S_QUOTES)
+	{
+		c = '\'';
+		str++;
+	}
+	else if (new->type == D_QUOTES)
+	{
+		c = '"';
+		str++;
+	}
+	else
+	{
+		new->str = NULL;
+		return (SUCCESS);
+	}
+	len = ft_strlen_remake(str, new->type);
+	if (len == -1)
+	{
+		printf("Double or single cote open");
+		return (ERROR);
+	}
+	new->str = malloc(sizeof(char) * (len + 1));
+	if (new->str == NULL)
+		return (ERROR); // malloc error
+	while (*str && i < len && *str != c)
+		new->str[i++] = *str++;
+	new->str[i] = '\0';
+	return (SUCCESS);
 }
 
 t_token *ft_newtoken(char *str)
 {
 	t_token *new;
-	int type;
 
+	if (str == NULL)
+		return (NULL);  // error fill token
 	new = malloc(sizeof(t_token));
 	if (new == NULL)
-		return (NULL);
-	type = ft_test_type(str);
-	if (str == NULL)
-		new->str = NULL;
-	else
-	{
-		new->str = ft_strdup_remake(str, type); // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
-		if (new->str == NULL)
-			return (free(new), NULL);
-		printf("%s\n", new->str);
-	}
-	new->type = type;
+		return (NULL); // malloc error
+	ft_test_type(str, new);
+	if (new->type == -1)
+		return (free(new), NULL); //syntax error near unexpected token `|'
+	if (ft_strdup_remake(str, new) == ERROR)
+		return (free(new), NULL); // malloc error
 	new->next = NULL;
 	return (new);
 }
 
-int ft_lstadd_back(t_token **lst, t_token *new)
+int	ft_lstadd_back(t_token **lst, t_token *new)
 {
 	t_token *actu;
 
 	if (new == NULL)
-		return (1);
+		return (ERROR);
 	if (*lst == NULL)
 	{
 		*lst = new;
-		return (0);
+		return (SUCCESS);
 	}
 	actu = *lst;
 	while (actu->next != NULL)
 		actu = actu->next;
 	actu->next = new;
-	return (0);
+	return (SUCCESS);
 }

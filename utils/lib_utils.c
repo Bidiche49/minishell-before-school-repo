@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/22 22:40:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/06 16:40:49 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 		i++;
 	return (i);

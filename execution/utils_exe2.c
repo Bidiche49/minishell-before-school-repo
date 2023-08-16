@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 21:02:37 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/05 16:42:22 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/06 17:34:09 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	ft_strcat_token(char *path, char *cmd, t_section *section)
 	i = 0;
 	j = 0;
 	len = ft_strlen(path) + ft_strlen(cmd);
-	section->abs_path = malloc(sizeof(char) * (len + 1));
+	free(section->abs_path);
+	section->abs_path = malloc(sizeof(char) * (len + 2));
 	if (!section->abs_path)
 		return (ERROR);
 	while (path[i])
@@ -30,6 +31,7 @@ int	ft_strcat_token(char *path, char *cmd, t_section *section)
 		section->abs_path[i] = path[i];
 		i++;
 	}
+	section->abs_path[i++] = '/';
 	while (cmd[j])
 	{
 		section->abs_path[i] = cmd[j];
@@ -37,7 +39,7 @@ int	ft_strcat_token(char *path, char *cmd, t_section *section)
 		j++;
 	}
 	section->abs_path[i] = '\0';
-	return (SUCCES);
+	return (SUCCESS);
 }
 
 int	ft_strcpy_token(char *src, t_section *section)
@@ -54,6 +56,6 @@ int	ft_strcpy_token(char *src, t_section *section)
 		i++;
 	}
 	section->cmd[i] = '\0';
-	return (SUCCES);
+	return (SUCCESS);
 }
 

@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/07 16:53:05 by audrye           ###   ########.fr       */
+/*   Created: 2023/08/07 16:50:18 by audrye            #+#    #+#             */
+/*   Updated: 2023/08/08 12:46:11 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free_list_token(t_token **lst_token)
+int	is_redir(int type)
 {
-	t_token *tmp;
-
-	tmp = *lst_token;
-	while ((*lst_token))
-	{
-		tmp = (*lst_token)->next;
-		// printf("token->str =%s\n", (*lst_token)->str);
-		if ((*lst_token)->str)
-			free((*lst_token)->str);
-		free((*lst_token));
-		(*lst_token) = tmp;
-	}
+	if (type == OUT || type == IN 
+		|| type == HEREDOC || type == APPEND)
+		return (1);
+	return (0);	
 }
-void free_all(t_token *lst_token)
+
+int	is_operator_exec(t_token *token)
 {
-	// t_token	*tmp;
-
-	printf("test\n");
-	if (!lst_token)
-		return;
-
-	free(lst_token);
-	printf("fin free\n");
+	while (token)
+	{
+		if (token->type == OUT || token->type == IN || token->type == HEREDOC
+			|| token->type == APPEND || token->type == PIPE)
+			return (1);
+		token = token->next;
+	}
+	return (0);
 }

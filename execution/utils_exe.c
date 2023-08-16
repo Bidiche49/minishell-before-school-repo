@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/05 22:17:49 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/07 18:51:01 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,17 @@ t_section	*ft_lstlast(t_section *lst)
 }
 
 
-int	cmp_pipe(t_token *token)
+int	cmp_operator(t_token *token)
 {
 	int	i;
 
 	i = 0;
-	printf("entre dans le cmp pipe\n");
-	while (token->next == NULL)
+	while (token == NULL)
 	{
-		if (token->type == PIPE)
+		if (is_redir(token->type) == 1 || token->type == PIPE)
 			i++;
 		token = token->next;
 	}
-	printf("valeur de i = %d\n", i);
 	return (i);
 }
 
@@ -71,7 +69,6 @@ int ft_lstadd_back_exec(t_section **lst, t_section *new)
 {
 	t_section *actu;
 
-	printf("entre dans lstadd_back_exec\n");
 	if (new == NULL)
 		return (1);
 	if (*lst == NULL)
@@ -83,7 +80,6 @@ int ft_lstadd_back_exec(t_section **lst, t_section *new)
 	while (actu->next != NULL)
 		actu = actu->next;
 	actu->next = new;
-	printf("end lstadd_back\n");
 	return (0);
 }
 
@@ -91,9 +87,7 @@ void	init_list_section(t_token *token, t_section *section)
 {
 	int	nb_pipe;
 
-	printf("entre dans init_list_section\n");
-	nb_pipe = cmp_pipe(token); // compte le nombre de mots
-	printf("passe cmp_pipe\n");
+	nb_pipe = cmp_operator(token); // compte le nombre de mots
 	if (nb_pipe == 0)
 	{
 		section->cmd = NULL;
@@ -104,10 +98,8 @@ void	init_list_section(t_token *token, t_section *section)
 	}
 	while (nb_pipe > 0)
 	{
-		printf("entre dans la boucle\n");
 		ft_lstadd_back_exec(&section, ft_newsection());
 		section = section->next;
 		nb_pipe--;
 	}
-	printf("end init_list_section\n");
 }
