@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/08 12:46:29 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/23 02:44:01 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@
 # define ERROR 1
 # define NEW_LINE 2
 # define ERR_MANY_ARG "too many arguments\n"
+# define ERR_ENV_KO "minishell: Error while retrieving the environment.\n"
+# define ERR_MALLOC_KO "minishell: Error malloc\n"
 
 extern int				g_error;
 
 typedef enum e_type			t_type_token;
 typedef struct s_token		t_token;
+typedef struct s_env		t_env;
 
 enum e_type{
 	WORD,
@@ -49,6 +52,12 @@ struct s_token{
 	char	*str;
 	int		type;
 	t_token	*next;
+};
+
+struct s_env{
+	char	*name;
+	char	*content;
+	t_env	*next;
 };
 
 typedef struct s_section
@@ -72,6 +81,10 @@ char	**ft_split(char const *s, char c);
 void	free_all(t_token *lst_token);
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
+int		create_env(char **envd, t_env **env);
+int		ft_lstadd_back_env(t_env **lst, t_env *new);
+t_env	*fill_new_env(char *line_env);
+int		expand(t_token **list_token, t_env *env);
 
 /* SIGNAL */
 

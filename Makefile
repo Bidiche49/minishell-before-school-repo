@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: audrye <audrye@student.42.fr>              +#+  +:+       +#+         #
+#    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/07 17:16:05 by audrye           ###   ########.fr        #
+#    Updated: 2023/08/23 00:07:54 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ CFLAGS =		-Wall -Werror -Wextra -g3
 PARS_LOC =		parsing/
 UTILS_LOC =		utils/
 EXEC_LOC =		execution/
+EXPAND_LOC =	expand/
 
 
 SRCS =			minishell.c							\
@@ -36,6 +37,9 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)fill_utils.c				\
 				$(PARS_LOC)check_pars.c				\
 				$(PARS_LOC)init.c					\
+				$(EXPAND_LOC)env_utils.c			\
+				$(EXPAND_LOC)env.c					\
+				$(EXPAND_LOC)expand.c				\
 				$(EXEC_LOC)execution.c				\
 				$(EXEC_LOC)utils_exe.c				\
 				$(EXEC_LOC)utils_exe2.c				\
