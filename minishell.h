@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/23 02:44:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/26 15:54:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,12 @@ char	*ft_strdup(const char *src);
 char	*ft_substr(char const *s, int start, int len);
 char	**ft_split(char const *s, char c);
 
-void	free_all(t_token *lst_token);
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
 int		create_env(char **envd, t_env **env);
 int		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*fill_new_env(char *line_env);
-int		expand(t_token **list_token, t_env *env);
+int		expand(t_token **list_token, t_env **env);
 
 /* SIGNAL */
 
@@ -93,6 +92,7 @@ void	config_minishell_signal(void);
 /* FREE */
 
 void free_list_token(t_token **lst_token);
+void free_all(t_token **lst_token, t_env **env);
 
 /* Execution */
 

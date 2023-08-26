@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/07 16:53:05 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/26 16:03:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,32 @@ void free_list_token(t_token **lst_token)
 		(*lst_token) = tmp;
 	}
 }
-void free_all(t_token *lst_token)
+
+void free_env(t_env **env)
+{
+	t_env *tmp;
+
+	tmp = *env;
+	while ((*env))
+	{
+		tmp = (*env)->next;
+		if ((*env)->name)
+			free((*env)->name);
+		if ((*env)->content)
+			free((*env)->content);
+		free((*env));
+		(*env) = tmp;
+	}
+}
+
+void free_all(t_token **lst_token, t_env **env)
 {
 	// t_token	*tmp;
 
 	printf("test\n");
-	if (!lst_token)
-		return;
-
-	free(lst_token);
+	if (lst_token)
+		free_list_token(lst_token);
+	if (env)
+		free_env(env);
 	printf("fin free\n");
 }
