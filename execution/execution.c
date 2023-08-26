@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/15 17:50:38 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/26 16:10:37 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_cmd(char *src, char *env, t_section *section)
 {
 	char	**tmp;
 	int	i;
-	
+
 	i = 0;
 	tmp = ft_split(env, ':');
 	while (tmp[i])
@@ -41,9 +41,9 @@ int	check_cmd(char *src, char *env, t_section *section)
 void	find_cmd(t_token *token, t_section *section)
 {
 	char	*env;
-	
+
 	env = getenv("PATH");
-	if (token->type == WORD) 
+	if (token->type == WORD)
 	{
 		if (check_cmd(token->str, env, section) != 0)
 			section->cmd = NULL;
@@ -56,13 +56,13 @@ void	find_cmd(t_token *token, t_section *section)
 					section->cmd = NULL;
 		token = token->next;
 	}
-}			
+}
 
 int	gathering(t_token *token, t_section *section)
 {
 	while (token && ((is_redir(token->type) == 1) || token->type == PIPE))
 	{
-		if (token->type == SEPARATOR) 
+		if (token->type == SEPARATOR)
 			add_space(section);
 		else if (token->type == WORD)
 		{
@@ -108,16 +108,16 @@ int	exec_exe_simple(t_section *section, int pid)
 	return (0);
 }
 
-int	exec_all(t_section *section, int pid)
-{
-	
-}
+// int	exec_all(t_section *section, int pid)
+// {
+
+// }
 
 int	execution(t_token *token)
 {
 	t_section	list_section;
 	int pid;
-	
+
 	pid = fork();
 	init_list_section(token, &list_section);
 	if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
@@ -125,8 +125,8 @@ int	execution(t_token *token)
 	if (is_operator_exec(token) == 0 && exec_exe_simple(&list_section, pid) != 0)
 		return (ERROR);
 	// if (is_operator_exec(token) == 1 && exec_all(&list_section, pid))
-	
 
-	
+
+
 	return (SUCCESS);
 }

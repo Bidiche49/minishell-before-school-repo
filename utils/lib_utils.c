@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/06 16:40:49 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/26 16:44:54 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,31 @@ char	*ft_strdup(const char *src)
 	return (str);
 }
 
-int	ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep)
+char	*ft_strcat_dup(char *dest, char *str)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
-	while (path[i])
-		abs_path[j++] = path[i++];
-	abs_path[j++] = sep;
-	i = 0;
-	while (cmd[i])
-		abs_path[j++] = cmd[i++];
-	abs_path[j] = '\0';
-	return (0);
+	tmp = ft_strdup(dest);
+	if (tmp == NULL)
+		return (NULL);
+	free (dest);
+	dest = malloc(sizeof(char) * (ft_strlen(tmp) + ft_strlen(str) + 1));
+	if (dest == NULL)
+		return (NULL);
+	while (tmp[j])
+	{
+		dest[j] = tmp[j];
+		j++;
+	}
+	free(tmp);
+	while (str[i])
+		dest[j++] = str[i++];
+	dest[j] = '\0';
+	return (dest);
 }
 
 char	*ft_substr(char const *s, int start, int len)
