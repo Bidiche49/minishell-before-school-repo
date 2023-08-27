@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/26 16:44:54 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 02:03:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	*ft_strdup(const char *src)
 	char			*str;
 
 	i = -1;
+	if (!src)
+		return (NULL);
 	str = malloc(sizeof(char) * (ft_strlen(src) + 1));
 	if (str == NULL)
 		return (NULL);

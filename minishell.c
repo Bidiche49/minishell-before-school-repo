@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/26 17:10:06 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 01:36:08 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	print_env(t_env *env)
 {
 	while(env)
 	{
-		printf("%s=%s\"\n", env->name, env->content);
+		printf("%s=%s\n", env->name, env->content);
 		env = env->next;
 	}
 }
