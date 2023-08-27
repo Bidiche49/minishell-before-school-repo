@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 23:48:36 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 00:02:04 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ int expand_word(t_token **token, t_env **env)
 	(*token)->str = NULL;
 	return (SUCCESS);
 }
-
-
 
 int copy_var_env(char *dest, char *str, t_env *env)
 {
