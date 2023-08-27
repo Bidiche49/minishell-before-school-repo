@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 22:35:11 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 23:48:36 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int copy_var_env(char *dest, char *str, t_env *env)
 		}
 		if (is_in_env(str, env) == 1)
 		{
-			// printf("str test = %s\n", str);
 			while (env->content[i])
 			{
 				dest[i] = env->content[i];
@@ -101,10 +100,7 @@ int count_len_var_content(char *str, t_env *env)
 	while (env)
 	{
 		if (is_in_env(str, env) == 1)
-		{
-			// printf("count_len_CONTENT %s = %d\n", str, ft_strlen(env->content));
 			return (ft_strlen(env->content));
-		}
 		env = env->next;
 	}
 	return (0);
@@ -135,7 +131,6 @@ char *dup_dquotes(int len_tot, char *str, t_env *env)
 
 	i = 0;
 	j = 0;
-	// printf("len_tot = %d\n",len_tot);
 	d_quotes = malloc(sizeof(char) * len_tot);
 	if (d_quotes == NULL)
 		return (write(0, ERR_MALLOC_KO, ft_strlen(ERR_MALLOC_KO)), NULL);
@@ -143,8 +138,6 @@ char *dup_dquotes(int len_tot, char *str, t_env *env)
 	{
 		if (str[i] == '$')
 		{
-			// printf("char %c\n", str[i]);
-			// printf("string %s\n", str + i);
 			j += copy_var_env(d_quotes + j, str + i, env);
 			i += count_len_var_name(str + i);
 			if (str[i] && str[i] == '$' && (!str[i + 1] || str[i + 1] == ' '))
@@ -184,7 +177,13 @@ int expand_d_quotes(t_token **list_token, t_env *env)
 				i++;
 			}
 			len_tot += i + 1;
-			tmp->str = dup_dquotes(len_tot, tmp->str, env);
+			if (len_tot == 1)
+			{
+				free(tmp->str);
+				tmp->str = NULL;
+			}
+			else
+				tmp->str = dup_dquotes(len_tot, tmp->str, env);
 		}
 		tmp = tmp->next;
 	}
@@ -198,12 +197,6 @@ int expand_to_token(t_token **list_token)
 	tmp = *list_token;
 	while (tmp)
 	{
-		// if (tmp->next && tmp->next->type == SEPARATOR && !tmp->next->next)
-		// 	del_next_token(&tmp);
-		// if (tmp->next && tmp->next->type == WORD && !tmp->next->str)
-		// 	del_next_token(&tmp);
-		// if (tmp->next && tmp->type == SEPARATOR && tmp->next->type == SEPARATOR)
-		// 	del_next_token(&tmp);
 		if (tmp->next && tmp->type == WORD && tmp->next->type == WORD)
 		{
 			tmp->str = ft_strcat_dup(tmp->str, tmp->next->str);
@@ -216,6 +209,54 @@ int expand_to_token(t_token **list_token)
 	return (SUCCESS);
 }
 
+int	is_token_ok(t_token *list_token)
+{
+	while (list_token)
+	{
+		if (list_token->next && list_token->type == WORD && list_token->next->type == WORD)
+			return (0);
+		else if (list_token->next && list_token->next->type == WORD && list_token->next->str == NULL)
+			return (0);
+		else if (list_token->next && list_token->next->type == D_QUOTES && list_token->next->str == NULL)
+			return (0);
+		else if (list_token->next && list_token->next->type == S_QUOTES && list_token->next->str == NULL)
+			return (0);
+		else if (!list_token->next && list_token->type == SEPARATOR)
+			return (0);
+		else if (list_token->next && list_token->type == SEPARATOR && list_token->next->type == SEPARATOR)
+			return (0);
+		list_token = list_token->next;
+	}
+	return (1);
+}
+
+void	clean_token(t_token **list_token)
+{
+	t_token *tmp;
+
+	tmp = *list_token;
+	while (tmp)
+	{
+		if (tmp->next && tmp->next->type == SEPARATOR && !tmp->next->next)
+			del_next_token(&tmp);
+		if (tmp->next && tmp->next->type == WORD && !tmp->next->str)
+			del_next_token(&tmp);
+		if (tmp->next && tmp->next->type == D_QUOTES && !tmp->next->str)
+			del_next_token(&tmp);
+		if (tmp->next && tmp->next->type == S_QUOTES && !tmp->next->str)
+			del_next_token(&tmp);
+		if (tmp->next && tmp->type == SEPARATOR && tmp->next->type == SEPARATOR)
+			del_next_token(&tmp);
+		tmp = tmp->next;
+	}
+}
+
+// int	is_spec_char(char c)
+// {
+// 	if (c == '!' || c == '@' || c == '#' || c == '%' || c == '!' || c == '!' || c == '!' || c == '!' || )
+// 	return(0)
+// }
+
 int expand(t_token **list_token, t_env **env)
 {
 	t_token *tmp;
@@ -223,12 +264,12 @@ int expand(t_token **list_token, t_env **env)
 	tmp = *list_token;
 	while (tmp)
 	{
-		if (tmp->type == WORD && tmp->str && tmp->str[0] == '$' && tmp->str[1])
+		if (tmp->type == WORD && tmp->str && tmp->str[0] == '$' && tmp->str[1] && is_alnum_und(tmp->str[1]))
 			if (expand_word(&tmp, env) == ERROR)
 				return (free_all(list_token, env), ERROR);
 		tmp = tmp->next;
 	}
-	while (isexpand_ok(*list_token) == 1)
+	while (!isexpand_ok(*list_token))
 	{
 		if (expand_d_quotes(list_token, *env) == ERROR)
 			return (free_all(list_token, env), ERROR);
@@ -236,8 +277,8 @@ int expand(t_token **list_token, t_env **env)
 			return (free_all(list_token, env), ERROR);
 		break;
 	}
-	// while (is_token_ok(*list_token) == 1)
-	// 	clean_token(list_token);
+	while (!is_token_ok(*list_token))
+		clean_token(list_token);
 	return (SUCCESS);
 }
 /*
@@ -248,4 +289,7 @@ gerer aussi $?   = 0 normalement ok
 gerer [SEPARATOR =(null)] [WORD =(null)] [SEPARATOR =(null)]
 gerer les \$ \ en gerneral
 
+
+echo "$USER$$$\$HOME$UHO$UINJ$$$"
+[WORD =echo] [SEPARATOR =(null)] [D_QUOTES =ntardy/mnt/nfs/homes/ntardy$] (manque un$etun\)
 */

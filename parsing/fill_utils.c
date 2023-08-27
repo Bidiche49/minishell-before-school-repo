@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 22:20:15 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 23:51:09 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,9 @@ int ft_strdup_remake(char *str, t_token *new)
 	}
 	len = ft_strlen_remake(str, new->type);
 	if (len == -1)
-	{
-		printf("Double or single cote open");
-		return (ERROR);
-	}
+		return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN)), ERROR);
+	if (len == 0)
+		return (new->str = NULL, SUCCESS);
 	new->str = malloc(sizeof(char) * (len + 1));
 	if (new->str == NULL)
 		return (ERROR); // malloc error
@@ -124,7 +123,6 @@ t_token *ft_newtoken(char *str)
 		return (free(new), NULL); //syntax error near unexpected token `|'
 	if (ft_strdup_remake(str, new) == ERROR)
 		return (free(new), NULL); // malloc error
-	printf("after dup\n");
 	new->next = NULL;
 	return (new);
 }

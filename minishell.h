@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/26 16:38:07 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 23:50:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@
 # define SUCCESS 0
 # define ERROR 1
 # define NEW_LINE 2
-# define ERR_MANY_ARG "too many arguments\n"
+# define ERR_MANY_ARG "minishell: too many arguments\n"
 # define ERR_ENV_KO "minishell: Error while retrieving the environment.\n"
 # define ERR_MALLOC_KO "minishell: Error malloc\n"
+# define ERR_QUOTES_OPEN "minishell: Error quote open\n"
 
 extern int				g_error;
 

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 22:24:25 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 23:04:48 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ int main(int argc, char **argv, char **envd)
 	env = NULL;
 	(void)argv;
 	// print_envd(envd);//A ENLEVER ---------------------------------------
-	create_env(envd, &env);
+	if (create_env(envd, &env) == ERROR)
+		return(free_all(&list_token, &env), ERROR);
 	// printf("after creat_env");
 	// print_env(env);//A ENLEVER -----------------------------------------
 	config_minishell_signal();
@@ -118,6 +119,7 @@ int main(int argc, char **argv, char **envd)
 			add_history(input); // Ajoute l'entrée à l'historique de readline pour qu'elle puisse être rappelée avec les flèches du clavier.
 			if (parsing(input, &list_token) == ERROR) // Appelle la fonction parsing pour analyser l'entrée et stocker les jetons dans list_token.
 				return (free_all(&list_token, &env), ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
+			print_token(list_token);
 			expand(&list_token, &env);
 			// check_lst_token(&list_token);
 			// if (list_token->next || list_token->str)
