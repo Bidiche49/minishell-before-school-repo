@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/26 17:10:06 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 22:24:25 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	print_env(t_env *env)
 {
 	while(env)
 	{
-		printf("%s=%s\"\n", env->name, env->content);
+		printf("%s=%s\n", env->name, env->content);
 		env = env->next;
 	}
 }
@@ -105,8 +105,8 @@ int main(int argc, char **argv, char **envd)
 	(void)argv;
 	// print_envd(envd);//A ENLEVER ---------------------------------------
 	create_env(envd, &env);
-	printf("after creat_env");
-	print_env(env);//A ENLEVER -----------------------------------------
+	// printf("after creat_env");
+	// print_env(env);//A ENLEVER -----------------------------------------
 	config_minishell_signal();
 	while (1)
 	{
@@ -117,8 +117,9 @@ int main(int argc, char **argv, char **envd)
 		{
 			add_history(input); // Ajoute l'entrée à l'historique de readline pour qu'elle puisse être rappelée avec les flèches du clavier.
 			if (parsing(input, &list_token) == ERROR) // Appelle la fonction parsing pour analyser l'entrée et stocker les jetons dans list_token.
-				return (ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
+				return (free_all(&list_token, &env), ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
 			expand(&list_token, &env);
+			// check_lst_token(&list_token);
 			// if (list_token->next || list_token->str)
 			// 	if (execution(list_token) == 1)
 			// 		return 1;
@@ -140,6 +141,6 @@ int main(int argc, char **argv, char **envd)
 	}
 	free_all(&list_token, &env);
 	rl_clear_history();
-	write(STDOUT_FILENO, "exit\n", 5);//ctrl-D qui ne fonctionne que quand la line est vide
+	write(STDOUT_FILENO, "exit\n", 5);
 	return (SUCCESS);
 }

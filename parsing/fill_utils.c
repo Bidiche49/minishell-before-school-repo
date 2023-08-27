@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/22 22:37:52 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 22:20:15 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,13 @@ int ft_strdup_remake(char *str, t_token *new)
 	char c;
 
 	i = 0;
+	if (str[0] == '$' && str[1] && str[1] == '$')
+	{
+		new->type = WORD;
+		new->str = NULL;
+		printf("str = %s\n", str);
+		return (SUCCESS);
+	}
 	if (new->type == WORD )
 		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
 	else if (new->type == S_QUOTES)
@@ -117,6 +124,7 @@ t_token *ft_newtoken(char *str)
 		return (free(new), NULL); //syntax error near unexpected token `|'
 	if (ft_strdup_remake(str, new) == ERROR)
 		return (free(new), NULL); // malloc error
+	printf("after dup\n");
 	new->next = NULL;
 	return (new);
 }

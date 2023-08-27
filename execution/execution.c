@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/26 16:10:37 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 15:49:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ int	is_clear(t_token *token, t_section *section)
 
 int	exec_exe_simple(t_section *section, int pid)
 {
-	if (pid == 0 && execve(section->abs_path, ft_split(section->option, ' '), NULL) == -1)
+	char **tmp;
+
+	tmp =  ft_split(section->option, ' ');
+	if (pid == 0 && execve(section->abs_path, tmp, NULL) == -1)
 		return (perror(section->abs_path), 1);
 	return (0);
 }

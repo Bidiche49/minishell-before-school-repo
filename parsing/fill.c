@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/30 02:16:41 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 22:29:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char *next_token(char *str)
 	if (*str == '$')
 	{
 		str++;
+		if (*str == '$')
+			return(++str);
 		while (*str && !is_sep_op(*str))
 			str++;
 		return (str);
@@ -72,11 +74,9 @@ int fill_tokens(char *input, t_token **list_token)
 	while (*tmp_input)
 	{
 		new_token = ft_newtoken(tmp_input);
-		// printf("new_token->str = %s\n", new_token->str);
 		if (ft_lstadd_back(list_token, new_token) == ERROR)
-			return (ERROR); /////////////////////FREE
+			return (ERROR);
 		tmp_input = next_token(tmp_input);
 	}
-
 	return (SUCCESS);
 }
