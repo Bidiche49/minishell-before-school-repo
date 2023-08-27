@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 01:36:08 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 15:53:14 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int main(int argc, char **argv, char **envd)
 			if (parsing(input, &list_token) == ERROR) // Appelle la fonction parsing pour analyser l'entrée et stocker les jetons dans list_token.
 				return (ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
 			expand(&list_token, &env);
+			// check_lst_token(&list_token);
 			// if (list_token->next || list_token->str)
 			// 	if (execution(list_token) == 1)
 			// 		return 1;
@@ -140,6 +141,6 @@ int main(int argc, char **argv, char **envd)
 	}
 	free_all(&list_token, &env);
 	rl_clear_history();
-	write(STDOUT_FILENO, "exit\n", 5);//ctrl-D qui ne fonctionne que quand la line est vide
+	write(STDOUT_FILENO, "exit\n", 5);
 	return (SUCCESS);
 }

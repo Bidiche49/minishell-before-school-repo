@@ -6,15 +6,15 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 02:15:12 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 16:39:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-int	is_an_exp_dquotes(t_token *list_token)
+int is_an_exp_dquotes(t_token *list_token)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (list_token->type == D_QUOTES)
@@ -27,23 +27,43 @@ int	is_an_exp_dquotes(t_token *list_token)
 	return (SUCCESS);
 }
 
-int	expand_word(t_token **token, t_env **env)
+int	special_case_expand(t_token **token)
 {
-	t_env	*tmp_env;
-	int		i;
+	int	i;
+
+	i = 0;
+	if ((*token)->str && (*token)->str[1] == '?')
+	{
+		(*token)->str[0] = '0';
+		while ((*token)->str[i++])
+		{
+			printf("%c\n", (*token)->str[i]);
+			(*token)->str[i] = (*token)->str[i + 1];
+		}
+		return (0);
+	}
+	else if ((*token)->str && is_num((*token)->str[1]) == 1)
+	{
+		while ((*token)->str[i + 1])
+		{
+			(*token)->str[i] = (*token)->str[i + 2];
+			i++;
+		}
+		return (0);
+	}
+	return (1);
+}
+
+int expand_word(t_token **token, t_env **env)
+{
+	t_env *tmp_env;
 
 	tmp_env = *env;
-	i = 0;
 	while (tmp_env)
 	{
-		if ((*token)->str &&(*token)->str[1] == '?')
-		{
-			(*token)->str[0] = '0';
-			while ((*token)->str[i++])
-				(*token)->str[i] = (*token)->str[i + 1];
+		if (special_case_expand(token) == 0)
 			return (SUCCESS);
-		}
-		if (is_in_env((*token)->str, tmp_env) == 1)
+		else if (is_in_env((*token)->str, tmp_env) == 1)
 		{
 			free((*token)->str);
 			(*token)->str = ft_strdup(tmp_env->content);
@@ -58,7 +78,7 @@ int	expand_word(t_token **token, t_env **env)
 	return (SUCCESS);
 }
 
-int	count_len_var_env(char *str, t_env *env)
+int count_len_var_env(char *str, t_env *env)
 {
 	while (env)
 	{
@@ -72,9 +92,9 @@ int	count_len_var_env(char *str, t_env *env)
 	return (0);
 }
 
-int	copy_var_env(char *dest, char *str, t_env *env)
+int copy_var_env(char *dest, char *str, t_env *env)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (env)
@@ -101,7 +121,7 @@ int	copy_var_env(char *dest, char *str, t_env *env)
 	return (i);
 }
 
-int	isexpand_ok(t_token *list_token)
+int isexpand_ok(t_token *list_token)
 {
 	while (list_token)
 	{
@@ -120,12 +140,12 @@ int	isexpand_ok(t_token *list_token)
 	return (SUCCESS);
 }
 
-void	del_next_token(t_token **token)
+void del_next_token(t_token **token)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	if (!(*token)->next)
-		return ;
+		return;
 	tmp = (*token)->next->next;
 	if ((*token)->next->str)
 		free((*token)->next->str);
@@ -133,11 +153,9 @@ void	del_next_token(t_token **token)
 	(*token)->next = tmp;
 }
 
-
-
-int	count_len_var_dquotes(char *str)
+int count_len_var_dquotes(char *str)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (str[i + 1] == ' ' || !str[i + 1])
@@ -152,11 +170,11 @@ int	count_len_var_dquotes(char *str)
 	return (i + 1);
 }
 
-char	*dup_dquotes(int len_tot, char *str, t_env *env)
+char *dup_dquotes(int len_tot, char *str, t_env *env)
 {
-	char	*d_quotes;
-	int		i;
-	int		j;
+	char *d_quotes;
+	int i;
+	int j;
 
 	(void)env;
 
@@ -181,11 +199,11 @@ char	*dup_dquotes(int len_tot, char *str, t_env *env)
 	return (d_quotes);
 }
 
-int	expand_d_quotes(t_token **list_token, t_env *env)
+int expand_d_quotes(t_token **list_token, t_env *env)
 {
-	t_token	*tmp;
-	int		i;
-	int		len_tot;
+	t_token *tmp;
+	int i;
+	int len_tot;
 
 	i = 0;
 	tmp = *list_token;
@@ -208,16 +226,16 @@ int	expand_d_quotes(t_token **list_token, t_env *env)
 	return (SUCCESS);
 }
 
-int	expand_to_token(t_token **list_token)
+int expand_to_token(t_token **list_token)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	tmp = *list_token;
 	while (tmp)
 	{
-		if(tmp->next && tmp->next->type == SEPARATOR && !tmp->next->next)
+		if (tmp->next && tmp->next->type == SEPARATOR && !tmp->next->next)
 			del_next_token(&tmp);
-		if(tmp->next && tmp->next->type == WORD && !tmp->next->str)
+		if (tmp->next && tmp->next->type == WORD && !tmp->next->str)
 			del_next_token(&tmp);
 		if (tmp->next && tmp->type == SEPARATOR && tmp->next->type == SEPARATOR)
 			del_next_token(&tmp);
@@ -233,14 +251,14 @@ int	expand_to_token(t_token **list_token)
 	return (SUCCESS);
 }
 
-int	expand(t_token **list_token, t_env **env)
+int expand(t_token **list_token, t_env **env)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	tmp = *list_token;
 	while (tmp)
 	{
-		if (tmp->type == WORD && tmp->str[0] == '$')
+		if (tmp->type == WORD && tmp->str[0] == '$' && tmp->str[1])
 			if (expand_word(&tmp, env) == ERROR)
 				return (free_all(list_token, env), ERROR);
 		tmp = tmp->next;
@@ -251,7 +269,7 @@ int	expand(t_token **list_token, t_env **env)
 			return (free_all(list_token, env), ERROR);
 		if (expand_to_token(list_token) == ERROR)
 			return (free_all(list_token, env), ERROR);
-		break ;
+		break;
 	}
 	return (SUCCESS);
 }
