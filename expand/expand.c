@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 02:07:49 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 02:15:12 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	expand_word(t_token **token, t_env **env)
 	{
 		if ((*token)->str &&(*token)->str[1] == '?')
 		{
-			printf("tes\n");
 			(*token)->str[0] = '0';
 			while ((*token)->str[i++])
 				(*token)->str[i] = (*token)->str[i + 1];
@@ -92,7 +91,6 @@ int	copy_var_env(char *dest, char *str, t_env *env)
 		{
 			while (env->content[i])
 			{
-				printf("env->content = %s\n", env->content);
 				dest[i] = env->content[i];
 				i++;
 			}
@@ -109,7 +107,7 @@ int	isexpand_ok(t_token *list_token)
 	{
 		if (list_token->next && list_token->type == WORD && list_token->next->type == WORD)
 			return (ERROR);
-		else if (list_token->next && list_token->next->type == WORD && !list_token->next->str)
+		else if (list_token->next && list_token->next->type == WORD && list_token->next->str == NULL)
 			return (ERROR);
 		else if (!list_token->next && list_token->type == SEPARATOR)
 			return (ERROR);
@@ -262,5 +260,5 @@ int	expand(t_token **list_token, t_env **env)
 supprimer les separator a la fin.
 bien gerer la lecture des variable d'environnement (si le premier caractere apres le $ est un chiffre, considerer la suite comme un word : echo $0HBDHUE        {value$0}HBDHUE)
 gerer aussi $?   = 0
-
+gerer [SEPARATOR =(null)] [WORD =(null)] [SEPARATOR =(null)]
 */
