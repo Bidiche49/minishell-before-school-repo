@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/23 00:07:54 by ntardy           ###   ########.fr        #
+#    Updated: 2023/08/28 01:09:44 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,14 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)error.c					\
 				$(PARS_LOC)fill.c					\
 				$(PARS_LOC)fill_utils.c				\
-				$(PARS_LOC)check_pars.c				\
 				$(PARS_LOC)init.c					\
 				$(EXPAND_LOC)env_utils.c			\
+				$(EXPAND_LOC)expand_word.c			\
+				$(EXPAND_LOC)expand_dquotes.c		\
+				$(EXPAND_LOC)expand_dquotes_utils.c	\
 				$(EXPAND_LOC)env.c					\
 				$(EXPAND_LOC)expand.c				\
+				$(EXPAND_LOC)expand_utils.c			\
 				$(EXEC_LOC)execution.c				\
 				$(EXEC_LOC)utils_exe.c				\
 				$(EXEC_LOC)utils_exe2.c				\

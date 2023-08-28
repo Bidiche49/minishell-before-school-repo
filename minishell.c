@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 04:31:17 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:57:43 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,11 @@ void	print_envd(char **env)
 
 void	print_env(t_env *env)
 {
-	printf("\n\n\n\n\n");
-
 	while(env)
 	{
-		printf("name = \"%s\"      content = \"%s\"\n", env->name, env->content);
+		printf("%s=%s\n", env->name, env->content);
 		env = env->next;
 	}
-
-	printf("\n\n\n\n\n");
 }
 
 // int	isan_export(char *str)
@@ -107,42 +103,31 @@ int main(int argc, char **argv, char **envd)
 	list_token = NULL;
 	env = NULL;
 	(void)argv;
-	// print_envd(envd);//A ENLEVER ---------------------------------------
-	create_env(envd, &env);
-	printf("after creat_env");
-	print_env(env);//A ENLEVER -----------------------------------------
+	if (create_env(envd, &env) == ERROR)
+		return(free_all(&list_token, &env), ERROR);
 	config_minishell_signal();
 	while (1)
 	{
 		input = readline("Minishell > ");
-		if (!input)
+		if (!input || ft_strlen(input) <= 0 || space_only(input) == 0)
 			break ;//malloc readline error
-		if (ft_strlen(input) > 0 && space_only(input) == 1)
+		else
 		{
 			add_history(input); // Ajoute l'entrée à l'historique de readline pour qu'elle puisse être rappelée avec les flèches du clavier.
 			if (parsing(input, &list_token) == ERROR) // Appelle la fonction parsing pour analyser l'entrée et stocker les jetons dans list_token.
-				return (ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
-			expand(&list_token, env);
+				return (free_all(&list_token, &env), ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
+			print_token(list_token);
+			expand(&list_token, &env);
 			if (list_token->next || list_token->str)
 				if (execution(list_token, env) == 1)
-					return 1;
-			// if(export(list_token) == 0)
-			// {
-			// 	printf("not an export\n");
-			// }
-			// print_token(list_token); // Affiche les jetons (tokens) analysés à des fins de test.
-			// test
-
+			// 		return 1;
 			print_token(list_token);
-			// free_all(&list_token);
-			// free(input); // Libère la mémoire allouée pour stocker l'entrée de l'utilisateur.
-			// exit (0);
-			/*---------------------TESTS_END----------------------*/
 		}
 		free_list_token(&list_token);
 		free_list_token(&list_token);
 	}
+	free_all(&list_token, &env);
 	rl_clear_history();
-	write(STDOUT_FILENO, "exit\n", 5);//ctrl-D qui ne fonctionne que quand la line est vide
+	write(STDOUT_FILENO, "exit\n", 5);
 	return (SUCCESS);
 }

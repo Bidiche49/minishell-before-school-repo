@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/28 04:30:14 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:58:01 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@
 # define SUCCESS 0
 # define ERROR 1
 # define NEW_LINE 2
-# define ERR_MANY_ARG "too many arguments\n"
+# define ERR_MANY_ARG "minishell: too many arguments\n"
 # define ERR_ENV_KO "minishell: Error while retrieving the environment.\n"
 # define ERR_MALLOC_KO "minishell: Error malloc\n"
+# define ERR_QUOTES_OPEN "minishell: Error quote open\n"
 
 extern int				g_error;
 
@@ -92,16 +93,16 @@ int		ft_isspace(char c);
 int		space_only(char *p);
 char	*first_word(char *str);
 char	*ft_strdup(const char *src);
+char	*ft_strcat_dup(char *dest, char *str);
 char	*ft_substr(char const *s, int start, int len);
 char	**ft_split(char const *s, char c);
 
-void	free_all(t_token *lst_token);
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
 int		create_env(char **envd, t_env **env);
 int		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*fill_new_env(char *line_env);
-int		expand(t_token **list_token, t_env *env);
+int		expand(t_token **list_token, t_env **env);
 
 /* SIGNAL */
 
@@ -110,6 +111,7 @@ void	config_minishell_signal(void);
 /* FREE */
 
 void free_list_token(t_token **lst_token);
+void free_all(t_token **lst_token, t_env **env);
 
 /* Execution */
 

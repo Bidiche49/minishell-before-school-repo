@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:46:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/23 00:10:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 01:04:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ t_env	*fill_new_env(char *line_env)
 	i = 0;
 	new = malloc(sizeof(t_env *));
 	if (!new)
-		return (NULL);// GERER LES ERREURs MALLOC KO
+		return (NULL);
 	new->name = malloc(sizeof(char) * (ft_strlen_char(line_env, '=') + 1));
 	if (!new->name)
-		return (NULL);// GERER LES ERREURs MALLOC KO
+		return (free(new), NULL);
 	while (line_env && *line_env && *line_env != '=')
 		new->name[i++] = *line_env++;
 	new->name[i] = '\0';
 	i = 0;
 	new->content = malloc(sizeof(char) * (ft_strlen_char(line_env, '\0') + 1));
 	if (!new->content)
-		return (NULL);// GERER LES ERREURs MALLOC KO
+		return (NULL);
 	while (line_env && *++line_env)
 		new->content[i++] = *line_env;
 	new->content[i] = '\0';
@@ -40,7 +40,7 @@ t_env	*fill_new_env(char *line_env)
 
 int	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
-	t_env *actu;
+	t_env	*actu;
 
 	if (new == NULL)
 		return (ERROR);
@@ -58,14 +58,12 @@ int	ft_lstadd_back_env(t_env **lst, t_env *new)
 
 int	create_env(char **envd, t_env **env)
 {
-	// t_env	*new;
-	int		i;
+	int	i;
 
 	i = 0;
 	while (envd[i])
 	{
-		// new = fill_new_env(envd[i]);
-		if(ft_lstadd_back_env(env, fill_new_env(envd[i])))//PAS OUBLIER DE BIEN TOUT FREE EN CAS DERREUR MALLOC OU AUTRE
+		if (ft_lstadd_back_env(env, fill_new_env(envd[i])))
 			return (ERROR);
 		i++;
 	}

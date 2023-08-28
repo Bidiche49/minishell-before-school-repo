@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/28 04:26:10 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:56:56 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_cmd(char *src, char *env, t_section *section)
 {
 	char	**tmp;
 	int	i;
-	
+
 	i = 0;
 	tmp = ft_split(env, ':');
 	while (tmp[i])
@@ -41,9 +41,9 @@ int	check_cmd(char *src, char *env, t_section *section)
 void	find_cmd(t_token *token, t_section *section)
 {
 	char	*env;
-	
+
 	env = getenv("PATH");
-	if (token->type == WORD) 
+	if (token->type == WORD)
 	{
 		if (check_cmd(token->str, env, section) != 0)
 			section->cmd = NULL;
@@ -56,13 +56,13 @@ void	find_cmd(t_token *token, t_section *section)
 					section->cmd = NULL;
 		token = token->next;
 	}
-}			
+}
 
 int	gathering(t_token *token, t_section *section)
 {
 	while (token && ((is_redir(token->type) == 1) || token->type == PIPE))
 	{
-		if (token->type == SEPARATOR) 
+		if (token->type == SEPARATOR)
 			add_space(section);
 		else if (token->type == WORD)
 		{
