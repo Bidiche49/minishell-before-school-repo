@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 23:53:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 05:01:20 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	is_in_env(char *env_var, t_env *env)
 	int	i;
 
 	i = 0;
+	if (env_var[i + 1] && !is_alnum_und(env_var[i + 1]))
+		return (0);
 	while (env->name && env_var && env->name[i])
 	{
 		if (env->name[i] == env_var[i + 1])

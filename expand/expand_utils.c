@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 01:38:02 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:55:59 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_num(char c)
 
 int	is_alnum_und(char c)
 {
-	if (is_num(c) == 1 || (c >= 'A' && c <= 'Z')
+	if (is_num(c) || (c >= 'A' && c <= 'Z')
 		|| (c >= 'a' && c <= 'z') || c == '_')
 		return (1);
 	return (0);

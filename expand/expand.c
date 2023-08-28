@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 03:00:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 05:36:08 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int	expand(t_token **list_token, t_env **env)
 			if (expand_word(&tmp, env) == ERROR)
 				return (free_all(list_token, env), ERROR);
 		tmp = tmp->next;
+		printf("boucle expand\n");
 	}
 	while (!isexpand_ok(*list_token))
 	{
@@ -134,7 +135,10 @@ int	expand(t_token **list_token, t_env **env)
 		break ;
 	}
 	while (!is_token_ok(*list_token))
+	{
+		printf("while is_token_ok");
 		clean_token(list_token);
+	}
 	return (SUCCESS);
 }
 /*
