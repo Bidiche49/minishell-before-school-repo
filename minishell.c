@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/23 04:01:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:31:17 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int main(int argc, char **argv, char **envd)
 				return (ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
 			expand(&list_token, env);
 			if (list_token->next || list_token->str)
-				if (execution(list_token) == 1)
+				if (execution(list_token, env) == 1)
 					return 1;
 			// if(export(list_token) == 0)
 			// {
