@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/29 00:20:42 by ntardy           ###   ########.fr        #
+#    Updated: 2023/08/29 01:25:13 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,14 @@ CFLAGS =		-Wall -Werror -Wextra -g3
 PARS_LOC =		parsing/
 UTILS_LOC =		utils/
 EXEC_LOC =		execution/
+BUILTINS_LOC =	$(EXEC_LOC)builtins/
 EXPAND_LOC =	expand/
 ENV_LOC =		env/
 
 # Couleurs
 RESET   = \033[0m
 GREEN   = \033[32m
+RED     = \033[31m
 YELLOW  = \033[33m
 
 SRCS =			minishell.c							\
@@ -56,8 +58,8 @@ SRCS =			minishell.c							\
 				$(EXEC_LOC)utils_exe4.c				\
 				$(EXEC_LOC)redir.c					\
 				$(EXEC_LOC)pipe.c					\
-				$(EXEC_LOC)/builtins/cmd_env.c		\
-				$(EXEC_LOC)/builtins/echo.c
+				$(BUILTINS_LOC)cmd_env.c			\
+				$(BUILTINS_LOC)echo.c
 
 OBJS =			$(SRCS:.c=.o)
 
@@ -72,24 +74,30 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)Compiling in progress...$(RESET)"
-	@echo -n "$(GREEN)[                    ]$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJS) $(CREADLINE) -o $(NAME)
-	@echo -n "\r$(GREEN)[=>                  ]$(RESET)"
-	@sleep 0.1
-	@echo -n "\r$(GREEN)[===>                ]$(RESET)"
-	@sleep 0.1
-	@echo -n "\r$(GREEN)[=====>              ]$(RESET)"
-	@sleep 0.1
-	@echo -n "\r$(GREEN)[========>           ]$(RESET)"
-	@sleep 0.1
-	@echo -n "\r$(GREEN)[===========>        ]$(RESET)"
-	@sleep 0.1
-	@echo -n "\r$(GREEN)[==============>     ]$(RESET)"
-	@sleep 0.1
-	@echo -n "\r$(GREEN)[==================>  ]$(RESET)"
-	@sleep 0.1
-	@echo "\r$(GREEN)[=====================$(RESET)"
-	@echo "$(GREEN)Compilation completed.$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) $(CREADLINE) -o $(NAME) 2>&1 | \
+		awk '{ if ($$0 ~ /undefined reference/) print "$(RED)" $$0 "$(RESET)"; \
+		       else if ($$0 ~ /in function/) print "$(RED)" $$0 "$(RESET)"; \
+		       else if ($$0 ~ /exit/) print "$(RED)" $$0 "$(RESET)"; \
+		       else print $$0 }'; \
+		if [ $$? -eq 0 ]; then \
+			echo -n "$(GREEN)[                    ]$(RESET)"; \
+			echo -n "\r$(GREEN)[=>                  ]$(RESET)"; \
+			sleep 0.1; \
+			echo -n "\r$(GREEN)[===>                ]$(RESET)"; \
+			sleep 0.1; \
+			echo -n "\r$(GREEN)[=====>              ]$(RESET)"; \
+			sleep 0.1; \
+			echo -n "\r$(GREEN)[========>           ]$(RESET)"; \
+			sleep 0.1; \
+			echo -n "\r$(GREEN)[===========>        ]$(RESET)"; \
+			sleep 0.1; \
+			echo -n "\r$(GREEN)[==============>     ]$(RESET)"; \
+			sleep 0.1; \
+			echo -n "\r$(GREEN)[==================>  ]$(RESET)"; \
+			sleep 0.1; \
+			echo "\r$(GREEN)[=====================$(RESET)"; \
+			echo "$(GREEN)Compilation completed.$(RESET)"; \
+		fi
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
