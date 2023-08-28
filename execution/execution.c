@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/15 17:50:38 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:26:10 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,32 +101,69 @@ int	is_clear(t_token *token, t_section *section)
 	return (SUCCESS);
 }
 
-int	exec_exe_simple(t_section *section, int pid)
+void	back_to_home(int *pid, int ret)
 {
-	if (pid == 0 && execve(section->abs_path, ft_split(section->option, ' '), NULL) == -1)
-		return (perror(section->abs_path), 1);
-	return (0);
-}
+	int	i;
+	int	status;
+	int error;
 
-int	exec_all(t_section *section, int pid)
+	i = 0;
+	while (i != ret)
+	{
+		if (waitpid(-1, &status, WUNTRACED) == pid[ret - 1])
+		{
+			if (status == 2)
+				error = 130;
+			else if (status > 256)
+				error = status / 256;
+			else
+				error = status;
+		}
+		i++;
+	}
+	if (error == 130 || error == 131)
+		write(1, "\n", 1);
+}
+void	end_of_exit(int *pid, int x, int y)
 {
+	free(pid);
+	convert_file(x, y);
+	close(x);
+	close(y);
+}
+int	master_exec(t_section *section)
+{
+	int		*pid;
+	int		j[2];
+	int		ret;
 	
+	pid = malloc(sizeof(int) * ft_lstsize_section(section));
+	if (!pid)
+		return (0);
+	j[0] = dup(0);
+	j[1] = dup(1);
+	if (exec_pipe(section, j[1], j[0]) == -1)
+		return (close(j[1]), close(j[0]), -1);
+	signal(SIGINT, SIG_IGN);
+	ret = fork_using(section, pid, j, NULL);
+	if (ret == -1)
+		return (close(j[0]), close(j[1]), free(pid), -1);
+	if (pid[0] != -1)
+		back_to_home(pid, ret);
+	return (end_of_exec(pid, j[0], j[1]), 0);
 }
 
-int	execution(t_token *token)
+int	execution(t_token *token, t_env **env)
 {
 	t_section	list_section;
-	int pid;
+	t_file		list_file;
 	
-	pid = fork();
-	init_list_section(token, &list_section);
+	init_list_section(token, &list_section, (*env));
+	init_file(token, &list_file);
 	if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
 		return (ERROR); // free la structure
-	if (is_operator_exec(token) == 0 && exec_exe_simple(&list_section, pid) != 0)
+	if (is_operator_exec(token) == 0 && master_exec(&list_section) != 0)
 		return (ERROR);
 	// if (is_operator_exec(token) == 1 && exec_all(&list_section, pid))
-	
-
-	
 	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/23 02:44:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 04:30:14 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # include <stdlib.h>
 # include <stddef.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -59,12 +63,25 @@ struct s_env{
 	char	*content;
 	t_env	*next;
 };
+	
+typedef struct s_file
+{
+	char			*name;
+	enum e_type		type;
+	struct s_file	*next;
+}	t_file;
 
 typedef struct s_section
 {
 	char	*cmd;
 	char	*abs_path;
 	char	*option;
+	int		fd[2];
+	int		pipe[2];
+	int		deep;
+	t_env	**env;
+	struct s_token	*token;
+	struct s_file	*file;
 	struct s_section *next;
 }	t_section;
 
@@ -96,14 +113,16 @@ void free_list_token(t_token **lst_token);
 
 /* Execution */
 
-int	execution(t_token *token);
+int	execution(t_token *token, t_env **env);
+int	master_exec(t_section *section);
+void	end_of_exit(int *pid, int x, int y);
 
 /* Utils_exe */
 
 int	ft_lstsize(t_token *token);
 int	ft_lstadd_back_exec(t_section **lst, t_section *new);
 t_section	*ft_lstlast(t_section *lst);
-void	init_list_section(t_token *token, t_section *section);
+void	init_list_section(t_token *token, t_section *section, t_env *env);
 
 /* Utils_exe2 */
 
@@ -112,11 +131,11 @@ int	ft_strcpy_token(char *src, t_section *section);
 
 /* Utils_exe3 */
 
-int	ft_strcat_exec_sec(t_section *section, char *exec);
-int	ft_strcat_exec_sec_s(t_section *section, char *exec);
-int	ft_strcpy_exec_s(char *src, t_section *section);
-int	ft_strcpy_exec_d(char *src, t_section *section);
-int	is_meta_c(char *simple_c);
+int		ft_strcat_exec_sec(t_section *section, char *exec);
+int		ft_strcat_exec_sec_s(t_section *section, char *exec);
+int		ft_strcpy_exec_s(char *src, t_section *section);
+int		ft_strcpy_exec_d(char *src, t_section *section);
+int		is_meta_c(char *simple_c);
 void	add_space(t_section *section);
 
 /* Utils_exe3 */
@@ -124,10 +143,30 @@ void	add_space(t_section *section);
 int	is_meta_d(char *simple_d);
 int	ft_strcat_exec_sec_d(t_section *section, char *exec);
 int	is_back(char *str);
+int	is_pipe(t_section *section);
 
 /* REDIR */
 
 int	is_redir(int type);
 int	is_operator_exec(t_token *token);
+
+/* PIPE */
+
+int	exec_pipe(t_section *section, int x, int y);
+int	open_all(t_section *section, t_file *file);
+int file_open(t_section *section);
+void	convert_file(int x, int y);
+int	is_bultin(t_section *section);
+int	util_dup2(t_section *section, int x, int y);
+int	assigne_file(t_section *section, int *j, int i);
+void	first_close_cmd(t_section *section, int n, int j);
+void	last_close_cmd(t_section *section, int n);
+void	other_close_cmd(t_section *section, int n);
+void	fork_apli(t_section *section, int *pid, int *j);
+t_section	*next_section(t_section *section, int x, int *i);
+void	kill_child(int num);
+void	exec_cmd(t_section *section);
+void	exec_not_pipe(t_section *section, int *pid, int *j, char *str);
+int	fock_using(t_section *section, int *pid, int *j, char *str);
 
 #endif
