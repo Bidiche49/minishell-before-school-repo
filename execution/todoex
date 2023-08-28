@@ -1,0 +1,20 @@
+- Gerer la verifiction des differentes commandes.
+- Gestion des free;
+- Gerer l'execution des commandes.
+- Gestion des free;
+- Gestion des pipe
+- Gestion des free;
+- coder les builtins : echo (-n) ; cd ( uniquement avec un chemin absoluts ou relatif ); pwd : export ; unset ; env ; exit ; ( faire en fonction des sortie des fonction)
+- Gestion des free;
+- Gerer la non interpretation des meta-caracteres dans les simple cote.
+- Gestion des free;
+- Gerer la non interpretation des meta-caracteres sauf le " $ " dans les doubles cote.
+- Gestion des free;
+- Gestion des entre " < "
+- Gestion des free;
+- Gestion des sorties " > "
+- Gestion des free;
+- Gestion des doubles sorties  " >> "
+- Gestion des free;
+- Gestion des heardoc " << "
+- Gestion des free;
