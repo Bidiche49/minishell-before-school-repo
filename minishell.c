@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 23:04:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 02:04:51 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,8 @@ int main(int argc, char **argv, char **envd)
 	list_token = NULL;
 	env = NULL;
 	(void)argv;
-	// print_envd(envd);//A ENLEVER ---------------------------------------
 	if (create_env(envd, &env) == ERROR)
 		return(free_all(&list_token, &env), ERROR);
-	// printf("after creat_env");
-	// print_env(env);//A ENLEVER -----------------------------------------
 	config_minishell_signal();
 	while (1)
 	{
@@ -121,22 +118,10 @@ int main(int argc, char **argv, char **envd)
 				return (free_all(&list_token, &env), ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
 			print_token(list_token);
 			expand(&list_token, &env);
-			// check_lst_token(&list_token);
-			// if (list_token->next || list_token->str)
-			// 	if (execution(list_token) == 1)
-			// 		return 1;
-			// if(export(list_token) == 0)
-			// {
-			// 	printf("not an export\n");
-			// }
-			// print_token(list_token); // Affiche les jetons (tokens) analysés à des fins de test.
-			// test
-
+			if (list_token->next || list_token->str)
+				if (execution(list_token) == 1)
+					return 1;
 			print_token(list_token);
-			// free_all(&list_token);
-			// free(input); // Libère la mémoire allouée pour stocker l'entrée de l'utilisateur.
-			// exit (0);
-			/*---------------------TESTS_END----------------------*/
 		}
 		free_list_token(&list_token);
 		free_list_token(&list_token);

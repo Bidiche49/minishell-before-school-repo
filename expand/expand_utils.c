@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 23:59:27 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 01:38:02 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,10 @@ void	del_next_token(t_token **token)
 	free((*token)->next);
 	(*token)->next = tmp;
 }
-
-int	is_an_exp_dquotes(t_token *list_token)
+int	is_op(t_token *token)
 {
-	int	i;
-
-	i = 0;
-	if (list_token->type == D_QUOTES)
-	{
-		while (list_token->str && list_token->str[i])
-		{
-			if (list_token->str[i + 1] && list_token->str[i] == '$'
-				&& is_alnum_und(list_token->str[i + 1]))
-				return (1);
-			i++;
-		}
-	}
+	if (token->type == OUT || token->type == IN || token->type == HEREDOC
+		|| token->type == APPEND || token->type == PIPE)
+		return (1);
 	return (0);
 }
