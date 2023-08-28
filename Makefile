@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: audrye <audrye@student.42.fr>              +#+  +:+       +#+         #
+#    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/28 08:31:29 by audrye           ###   ########.fr        #
+#    Updated: 2023/08/29 00:19:33 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,12 @@ PARS_LOC =		parsing/
 UTILS_LOC =		utils/
 EXEC_LOC =		execution/
 EXPAND_LOC =	expand/
+ENV_LOC =		env/
 
+# Couleurs
+RESET   = \033[0m
+GREEN   = \033[32m
+YELLOW  = \033[33m
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
@@ -37,11 +42,11 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)fill.c					\
 				$(PARS_LOC)fill_utils.c				\
 				$(PARS_LOC)init.c					\
-				$(EXPAND_LOC)env_utils.c			\
+				$(ENV_LOC)env_utils.c				\
+				$(ENV_LOC)env.c						\
 				$(EXPAND_LOC)expand_word.c			\
 				$(EXPAND_LOC)expand_dquotes.c		\
 				$(EXPAND_LOC)expand_dquotes_utils.c	\
-				$(EXPAND_LOC)env.c					\
 				$(EXPAND_LOC)expand.c				\
 				$(EXPAND_LOC)expand_utils.c			\
 				$(EXEC_LOC)execution.c				\
@@ -56,19 +61,66 @@ SRCS =			minishell.c							\
 
 OBJS =			$(SRCS:.c=.o)
 
-.PHONY: all
+# Options de compilation
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra -g3
+CREADLINE = -lreadline
+
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(CREADLINE) -o $(NAME)
+	@echo "$(YELLOW)Compiling in progress...$(RESET)"
+	@echo -n "$(GREEN)[                    ]$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) $(CREADLINE) -o $(NAME)
+	@echo -n "\r$(GREEN)[=>                  ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===>                ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[=====>              ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[========>           ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===========>        ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==============>     ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==================>  ]$(RESET)"
+	@sleep 0.1
+	@echo "\r$(GREEN)[=====================$(RESET)"
+	@echo "$(GREEN)Compilation completed.$(RESET)"
 
-.PHONY: clean
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
+
+
 clean:
-	rm -f $(OBJS)
+	@echo "$(YELLOW)Removing object files...$(RESET)"
+	@echo -n "$(GREEN)[                    ]$(RESET)"
+	@rm -f $(OBJS)
+	@echo -n "\r$(GREEN)[=>                  ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===>                ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[=====>              ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[========>           ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===========>        ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==============>     ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==================>  ]$(RESET)"
+	@sleep 0.1
+	@echo "\r$(GREEN)[=====================$(RESET)"
+	@echo "$(GREEN)Object files removed.$(RESET)"
 
-.PHONY: fclean
 fclean: clean
-	rm -f $(NAME)
+	@sleep 0.1
+	@echo "$(YELLOW)Removing the executable...$(RESET)"
+	@rm -f $(NAME)
+	@sleep 0.1
+	@echo "$(GREEN)Executable removed.$(RESET)"
 
-.PHONY: re
-re: fclean $(NAME)
+re: fclean all
