@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 02:03:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 23:10:25 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,19 @@ char	*ft_substr(char const *s, int start, int len)
 	}
 	str[y] = '\0';
 	return (str);
+}
+
+int	is_num(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
+int	is_alnum_und(char c)
+{
+	if (is_num(c) || (c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z') || c == '_')
+		return (1);
+	return (0);
 }

@@ -6,26 +6,11 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 04:55:59 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 23:10:17 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
-
-int	is_num(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-int	is_alnum_und(char c)
-{
-	if (is_num(c) || (c >= 'A' && c <= 'Z')
-		|| (c >= 'a' && c <= 'z') || c == '_')
-		return (1);
-	return (0);
-}
 
 int	isexpand_ok(t_token *list_token)
 {

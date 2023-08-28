@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/27 23:50:49 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 23:10:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ char	*ft_strdup(const char *src);
 char	*ft_strcat_dup(char *dest, char *str);
 char	*ft_substr(char const *s, int start, int len);
 char	**ft_split(char const *s, char c);
+int		is_num(char c);
+int		is_alnum_und(char c);
+
 
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);

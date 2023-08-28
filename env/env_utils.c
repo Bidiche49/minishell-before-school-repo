@@ -6,11 +6,11 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 05:01:20 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 23:01:34 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expand.h"
+#include "env.h"
 
 int	ft_strlen_char(char *str, char c)
 {
