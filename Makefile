@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/29 00:11:08 by ntardy           ###   ########.fr        #
+#    Updated: 2023/08/29 00:20:42 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ YELLOW  = \033[33m
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
+				$(UTILS_LOC)lib_utils2.c			\
 				$(UTILS_LOC)split.c					\
 				$(UTILS_LOC)free.c					\
 				$(UTILS_LOC)signal.c				\
@@ -53,7 +54,10 @@ SRCS =			minishell.c							\
 				$(EXEC_LOC)utils_exe2.c				\
 				$(EXEC_LOC)utils_exe3.c				\
 				$(EXEC_LOC)utils_exe4.c				\
-				$(EXEC_LOC)redir.c
+				$(EXEC_LOC)redir.c					\
+				$(EXEC_LOC)pipe.c					\
+				$(EXEC_LOC)/builtins/cmd_env.c		\
+				$(EXEC_LOC)/builtins/echo.c
 
 OBJS =			$(SRCS:.c=.o)
 
@@ -120,4 +124,3 @@ fclean: clean
 	@echo "$(GREEN)Executable removed.$(RESET)"
 
 re: fclean all
-
