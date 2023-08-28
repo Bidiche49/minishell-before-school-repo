@@ -3,21 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:17:52 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/26 17:26:14 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 08:07:44 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	cmd_env(t_env *env)
+int	cmd_env(t_env **env)
 {
-	while(env)
+	t_env *tmp;
+	printf("entree dans la command: cmd_env !\n");
+	tmp = *env;
+	printf("1\n");
+	while(tmp)
 	{
-		printf("%s=%s\"\n", env->name, env->content);
-		env = env->next;
+		printf("while1\n");
+		if (tmp->name && tmp->content)
+		{
+			write(1, tmp->name, ft_strlen(tmp->name));
+			write(1, "=", 1);
+			write(1, tmp->content, ft_strlen(tmp->content));
+			write(1, "\n", 1);
+			// printf("%s=%s\"\n", tmp->name, tmp->content);
+			// printf("in\n");
+		}
+		printf("while2\n");
+		tmp = tmp->next;
 	}
-	return (0/*---------------------A VOIR----------------------------------*/)
+	printf("fin cmd_env\n");
+	return (0/*---------------------A VOIR----------------------------------*/);
 }

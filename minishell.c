@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 04:57:43 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 07:12:34 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int main(int argc, char **argv, char **envd)
 	(void)argv;
 	if (create_env(envd, &env) == ERROR)
 		return(free_all(&list_token, &env), ERROR);
+	// print_env(env);
 	config_minishell_signal();
 	while (1)
 	{
@@ -119,7 +120,7 @@ int main(int argc, char **argv, char **envd)
 			print_token(list_token);
 			expand(&list_token, &env);
 			if (list_token->next || list_token->str)
-				if (execution(list_token, env) == 1)
+				if (execution(list_token, &env) == 1)
 			// 		return 1;
 			print_token(list_token);
 		}

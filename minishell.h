@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/28 04:58:01 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 08:31:08 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ struct s_env{
 	
 typedef struct s_file
 {
-	char			*name;
-	enum e_type		type;
+	char	*name;
+	int		type;
 	struct s_file	*next;
 }	t_file;
 
@@ -125,6 +125,10 @@ int	ft_lstsize(t_token *token);
 int	ft_lstadd_back_exec(t_section **lst, t_section *new);
 t_section	*ft_lstlast(t_section *lst);
 void	init_list_section(t_token *token, t_section *section, t_env *env);
+int	ft_lstsize_section(t_section *section);
+// t_file *ft_newsection_file(t_token *token);
+// int ft_lstadd_back_exec_file(t_file **lst, t_file *new);
+// void	init_file(t_token *token, t_file *file);
 
 /* Utils_exe2 */
 
@@ -155,20 +159,25 @@ int	is_operator_exec(t_token *token);
 /* PIPE */
 
 int	exec_pipe(t_section *section, int x, int y);
-int	open_all(t_section *section, t_file *file);
+int	open_all(t_section *section, t_token *token);
 int file_open(t_section *section);
 void	convert_file(int x, int y);
 int	is_bultin(t_section *section);
 int	util_dup2(t_section *section, int x, int y);
 int	assigne_file(t_section *section, int *j, int i);
 void	first_close_cmd(t_section *section, int n, int j);
-void	last_close_cmd(t_section *section, int n);
+void	last_close_cmd(t_section *section);
 void	other_close_cmd(t_section *section, int n);
 void	fork_apli(t_section *section, int *pid, int *j);
 t_section	*next_section(t_section *section, int x, int *i);
 void	kill_child(int num);
 void	exec_cmd(t_section *section);
-void	exec_not_pipe(t_section *section, int *pid, int *j, char *str);
-int	fock_using(t_section *section, int *pid, int *j, char *str);
+void	exec_not_pipe(t_section *section, int *pid, int *j);
+int	fork_using(t_section *section, int *pid, int *j);
+char	**ft_get_env(t_env	*env);
+
+int	cmd_env(t_env **env);
+int	ft_strcmp(const char *s1, const char *s2);
+void	ft_echo(t_section *section);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/27 23:50:22 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/28 07:28:06 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_section *ft_newsection(t_env *env)
 {
 	t_section *new;
 
-	new = malloc(sizeof(t_file));
+	new = malloc(sizeof(t_section));
 	if (new == NULL)
 		return (NULL);
 	new->cmd = NULL;
@@ -119,6 +119,7 @@ void	init_list_section(t_token *token, t_section *section, t_env *env)
 		section->pipe[1] = -1;
 		section->pipe[2] = -1;
 		section->next = NULL;
+		section->token = token;
 	}
 	while (nb_pipe > 0)
 	{
@@ -129,42 +130,43 @@ void	init_list_section(t_token *token, t_section *section, t_env *env)
 	}
 }
 
-t_file *ft_newsection_file(t_token *token)
-{
-	t_file *new;
+// t_file *ft_newsection_file(t_token *token)
+// {
+// 	t_file *new;
 
-	new = malloc(sizeof(t_file));
-	if (new == NULL)
-		return (NULL);
-	new->name = token->str;
-	new->type = token->type;
-	new->next = NULL;
-	return (new);
-}
+// 	new = malloc(sizeof(t_file));
+// 	if (new == NULL)
+// 		return (NULL);
+// 	new->name = token->str;
+// 	new->type = token->type;
+// 	new->next = NULL;
+// 	return (new);
+// }
 
-int ft_lstadd_back_exec_file(t_section **lst, t_section *new)
-{
-	t_section *actu;
+// int ft_lstadd_back_exec_file(t_file **lst, t_file *new)
+// {
+// 	t_file *actu;
 
-	if (new == NULL)
-		return (1);
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return (0);
-	}
-	actu = *lst;
-	while (actu->next != NULL)
-		actu = actu->next;
-	actu->next = new;
-	return (0);
-}
+// 	if (new == NULL)
+// 		return (1);
+// 	if (lst == NULL)
+// 	{
+// 		*lst = new;
+// 		return (0);
+// 	}
+// 	actu = *lst;
+// 	while (actu->next != NULL)
+// 		actu = actu->next;
+// 	actu->next = new;
+// 	return (0);
+// }
 
-void	init_file(t_token *token, t_file *file)
-{
-	while (token)
-	{
-		ft_lstadd_back_exec(&file, ft_newsection(token));
-		file = file->next;
-	}
-}
+// void	init_file(t_token *token, t_file *file)
+// {
+// 	while (token)
+// 	{
+// 		ft_lstadd_back_exec_file(&file, ft_newsection_file(token));
+// 		file = file->next;
+		
+// 	}
+// }

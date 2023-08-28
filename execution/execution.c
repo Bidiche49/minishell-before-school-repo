@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/28 04:56:56 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 00:06:31 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,55 @@ int	check_cmd(char *src, char *env, t_section *section)
 	return (SUCCESS);
 }
 
+char	*ft_get_path(t_env	**env)
+{
+	char	*path;
+	t_env	*tmp;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	tmp = *env;
+	while (tmp && ft_strcmp(tmp->name, "PATH") != 0)
+		tmp=tmp->next;
+	path = malloc(sizeof(char) * (ft_strlen(tmp->name) + ft_strlen(tmp->content) + 2));
+	if (!path)
+		return (NULL); //FREE ALLLLLLL
+	while (tmp->name[j])
+		path[i] = tmp->name[j++];
+	j = 0;
+	path[i] = '=';
+	while (tmp->content[j])
+		path[i++] = tmp->content[j++];
+	path[i] = '\0';
+	return (path);
+}
+
 void	find_cmd(t_token *token, t_section *section)
 {
-	char	*env;
-
-	env = getenv("PATH");
+	char	*path;
+	
+	// cmd_env(section->env);
+	path = getenv("PATH");
+	// path = ft_get_path(section->env);
+	if (!path)
+		return ;
+	// cmd_env(section->env);
 	if (token->type == WORD)
 	{
-		if (check_cmd(token->str, env, section) != 0)
+		if (check_cmd(token->str, path, section) != 0)
 			section->cmd = NULL;
 	}
 	while (token)
 	{
 		if (token->type == PIPE)
 			if (token->next->type == WORD)
-				if (check_cmd(token->next->str, env, section) != 0)
+				if (check_cmd(token->next->str, path, section) != 0)
 					section->cmd = NULL;
 		token = token->next;
 	}
+	printf("dans find cmd\n");
 }
 
 int	gathering(t_token *token, t_section *section)
@@ -124,7 +155,7 @@ void	back_to_home(int *pid, int ret)
 	if (error == 130 || error == 131)
 		write(1, "\n", 1);
 }
-void	end_of_exit(int *pid, int x, int y)
+void	end_of_exec(int *pid, int x, int y)
 {
 	free(pid);
 	convert_file(x, y);
@@ -133,36 +164,42 @@ void	end_of_exit(int *pid, int x, int y)
 }
 int	master_exec(t_section *section)
 {
-	int		*pid;
+	pid_t		*pid;
 	int		j[2];
 	int		ret;
 	
+	if (!section->cmd)
+		return (0);
+	ret = 0;
 	pid = malloc(sizeof(int) * ft_lstsize_section(section));
 	if (!pid)
 		return (0);
-	j[0] = dup(0);
+	pid[0] = -1;
 	j[1] = dup(1);
+	j[0] = dup(0);
 	if (exec_pipe(section, j[1], j[0]) == -1)
 		return (close(j[1]), close(j[0]), -1);
 	signal(SIGINT, SIG_IGN);
-	ret = fork_using(section, pid, j, NULL);
+	ret = fork_using(section, pid, j);
 	if (ret == -1)
-		return (close(j[0]), close(j[1]), free(pid), -1);
+		return (close(j[1]), close(j[0]), free(pid), -1);
 	if (pid[0] != -1)
 		back_to_home(pid, ret);
-	return (end_of_exec(pid, j[0], j[1]), 0);
+	return (end_of_exec(pid, j[0], j[1]), 1);
 }
 
 int	execution(t_token *token, t_env **env)
 {
 	t_section	list_section;
-	t_file		list_file;
+	// t_file		list_file;
 	
 	init_list_section(token, &list_section, (*env));
-	init_file(token, &list_file);
+	// init_file(token, &list_file);
+	// cmd_env(*list_section.env);
+	printf("avant master_exec\n");
 	if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
 		return (ERROR); // free la structure
-	if (is_operator_exec(token) == 0 && master_exec(&list_section) != 0)
+	if (master_exec(&list_section) == -1)
 		return (ERROR);
 	// if (is_operator_exec(token) == 1 && exec_all(&list_section, pid))
 	return (SUCCESS);
