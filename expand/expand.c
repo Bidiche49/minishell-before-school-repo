@@ -6,26 +6,11 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 16:39:27 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 02:29:43 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
-
-int is_an_exp_dquotes(t_token *list_token)
-{
-	int i;
-
-	i = 0;
-	if (list_token->type == D_QUOTES)
-		while (list_token->str && list_token->str[i])
-		{
-			if (list_token->str[i + 1] && list_token->str[i] == '$' && list_token->str[i + 1] != ' ')
-				return (1);
-			i++;
-		}
-	return (SUCCESS);
-}
 
 int	special_case_expand(t_token **token)
 {
@@ -36,14 +21,14 @@ int	special_case_expand(t_token **token)
 	{
 		(*token)->str[0] = '0';
 		while ((*token)->str[i++])
-		{
-			printf("%c\n", (*token)->str[i]);
 			(*token)->str[i] = (*token)->str[i + 1];
-		}
 		return (0);
 	}
-	else if ((*token)->str && is_num((*token)->str[1]) == 1)
+	else if ((*token)->str && (is_num((*token)->str[1]) == 1
+			|| (*token)->str[1] == '$'))
 	{
+		if ((*token)->str[i + 2] == '\0')
+			return (free((*token)->str), (*token)->str = NULL, 0);
 		while ((*token)->str[i + 1])
 		{
 			(*token)->str[i] = (*token)->str[i + 2];
@@ -54,106 +39,58 @@ int	special_case_expand(t_token **token)
 	return (1);
 }
 
-int expand_word(t_token **token, t_env **env)
+int	if_forest(t_token *token)
 {
-	t_env *tmp_env;
 
-	tmp_env = *env;
-	while (tmp_env)
-	{
-		if (special_case_expand(token) == 0)
-			return (SUCCESS);
-		else if (is_in_env((*token)->str, tmp_env) == 1)
-		{
-			free((*token)->str);
-			(*token)->str = ft_strdup(tmp_env->content);
-			if (!(*token)->str)
-				return (write(0, ERR_MALLOC_KO, ft_strlen(ERR_MALLOC_KO)), ERROR);
-			return (SUCCESS);
-		}
-		tmp_env = tmp_env->next;
-	}
-	free((*token)->str);
-	(*token)->str = NULL;
-	return (SUCCESS);
-}
-
-int count_len_var_env(char *str, t_env *env)
-{
-	while (env)
-	{
-		if (is_in_env(str, env) == 1)
-		{
-			printf("%s = %d\n", str, ft_strlen(env->content));
-			return (ft_strlen(env->content));
-		}
-		env = env->next;
-	}
-	return (0);
-}
-
-int copy_var_env(char *dest, char *str, t_env *env)
-{
-	int i;
-
-	i = 0;
-	while (env)
-	{
-		printf("str test = %s\n", str);
-		if (str[i] == '$' && (str[i + 1] == '\0' || str[i + 1] == ' '))
+		if (token->next && token->type == WORD
+			&& token->next->type == WORD)
 			return (0);
-		if (str[i] == '$' && str[i + 1] == '?')
-		{
-			dest[i] = '0';
-			return (i + 2);
-		}
-		if (is_in_env(str, env) == 1)
-		{
-			while (env->content[i])
-			{
-				dest[i] = env->content[i];
-				i++;
-			}
-			return (i);
-		}
-		env = env->next;
-	}
-	return (i);
+		else if (token->next && token->next->type == WORD
+			&& token->next->str == NULL)
+			return (0);
+		else if (token->next && token->next->type == D_QUOTES
+			&& token->next->str == NULL)
+			return (0);
+		else if (token->next && token->next->type == S_QUOTES
+			&& token->next->str == NULL)
+			return (0);
+		else if (!token->next && token->type == SEPARATOR)
+			return (0);
+		else if (token->next && token->type == SEPARATOR
+			&& token->next->type == SEPARATOR)
+			return (0);
+		else if (!token->next && is_op(token))
+			return (0);
+	return (1);
 }
 
-int isexpand_ok(t_token *list_token)
+int	is_token_ok(t_token *list_token)
 {
 	while (list_token)
 	{
-		if (list_token->next && list_token->type == WORD && list_token->next->type == WORD)
-			return (ERROR);
-		else if (list_token->next && list_token->next->type == WORD && list_token->next->str == NULL)
-			return (ERROR);
-		else if (!list_token->next && list_token->type == SEPARATOR)
-			return (ERROR);
-		else if (list_token->next && list_token->type == SEPARATOR && list_token->next->type == SEPARATOR)
-			return (ERROR);
-		if (is_an_exp_dquotes(list_token) == 1)
-			return (ERROR);
+		if (list_token->next && is_op(list_token))
+			return (1);
+		if (if_forest(list_token) == 0)
+			return (0);
 		list_token = list_token->next;
 	}
-	return (SUCCESS);
+	return (1);
 }
 
-void del_next_token(t_token **token)
+void	del_all_token(t_token **list_token)
 {
 	t_token *tmp;
 
-	if (!(*token)->next)
-		return;
-	tmp = (*token)->next->next;
-	if ((*token)->next->str)
-		free((*token)->next->str);
-	free((*token)->next);
-	(*token)->next = tmp;
+	tmp = *list_token;
+	while (tmp->next)
+		del_next_token(&tmp);
+	tmp->type = WORD;
+	if (tmp->str)
+		free(tmp->str);
+	tmp->str = NULL;
 }
 
-int count_len_var_dquotes(char *str)
+void	clean_token(t_token **list_token)
 {
 	int i;
 
@@ -237,46 +174,61 @@ int expand_to_token(t_token **list_token)
 			del_next_token(&tmp);
 		if (tmp->next && tmp->next->type == WORD && !tmp->next->str)
 			del_next_token(&tmp);
+		if (tmp->next && tmp->next->type == D_QUOTES && !tmp->next->str)
+			del_next_token(&tmp);
+		if (tmp->next && tmp->next->type == S_QUOTES && !tmp->next->str)
+			del_next_token(&tmp);
 		if (tmp->next && tmp->type == SEPARATOR && tmp->next->type == SEPARATOR)
 			del_next_token(&tmp);
-		if (tmp->next && tmp->type == WORD && tmp->next->type == WORD)
-		{
-			tmp->str = ft_strcat_dup(tmp->str, tmp->next->str);
-			if (tmp->str == NULL)
-				return (write(0, ERR_MALLOC_KO, ft_strlen(ERR_MALLOC_KO)), ERROR);
-			del_next_token(&tmp);
-		}
+		if (!tmp->next && is_op(tmp))
+			return (del_all_token(list_token), (void)0);
 		tmp = tmp->next;
 	}
-	return (SUCCESS);
 }
 
 int expand(t_token **list_token, t_env **env)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = *list_token;
 	while (tmp)
 	{
-		if (tmp->type == WORD && tmp->str[0] == '$' && tmp->str[1])
+		if (tmp->type == WORD && tmp->str && tmp->str[0] == '$'
+			&& tmp->str[1] && is_alnum_und(tmp->str[1]))
 			if (expand_word(&tmp, env) == ERROR)
 				return (free_all(list_token, env), ERROR);
 		tmp = tmp->next;
 	}
-	while (isexpand_ok(*list_token) == 1)
+	while (!isexpand_ok(*list_token))
 	{
 		if (expand_d_quotes(list_token, *env) == ERROR)
 			return (free_all(list_token, env), ERROR);
 		if (expand_to_token(list_token) == ERROR)
 			return (free_all(list_token, env), ERROR);
-		break;
+		break ;
 	}
+	while (!is_token_ok(*list_token))
+		clean_token(list_token);
 	return (SUCCESS);
 }
 /*
 !!!!!!!!!!!!!!!!!!!!!!!!!A GERER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-supprimer les separator a la fin.
-bien gerer la lecture des variable d'environnement (si le premier caractere apres le $ est un chiffre, considerer la suite comme un word : echo $0HBDHUE        {value$0}HBDHUE)
-gerer aussi $?   = 0
+bien gerer la lecture des variable d'environnement
+(si le premier caractere apres le $ est un chiffre,
+considerer la suite comme un word : echo $0HBDHUE        {value$0}HBDHUE)
+
+gerer aussi $?   = 0 normalement ok
 gerer [SEPARATOR =(null)] [WORD =(null)] [SEPARATOR =(null)]
+gerer les \$ \ en gerneral
+
+
+gerer echo | $gggrtg    -ou-  echo | uerigh
+doit garder le mot apres le pipe
+gerer iggi | $vintg
+
+
+echo "$USER$$$\$HOME$UHO$UINJ$$$"
+[WORD =echo] [SEPARATOR =(null)]
+[D_QUOTES =ntardy/mnt/nfs/homes/ntardy$] (manque un$etun\)
+echo "$$" ko
 */

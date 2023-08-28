@@ -6,6 +6,7 @@
 		"readline.h": "c",
 		"minishell.h": "c",
 		"compare": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"expand.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/22 22:37:52 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/27 23:51:09 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,13 @@ int ft_strdup_remake(char *str, t_token *new)
 	char c;
 
 	i = 0;
+	if (str[0] == '$' && str[1] && str[1] == '$')
+	{
+		new->type = WORD;
+		new->str = NULL;
+		printf("str = %s\n", str);
+		return (SUCCESS);
+	}
 	if (new->type == WORD )
 		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
 	else if (new->type == S_QUOTES)
@@ -90,10 +97,9 @@ int ft_strdup_remake(char *str, t_token *new)
 	}
 	len = ft_strlen_remake(str, new->type);
 	if (len == -1)
-	{
-		printf("Double or single cote open");
-		return (ERROR);
-	}
+		return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN)), ERROR);
+	if (len == 0)
+		return (new->str = NULL, SUCCESS);
 	new->str = malloc(sizeof(char) * (len + 1));
 	if (new->str == NULL)
 		return (ERROR); // malloc error
