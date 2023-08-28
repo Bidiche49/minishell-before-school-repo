@@ -1,1 +1,0 @@
-# minishell-before-school-repo
