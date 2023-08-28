@@ -6,11 +6,30 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 05:19:46 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 22:50:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
+
+int	count_dble_d(char *str)
+{
+	int	i;
+	int	nb_dble_d;
+
+	i = 0;
+	nb_dble_d = 0;
+	while (str[i])
+	{
+		if (str[i + 1] && str[i] == '$' && str[i + 1] == '$')
+		{
+			i += 2;
+			nb_dble_d++;
+		}
+		i++;
+	}
+	return (nb_dble_d * 2);
+}
 
 int	calc_len_tot(char *str, t_env *env)
 {
@@ -26,7 +45,7 @@ int	calc_len_tot(char *str, t_env *env)
 					- count_len_var_name(str + i));
 		i++;
 	}
-	len_tot += i + 1;
+	len_tot += i + 1 - count_dble_d(str);
 	return (len_tot);
 }
 
@@ -39,6 +58,9 @@ int	is_an_exp_dquotes(t_token *list_token)
 	{
 		while (list_token->str && list_token->str[i])
 		{
+			if (list_token->str[i + 1] && list_token->str[i] == '$'
+				&& list_token->str[i + 1] == '$')
+				return (1);
 			if (list_token->str[i + 1] && list_token->str[i] == '$'
 				&& is_alnum_und(list_token->str[i + 1]))
 				return (1);
