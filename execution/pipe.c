@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 15:09:25 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:21:30 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	is_bultin(t_section *section)
 	else if (ft_strcmp(section->cmd, "export") == 0)
 		return (0);
 	else if (ft_strcmp(section->cmd, "unset") == 0)
-		return (0);
+		return ();
 	else if (ft_strcmp(section->cmd, "env") == 0)
 		cmd_env(section->env);
 	else if (ft_strcmp(section->cmd, "exit") == 0)

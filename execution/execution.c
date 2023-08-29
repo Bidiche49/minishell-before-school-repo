@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 15:20:22 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:21:07 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int	master_exec(t_section *section)
 	printf("est dans master exec\n");
 	pid[0] = -1;
 	j[1] = dup(1);
-	j[0] = dup(0);
+	j[0] = dup(0);	// printf("passe signal\n");
+
 	if (exec_pipe(section, j[1], j[0]) == -1)
 		return (close(j[1]), close(j[0]), -1);
 	signal(SIGINT, SIG_IGN);
