@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 00:32:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 00:41:19 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	print_env(t_env *env)
 
 int main(int argc, char **argv, char **envd)
 {
-	// int		return_ft;
+	int		return_pars;
 	char	*input;
 	t_token	*list_token;
 	t_env	*env;
@@ -114,15 +114,18 @@ int main(int argc, char **argv, char **envd)
 			break ;//malloc readline error
 		else
 		{
-			add_history(input); // Ajoute l'entrée à l'historique de readline pour qu'elle puisse être rappelée avec les flèches du clavier.
-			if (parsing(input, &list_token) == ERROR) // Appelle la fonction parsing pour analyser l'entrée et stocker les jetons dans list_token.
-				return (free_all(&list_token, &env), ERROR);			  // Quitte le programme avec le code de retour 1 (erreur) si la fonction parsing retourne 1.
-			print_token(list_token);
-			expand(&list_token, &env);
-			// if (list_token->next || list_token->str)
-			// 	if (execution(list_token, &env) == 1)
-			// 		return 1;
-			print_token(list_token);
+			add_history(input);
+			return_pars = parsing(input, &list_token);
+			if (return_pars == ERROR)
+				return (free_all(&list_token, &env), ERROR);
+			if (return_pars == SUCCESS)
+			{
+				print_token(list_token);
+				expand(&list_token, &env);
+					if (execution(list_token, &env) == ERROR)
+						return (ERROR);
+				print_token(list_token);
+			}
 		}
 		free_list_token(&list_token);
 		free_list_token(&list_token);
