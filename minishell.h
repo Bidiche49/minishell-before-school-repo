@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 09:11:24 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 13:38:48 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	err(char *str);
 void	ft_putstr_fd(int fd, char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen_char(char *str, char c);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 
 /* EXPORT */

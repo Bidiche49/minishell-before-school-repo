@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 11:45:16 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 13:40:16 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int main(int argc, char **argv, char **envd)
 	(void)argv;
 	if (create_env(envd, &env) == ERROR)
 		return(free_all(&list_token, &env), ERROR);
-	print_envd(envd);
 	// print_env(env);
 	config_minishell_signal();
 	while (1)
@@ -123,11 +122,11 @@ int main(int argc, char **argv, char **envd)
 				return (free_all(&list_token, &env), ERROR);
 			if (return_pars == SUCCESS)
 			{
-				print_token(list_token);
-				// expand(&list_token, &env);
-				// 	if (execution(list_token, &env) == ERROR)
-				// 		return (ERROR);
-				print_token(list_token);
+				// print_token(list_token);
+				expand(&list_token, &env);
+					if (execution(list_token, &env) == ERROR)
+						return (ERROR);
+				// print_token(list_token);
 			}
 		}
 		free_list_token(&list_token);
