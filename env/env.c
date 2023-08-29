@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:46:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 09:53:47 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 11:46:16 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_env	*fill_new_env(char *line_env)
 		return (free_new_env(new), NULL);
 	while (line_env && *++line_env)
 	{
-		if (line_env[i] == '\"')
+		if (*line_env == '\"')
 			break ;
 		new->content[i++] = *line_env;
 	}
