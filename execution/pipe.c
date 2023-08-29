@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 13:28:08 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:25:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	exec_pipe(t_section *section, int x, int y)
 {
 	int	tmp_pipe[2];
-	
+
 	section->fd[0] = y;
 	// printf("vas dans exec_pipe\n");
 	while (section->next)
@@ -24,7 +24,7 @@ int	exec_pipe(t_section *section, int x, int y)
 		if (pipe(tmp_pipe) > 0)
 		{
 			// message d'erreur = echec de la creation du pipe;
-			return (-1);	
+			return (-1);
 		}
 		section->pipe[0] = tmp_pipe[0];
 		section->pipe[1] = tmp_pipe[1];
@@ -106,11 +106,11 @@ int	is_bultin(t_section *section)
 	else if (ft_strcmp(section->cmd, "pwd") == 0)
 		return (0);
 	else if (ft_strcmp(section->cmd, "export") == 0)
-		return (0);
+		return (cmd_export(section->env, section->option));
 	else if (ft_strcmp(section->cmd, "unset") == 0)
-		return (0);
+		return (cmd_unset(section->env, section->option));
 	else if (ft_strcmp(section->cmd, "env") == 0)
-		cmd_env(section->env);
+		return(section->env);
 	else if (ft_strcmp(section->cmd, "exit") == 0)
 		return (0);
 	else
@@ -123,7 +123,7 @@ int	is_bultin(t_section *section)
 int	util_dup2(t_section *section, int x, int y)
 {
 	int i;
-	
+
 	convert_file(section->fd[0], section->fd[1]);
 	i = is_bultin(section);
 	convert_file(x, y);
@@ -260,7 +260,7 @@ char	**ft_get_env_bis(t_env	**env)
 void free_env_char(char **env)
 {
 	int i;
-	
+
 	i = 0;
 	while (env)
 		free(env[i++]);
@@ -270,7 +270,7 @@ void free_env_char(char **env)
 void	exec_cmd(t_section *section)
 {
 	char **env_tmp;
-	
+
 	env_tmp = ft_get_env_bis(section->env);
 	signal(SIGINT, &kill_child);
 	signal(SIGQUIT, SIG_DFL);
