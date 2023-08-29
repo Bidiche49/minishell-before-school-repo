@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 00:41:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 02:15:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int main(int argc, char **argv, char **envd)
 	(void)argv;
 	if (create_env(envd, &env) == ERROR)
 		return(free_all(&list_token, &env), ERROR);
-	// print_env(env);
 	config_minishell_signal();
 	while (1)
 	{
@@ -133,5 +132,5 @@ int main(int argc, char **argv, char **envd)
 	free_all(&list_token, &env);
 	rl_clear_history();
 	write(STDOUT_FILENO, "exit\n", 5);
-	return (SUCCESS);
+	return (g_error);
 }
