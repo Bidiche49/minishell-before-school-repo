@@ -6,7 +6,7 @@
 #    By: audrye <audrye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/28 08:31:29 by audrye           ###   ########.fr        #
+#    Updated: 2023/08/29 04:44:13 by audrye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ EXPAND_LOC =	expand/
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
 				$(UTILS_LOC)lib_utils2.c			\
+				$(UTILS_LOC)lib_utils3.c			\
 				$(UTILS_LOC)split.c					\
 				$(UTILS_LOC)free.c					\
 				$(UTILS_LOC)signal.c				\

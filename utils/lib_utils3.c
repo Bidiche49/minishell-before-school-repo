@@ -1,45 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exe3.c                                       :+:      :+:    :+:   */
+/*   lib_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/29 01:03:58 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 04:34:13 by audrye           ###   ########.fr       */
+/*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
+/*   Updated: 2023/08/29 04:36:59 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "execution.h"
 #include "../minishell.h"
 
-void	add_space(t_section *section)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = malloc(sizeof(char) * (ft_strlen(section->option) + 2));
-	while (section->option[i])
-	{
-		tmp[i] = section->option[i];
-		i++;
-	}
-	free(section->option);
-	tmp[i] = ' ';
-	tmp[i + 1] = '\0';
-	section->option = tmp;
-}
-
-int	is_pipe(t_section *section)
+char	*ft_strcpy(char *s1, char const *s2)
 {
 	int	i;
-	
+
 	i = 0;
-	while (section)
+	while (s2[i])
 	{
+		s1[i] = s2[i];
 		i++;
-		section = section->next;
 	}
-	return (i);
+	s1[i] = '\0';
+	return (s1);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*ram;
+	int		len;
+
+	if (s1 == NULL)
+		return ((char *)s2);
+	else if (s2 == NULL)
+		return ((char *)s1);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	ram = malloc(sizeof(char) * (len + 1));
+	if (!ram)
+		return (NULL);
+	ft_strcpy(ram, s1);
+	ft_strcpy(&ram[ft_strlen(s1)], s2);
+	return (ram);
 }
