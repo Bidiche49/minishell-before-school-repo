@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 07:46:22 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 12:25:28 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int main(int argc, char **argv, char **envd)
 	(void)argv;
 	if (create_env(envd, &env) == ERROR)
 		return(free_all(&list_token, &env), ERROR);
-	// print_env(env);
+	cmd_env(&env);
 	config_minishell_signal();
 	while (1)
 	{

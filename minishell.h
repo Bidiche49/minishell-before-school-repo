@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 04:37:12 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 12:27:06 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char	*ft_strdup(const char *src);
 char	*ft_strcat_dup(char *dest, char *str);
 char	*ft_substr(char const *s, int start, int len);
 char	**ft_split(char const *s, char c);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
@@ -126,7 +127,7 @@ int	is_clear(t_token *token, t_section *section);
 int	ft_lstsize(t_token *token);
 int	ft_lstadd_back_exec(t_section **lst, t_section *new);
 t_section	*ft_lstlast(t_section *lst);
-void	init_list_section(t_token *token, t_section *section, t_file *file, t_env *env);
+void	init_list_section(t_token *token, t_section *section, t_env **env);
 int	ft_lstsize_section(t_section *section);
 t_file *ft_newsection_file(t_token *token);
 int ft_lstadd_back_exec_file(t_file **lst, t_file *new);

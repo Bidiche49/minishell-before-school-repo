@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 08:08:41 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 12:28:19 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	cmp_operator(t_token *token)
 	return (i);
 }
 
-t_section *ft_newsection(t_env *env)
+t_section *ft_newsection(t_env **env)
 {
 	t_section *new;
 
@@ -73,7 +73,7 @@ t_section *ft_newsection(t_env *env)
 	new->cmd = NULL;
 	new->option = NULL;
 	new->abs_path = NULL;
-	new->env = &env;
+	new->env = env;
 	new->fd[1] = -2;
 	new->fd[2] = -2;
 	new->pipe[1] = -1;
@@ -100,12 +100,12 @@ int ft_lstadd_back_exec(t_section **lst, t_section *new)
 	return (0);
 }
 
-void	set_section_one(t_section *section, t_token *token, t_file *file, t_env *env)
+void	set_section_one(t_section *section, t_token *token, t_env **env)
 {
 	section->cmd = NULL;
 	section->option = NULL;
 	section->abs_path = NULL;
-	section->env = &env;
+	section->env = env;
 	section->deep = 0;
 	section->fd[1] = -2;
 	section->fd[2] = -2;
@@ -113,10 +113,10 @@ void	set_section_one(t_section *section, t_token *token, t_file *file, t_env *en
 	section->pipe[2] = -1;
 	section->next = NULL;
 	section->token = token;
-	section->file = file;
+	section->file = NULL;
 }
 
-void	init_list_section(t_token *token, t_section *section, t_file *file, t_env *env)
+void	init_list_section(t_token *token, t_section *section, t_env **env)
 {
 	int	nb_pipe;
 	int	i;
@@ -124,7 +124,7 @@ void	init_list_section(t_token *token, t_section *section, t_file *file, t_env *
 	i = 0;
 	nb_pipe = cmp_operator(token); // compte le nombre de mots
 	if (nb_pipe == 0)
-		set_section_one(section, token, file, env);
+		set_section_one(section, token, env);
 	while (nb_pipe > 0)
 	{
 		ft_lstadd_back_exec(&section, ft_newsection(env));
@@ -141,6 +141,7 @@ t_file *ft_newsection_file(t_token *token)
 	new = malloc(sizeof(t_file));
 	if (new == NULL)
 		return (NULL);
+	new->name = calloc(ft_strlen(token->str), sizeof(t_file));
 	new->name = token->str;
 	new->type = token->type;
 	new->next = NULL;
@@ -166,15 +167,31 @@ int ft_lstadd_back_exec_file(t_file **lst, t_file *new)
 	return (0);
 }
 
+int	is_separator(t_token *token)
+{
+	int i;
+	
+	i = 0;
+	while (token)
+	{
+		if (token->type == SEPARATOR)
+			i--;
+		token = token->next;
+		i++;
+	}
+	return (i);
+}
+
 void	init_file(t_token *token, t_file *file)
 {
 	int	i;
 
-	i = 0;
-	while (token != NULL)
+	i = is_separator(token);
+	while (i > 0)
 	{
-		ft_lstadd_back_exec_file(&file, ft_newsection_file(token));
+		if (token->type != SEPARATOR)
+			ft_lstadd_back_exec_file(&file, ft_newsection_file(token));
 		token = token->next;
-		i++;
+		i--;
 	}
 }

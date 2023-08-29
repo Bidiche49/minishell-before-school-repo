@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 08:10:21 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 12:37:39 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int	exec_pipe(t_section *section, int x, int y)
 	int	tmp_pipe[2];
 	
 	section->fd[0] = y;
+	printf("vas dans exec_pipe\n");
 	while (section->next)
 	{
+		printf("entre dans la boucle \n");
 		if (pipe(tmp_pipe) > 0)
 		{
 			// message d'erreur = echec de la creation du pipe;
@@ -31,6 +33,7 @@ int	exec_pipe(t_section *section, int x, int y)
 		section = section->next;
 	}
 	section->fd[1] = x;
+	printf("ici\n");
 	return (1);
 }
 
@@ -64,8 +67,8 @@ int file_open(t_section *section)
 	t_file *file;
 
 	file = section->file;
-	printf("valeur avent open_all de file->name = %s\n", file->name);
-	while (file)
+	printf("valeur avent open_all de file->name =\n");
+	while (file != NULL)
 	{
 		if (open_all(section, file) == 0)
 		{
@@ -75,7 +78,7 @@ int file_open(t_section *section)
 		if (file->next && file->next->type != HEREDOC && file->next->type != IN && file->type != HEREDOC && file->type != IN)
 		{
 			printf("vas dans le premier close\n");
-			// close (section->fd[1]);
+			close (section->fd[1]);
 		}
 		if (file->next && file->next->type == IN && file->next->type == HEREDOC && file->type == IN && file->type == HEREDOC)
 		{
@@ -293,6 +296,7 @@ int	fork_using(t_section *section, t_token *token, int *pid, int *j)
 
 	i[1] = 0;
 	i[0] = 1;
+	printf("valeur de file->name \n");
 	while (section && i[0] > -1)
 	{
 		i[0] = assigne_file(section, j, i[0]);
@@ -301,7 +305,10 @@ int	fork_using(t_section *section, t_token *token, int *pid, int *j)
 			return (-1);
 		if (i[0] == 1)
 		{
+			printf("rentre dans le if \n");
 			i[0] = is_clear(token, section);
+			printf("valeur de i[]0 = %d\n", i[0]);
+			printf("valeur option = %s\n", section->option);
 			if (i[0] == -1)
 				return (free(section->option), i[0]);
 			if (i[0] != 0)
