@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 02:15:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 05:33:29 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	print_env(t_env *env)
 {
 	while(env)
 	{
+		if(!env->content)
+			printf("%s\n", env->name);
 		printf("%s=%s\n", env->name, env->content);
 		env = env->next;
 	}
@@ -96,15 +98,17 @@ int main(int argc, char **argv, char **envd)
 	t_env	*env;
 
 	if (argc != 1)
-		return (write(0, ERR_MANY_ARG, ft_strlen(ERR_MANY_ARG)), ERROR);
+		return (err(ERR_MANY_ARG), ERROR);
 	if (!envd)
-		return (write(0, ERR_ENV_KO, ft_strlen(ERR_ENV_KO)), ERROR);
+		return (err(ERR_ENV_KO), ERROR);
 	input = NULL;
 	list_token = NULL;
 	env = NULL;
 	(void)argv;
 	if (create_env(envd, &env) == ERROR)
 		return(free_all(&list_token, &env), ERROR);
+	print_envd(envd);
+	// print_env(env);
 	config_minishell_signal();
 	while (1)
 	{
@@ -120,9 +124,9 @@ int main(int argc, char **argv, char **envd)
 			if (return_pars == SUCCESS)
 			{
 				print_token(list_token);
-				expand(&list_token, &env);
-					if (execution(list_token, &env) == ERROR)
-						return (ERROR);
+				// expand(&list_token, &env);
+				// 	if (execution(list_token, &env) == ERROR)
+				// 		return (ERROR);
 				print_token(list_token);
 			}
 		}

@@ -6,11 +6,22 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:46:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 23:01:29 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 09:53:47 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+
+void	free_new_env(t_env *env)
+{
+	if (!env)
+		return ;
+	if (env->name)
+		free(env->name);
+	if (env->content)
+		free(env->content);
+	free(env);
+}
 
 t_env	*fill_new_env(char *line_env)
 {
@@ -24,15 +35,33 @@ t_env	*fill_new_env(char *line_env)
 	new->name = malloc(sizeof(char) * (ft_strlen_char(line_env, '=') + 1));
 	if (!new->name)
 		return (free(new), NULL);
+	if (*line_env == '\"')
+		line_env++;
 	while (line_env && *line_env && *line_env != '=')
+	{
+		if (*line_env == '\"' && (!*line_env + 1 || *line_env + 1 == '='))
+			break ;
+		if (*line_env == '\"')
+			line_env++;
 		new->name[i++] = *line_env++;
+	}
 	new->name[i] = '\0';
 	i = 0;
+	if (*line_env != '=')
+		return (new->content = NULL, new->next = NULL, new);
+	if (*line_env + 1 && *line_env + 1 == ' ')
+		line_env[1] = '\0';
+	if (*line_env + 1 && *line_env + 1 == '\"')
+		line_env++;
 	new->content = malloc(sizeof(char) * (ft_strlen_char(line_env, '\0') + 1));
 	if (!new->content)
-		return (NULL);
+		return (free_new_env(new), NULL);
 	while (line_env && *++line_env)
+	{
+		if (line_env[i] == '\"')
+			break ;
 		new->content[i++] = *line_env;
+	}
 	new->content[i] = '\0';
 	new->next = NULL;
 	return (new);

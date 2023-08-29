@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 22:38:54 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/27 22:41:06 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 07:03:50 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,44 @@ int	ft_strcmp(const char *s1, const char *s2)
 	{
 		if (s1[i] != s2[i])
 			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void free_matrice(char **matrice)
+{
+	int i;
+
+	i = 0;
+	if (!matrice)
+		return ;
+	while (matrice)
+		free(matrice[i++]);
+	free(matrice);
+	matrice = NULL;
+}
+
+void	ft_putstr_fd(int fd, char *s)
+{
+	if (!s)
+		return ;
+	write(fd, s, ft_strlen(s));
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	*tmp1;
+	unsigned char	*tmp2;
+
+	tmp1 = (unsigned char *)s1;
+	tmp2 = (unsigned char *)s2;
+	i = 0;
+	while (n--)
+	{
+		if (tmp1[i] != tmp2[i] || tmp1[i] == 0 || tmp2[i] == 0)
+			return (tmp1[i] - tmp2[i]);
 		i++;
 	}
 	return (0);

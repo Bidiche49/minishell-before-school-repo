@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:13:19 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 23:10:41 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 07:04:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "../minishell.h"
 
-int		ft_strlen_char(char *str, char c);
 int		is_in_env(char *env_var, t_env *env);
 int		isexpand_ok(t_token *list_token);
 int		is_an_exp_dquotes(t_token *list_token);
