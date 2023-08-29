@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 12:28:19 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 13:28:32 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int ft_lstadd_back_exec_file(t_file **lst, t_file *new)
 	actu = *lst;
 	while (actu->next != NULL)
 		actu = actu->next;
-	printf("valeur de new->name = %s\n", new->name);
+	// printf("valeur de new->name = %s\n", new->name);
 	actu->next = new;
 	return (0);
 }

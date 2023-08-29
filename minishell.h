@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 12:27:06 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 13:15:23 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void	kill_child(int num);
 void	exec_cmd(t_section *section);
 void	exec_not_pipe(t_section *section, int *pid, int *j);
 int	fork_using(t_section *section, t_token *token, int *pid, int *j);
-char	**ft_get_env_bis(t_env	*env);
+char	**ft_get_env_bis(t_env	**env);
 
 int	cmd_env(t_env **env);
 int	ft_strcmp(const char *s1, const char *s2);

@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 12:37:39 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 13:28:08 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	exec_pipe(t_section *section, int x, int y)
 	int	tmp_pipe[2];
 	
 	section->fd[0] = y;
-	printf("vas dans exec_pipe\n");
+	// printf("vas dans exec_pipe\n");
 	while (section->next)
 	{
-		printf("entre dans la boucle \n");
+		// printf("entre dans la boucle \n");
 		if (pipe(tmp_pipe) > 0)
 		{
 			// message d'erreur = echec de la creation du pipe;
@@ -33,30 +33,30 @@ int	exec_pipe(t_section *section, int x, int y)
 		section = section->next;
 	}
 	section->fd[1] = x;
-	printf("ici\n");
+	// printf("ici\n");
 	return (1);
 }
 
 int	open_all(t_section *section, t_file *file)
 {
-	printf("valeur 1 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
-	printf("valeur de file->name = %s\n", file->name);
+	// printf("valeur 1 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
+	// printf("valeur de file->name = %s\n", file->name);
 	if (file->type == OUT)
 	{
-		printf("OUT\n");
+		// printf("OUT\n");
 		section->fd[1] = open(file->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	}
 	if (file->type == APPEND)
 	{
-		printf("APPEND\n");
+		// printf("APPEND\n");
 		section->fd[1] = open(file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
 	if (file->type == IN || file->type == HEREDOC)
 	{
-		printf("IN ou HEREDOC\n");
+		// printf("IN ou HEREDOC\n");
 		section->fd[0] = open(file->name, O_RDONLY);
 	}
-	printf("valeur 2 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
+	// printf("valeur 2 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
 	if (section->fd[0] == -1 || section->fd[1] == -1)
 		return (0);
 	return (1);
@@ -67,22 +67,22 @@ int file_open(t_section *section)
 	t_file *file;
 
 	file = section->file;
-	printf("valeur avent open_all de file->name =\n");
+	// printf("valeur avent open_all de file->name =\n");
 	while (file != NULL)
 	{
 		if (open_all(section, file) == 0)
 		{
-			printf("vas dans open all\n");
+			// printf("vas dans open all\n");
 			return (0);
 		}
 		if (file->next && file->next->type != HEREDOC && file->next->type != IN && file->type != HEREDOC && file->type != IN)
 		{
-			printf("vas dans le premier close\n");
+			// printf("vas dans le premier close\n");
 			close (section->fd[1]);
 		}
 		if (file->next && file->next->type == IN && file->next->type == HEREDOC && file->type == IN && file->type == HEREDOC)
 		{
-			printf("vas dans le deuxieme close\n");
+			// printf("vas dans le deuxieme close\n");
 			close (section->fd[0]);
 		}
 		file = file->next;
@@ -98,7 +98,7 @@ void	convert_file(int x, int y)
 
 int	is_bultin(t_section *section)
 {
-	printf("est dans is_bultin\n");
+	// printf("est dans is_bultin\n");
 	if (ft_strcmp(section->cmd, "echo") == 0)
 		return (ft_echo(section), 0);
 	else if (ft_strcmp(section->cmd, "cd") == 0)
@@ -132,11 +132,11 @@ int	util_dup2(t_section *section, int x, int y)
 
 int	assigne_file(t_section *section, int *j, int i)
 {
-	printf("valeur 1 de i = %d\n", i);
+	// printf("valeur 1 de i = %d\n", i);
 	i = file_open(section);
 	if (i >= 1)
 		i = util_dup2(section, j[0], j[1]);
-	printf("valeur 2 de i = %d\n", i);
+	// printf("valeur 2 de i = %d\n", i);
 	return (i);
 }
 
@@ -213,7 +213,7 @@ void	kill_child(int num)
 		exit(130);
 }
 
-char	**ft_get_env_bis(t_env	*env)
+char	**ft_get_env_bis(t_env	**env)
 {
 	char	**env_tmp;
 	t_env	*tmp;
@@ -224,32 +224,36 @@ char	**ft_get_env_bis(t_env	*env)
 	i = 0;
 	j = 0;
 	k = 0;
+	tmp = *env;
 	while (tmp)
 	{
 		k++;
 		tmp=tmp->next;
 	}
-	env_tmp = malloc(sizeof(char *) * (k + 1));
+	env_tmp = ft_calloc((k + 1), sizeof(char *));
 	if (!env_tmp)
 		return(NULL); //FREEEEEALLALALALALAL
-	tmp = env;
+	tmp = *env;
 	while (tmp)
 	{
-		env_tmp[i] = malloc(sizeof(char) * (ft_strlen(tmp->name) + ft_strlen(tmp->content) + 2));
+		k = 0;
+		env_tmp[i] = ft_calloc((ft_strlen(tmp->name) + ft_strlen(tmp->content) + 3), sizeof(char));
 		if (!env_tmp[i])
 			return (NULL); //FREE ALLLLLLL
-		printf("name = %s", tmp->name);
+		j = 0;
 		while (tmp->name[j])
-			env_tmp[i][k++] = tmp->name[j++];
+		{
+			env_tmp[i][k] = tmp->name[j];
+			k++;
+			j++;
+		}
 		j = 0;
 		env_tmp[i][k++] = '=';
-		printf(" = %s\n", tmp->content);
 		while (tmp->content[j])
 			env_tmp[i][k++] = tmp->content[j++];
-		env_tmp[i][k] = '\0';
-		tmp=tmp->next;
+		i++;
+		tmp = tmp->next;
 	}
-	env_tmp[i] = '\0';
 	return (env_tmp);
 }
 
@@ -267,7 +271,7 @@ void	exec_cmd(t_section *section)
 {
 	char **env_tmp;
 	
-	env_tmp = ft_get_env_bis(*section->env);
+	env_tmp = ft_get_env_bis(section->env);
 	signal(SIGINT, &kill_child);
 	signal(SIGQUIT, SIG_DFL);
 	execve(section->abs_path, ft_split(section->option, ' '), env_tmp);
@@ -278,6 +282,7 @@ void	exec_cmd(t_section *section)
 void	exec_not_pipe(t_section *section, int *pid, int *j)
 {
 	fork_apli(section, pid, j);
+	// printf("exec_pipe\n");
 	exec_cmd(section);
 	exit(127);
 }
@@ -285,7 +290,7 @@ void	exec_not_pipe(t_section *section, int *pid, int *j)
 void	you_pipe(int *pid, int y, t_section *section)
 {
 	if (pid[y] < 0)
-		printf("erreur de pipe\n");
+		// printf("erreur de pipe\n");
 	if (section->abs_path)
 		free(section->abs_path);
 }
@@ -296,19 +301,19 @@ int	fork_using(t_section *section, t_token *token, int *pid, int *j)
 
 	i[1] = 0;
 	i[0] = 1;
-	printf("valeur de file->name \n");
+	// printf("valeur de file->name \n");
 	while (section && i[0] > -1)
 	{
 		i[0] = assigne_file(section, j, i[0]);
-		printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
+		// printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
 		if (i[0] == -1)
 			return (-1);
 		if (i[0] == 1)
 		{
-			printf("rentre dans le if \n");
+			// printf("rentre dans le if \n");
 			i[0] = is_clear(token, section);
-			printf("valeur de i[]0 = %d\n", i[0]);
-			printf("valeur option = %s\n", section->option);
+			// printf("valeur de i[]0 = %d\n", i[0]);
+			// printf("valeur option = %s\n", section->option);
 			if (i[0] == -1)
 				return (free(section->option), i[0]);
 			if (i[0] != 0)
