@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 15:24:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:33:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void free_all(t_token **lst_token, t_env **env);
 /* Execution */
 
 int	execution(t_token *token, t_env **env);
-int	master_exec(t_section *sectio, t_token *token);
+int	master_exec(t_section *section);
 void	end_of_exit(int *pid, int x, int y);
 char	*ft_get_env(t_env	**env, char *str);
 int	is_clear(t_token *token, t_section *section);
@@ -196,7 +196,7 @@ t_section	*next_section(t_section *section, int x, int *i);
 void	kill_child(int num);
 void	exec_cmd(t_section *section);
 void	exec_not_pipe(t_section *section, int *pid, int *j);
-int	fork_using(t_section *section, t_token *token, int *pid, int *j);
+int	fork_using(t_section *section, int *pid, int *j);
 char	**ft_get_env_bis(t_env	**env);
 
 int	cmd_env(t_env **env);

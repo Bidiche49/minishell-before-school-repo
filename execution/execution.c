@@ -6,12 +6,19 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 13:29:08 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:21:07 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "execution.h"
 #include "../minishell.h"
+
+int	is_bubul(char *src)
+{
+	if (ft_strcmp(src, "export") == 0 || ft_strcmp(src, "echo") == 0 || ft_strcmp(src, "cd") == 0 || ft_strcmp(src, "pwd") == 0 || ft_strcmp(src, "unset") == 0 || ft_strcmp(src, "env") == 0 || ft_strcmp(src, "exit") == 0)
+		return (0);
+	return (1);
+}
 
 int	check_cmd(char *src, char *env, t_section *section)
 {
@@ -20,6 +27,12 @@ int	check_cmd(char *src, char *env, t_section *section)
 
 	i = 0;
 	tmp = ft_split(env, ':');
+	if (is_bubul(src) == 0)
+	{
+		if (ft_strcpy_token(src, section) != 0)
+				return (ERROR);
+		return (SUCCESS);
+	}	
 	while (tmp[i])
 	{
 		if (ft_strcat_token(tmp[i], src, section) != 0)
@@ -35,7 +48,6 @@ int	check_cmd(char *src, char *env, t_section *section)
 		}
 		i++;
 	}
-	// printf("valeur de cmd = %s\t|\tvaleur de abs_path = %s\n", section->cmd, section->abs_path);
 	return (SUCCESS);
 }
 
@@ -71,7 +83,6 @@ void	find_cmd(t_token *token, t_section *section)
 	char	*path;
 	
 	path = ft_get_env(section->env, "PATH");
-	// printf("valeur de PATH = %s\n", path);
 	if (!path)
 		return ;
 	if (token->type == WORD)
@@ -97,7 +108,6 @@ int	gathering(t_token *token, t_section *section) // foction a refaire ainsi que
 			add_space(section);
 		else if (token->type == WORD || token->type == S_QUOTES || token->type == D_QUOTES)
 		{
-			// printf("passe dans gathetring\n");
 			section->option = ft_strjoin(section->option, token->str);
 			if (section->option == NULL)
 				return (ERROR);
@@ -109,12 +119,11 @@ int	gathering(t_token *token, t_section *section) // foction a refaire ainsi que
 
 int	is_clear(t_token *token, t_section *section)
 {
-	// printf("in is_clear\n");
+	printf("in is_clear\n");
 	while (section)
 	{
 		if (token->type == PIPE)
 			section = section->next;
-		// printf("cmd = %s\n", section->cmd);
 		if (section->cmd != NULL)
 		{
 			if (gathering(token, section) != 0)
@@ -122,7 +131,7 @@ int	is_clear(t_token *token, t_section *section)
 		}
 		section = section->next;
 	}
-	return (1);
+	return (0);
 }
 
 void	back_to_home(int *pid, int ret)
@@ -155,7 +164,7 @@ void	end_of_exec(int *pid, int x, int y)
 	close(x);
 	close(y);
 }
-int	master_exec(t_section *section, t_token *token)
+int	master_exec(t_section *section)
 {
 	pid_t		*pid;
 	int		j[2];
@@ -167,15 +176,15 @@ int	master_exec(t_section *section, t_token *token)
 	pid = malloc(sizeof(int) * ft_lstsize_section(section));
 	if (!pid)
 		return (0);
+	printf("est dans master exec\n");
 	pid[0] = -1;
 	j[1] = dup(1);
-	j[0] = dup(0);
-	// printf("est dans master exec\n");
+	j[0] = dup(0);	// printf("passe signal\n");
+
 	if (exec_pipe(section, j[1], j[0]) == -1)
 		return (close(j[1]), close(j[0]), -1);
 	signal(SIGINT, SIG_IGN);
-	// printf("passe signal\n");
-	ret = fork_using(section, token, pid, j);
+	ret = fork_using(section, pid, j);
 	if (ret == -1)
 		return (close(j[1]), close(j[0]), free(pid), -1);
 	if (pid[0] != -1)
@@ -190,12 +199,14 @@ int	execution(t_token *token, t_env **env)
 	
 	init_file(token, &list_file);
 	init_list_section(token, &list_section, env);
-	// printf("init done\n");
 	find_cmd(token, &list_section);
-	// if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
-	// 	return (ERROR); // free la structure
+	printf("section->cmd = %s\n", list_section.cmd);
+	printf("init done\n");
+	if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
+		return (ERROR); // free la structure
 	// printf("valeur de cmd = %s \t||\t valeur de absPath = %s \t|| \t valeur des option = %s\n", list_section.cmd, list_section.abs_path, list_section.option);
-	if (master_exec(&list_section, token) == -1)
+	printf("avant\n");
+	if (master_exec(&list_section) == -1)
 		return (ERROR);
 	return (SUCCESS);
 }

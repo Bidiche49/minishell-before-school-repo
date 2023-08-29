@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 15:25:55 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:32:39 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ void	convert_file(int x, int y)
 
 int	is_bultin(t_section *section)
 {
-	// printf("est dans is_bultin\n");
+	printf("est dans is_bultin\n");
 	if (ft_strcmp(section->cmd, "echo") == 0)
-		return (ft_echo(section), 0);
+		ft_echo(section);
 	else if (ft_strcmp(section->cmd, "cd") == 0)
 		return (0);
 	else if (ft_strcmp(section->cmd, "pwd") == 0)
@@ -108,7 +108,7 @@ int	is_bultin(t_section *section)
 	else if (ft_strcmp(section->cmd, "export") == 0)
 		return (cmd_export(section->env, section->option));
 	else if (ft_strcmp(section->cmd, "unset") == 0)
-		return (cmd_unset(section->env, section->option));
+		return (0);
 	else if (ft_strcmp(section->cmd, "env") == 0)
 		return(section->env);
 	else if (ft_strcmp(section->cmd, "exit") == 0)
@@ -125,6 +125,7 @@ int	util_dup2(t_section *section, int x, int y)
 	int i;
 
 	convert_file(section->fd[0], section->fd[1]);
+	printf("avant is bultin\n");
 	i = is_bultin(section);
 	convert_file(x, y);
 	return (i);
@@ -132,8 +133,8 @@ int	util_dup2(t_section *section, int x, int y)
 
 int	assigne_file(t_section *section, int *j, int i)
 {
-	// printf("valeur 1 de i = %d\n", i);
 	i = file_open(section);
+	printf("valeur 1 de i = %d\n", i);
 	if (i >= 1)
 		i = util_dup2(section, j[0], j[1]);
 	// printf("valeur 2 de i = %d\n", i);
@@ -295,23 +296,23 @@ void	you_pipe(int *pid, int y, t_section *section)
 		free(section->abs_path);
 }
 
-int	fork_using(t_section *section, t_token *token, int *pid, int *j)
+int	fork_using(t_section *section, int *pid, int *j)
 {
 	int	i[2];
 
 	i[1] = 0;
 	i[0] = 1;
-	// printf("valeur de file->name \n");
+	printf("valeur de file->name \n");
 	while (section && i[0] > -1)
 	{
 		i[0] = assigne_file(section, j, i[0]);
-		// printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
+		printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
 		if (i[0] == -1)
 			return (-1);
 		if (i[0] == 1)
 		{
 			// printf("rentre dans le if \n");
-			i[0] = is_clear(token, section);
+			// i[0] = is_clear(token, section);
 			// printf("valeur de i[]0 = %d\n", i[0]);
 			// printf("valeur option = %s\n", section->option);
 			if (i[0] == -1)
