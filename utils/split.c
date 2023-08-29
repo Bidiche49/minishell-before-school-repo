@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 22:13:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/23 13:14:35 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 21:46:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,9 @@ char	**ft_split(char const *s, char c)
 	k = -1;
 	if (!s)
 		return (NULL);
-	res = malloc(sizeof(char *) * (count_word + 1));
+	res = ft_calloc((count_word + 1), sizeof(char *));
 	if (res == NULL)
-		return (printf("malloc KO\n"),NULL);
-	res[count_word] = NULL;
+		return (g_error = MALL_KO, NULL);
 	while (s[i] && ++k < count_word)
 	{
 		while (s[i] == c)

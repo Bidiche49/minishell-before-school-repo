@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 09:59:11 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:33:50 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_line(char *line)
 
 	i = check_var_name(line);
 	if (i == 0)
-		return (error_export(line), 1);
+		return (error_export(line), 0);
 	return (1);
 }
 
@@ -26,18 +26,21 @@ int	mod_exist_var(t_env **env, char *line)
 {
 	t_env	*tmp;
 	int		len_name;
+	char	*name;
 
 	tmp = *env;
 	len_name = ft_strlen_char(line, '=');
+	name = line;
+	name[len_name] = '\0';
 	while(tmp)
 	{
-		if (ft_strncmp(line, tmp->name, len_name))
+		if (!ft_strcmp(name, tmp->name))
 		{
 			if (tmp->content)
 				free(tmp->content);
 			tmp->content = ft_strdup(line + len_name + 1);
 			if (!tmp->content)
-				return (g_error = MALL_KO, err(ERR_MALLOC_KO), ERROR);
+				return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
 			return (SUCCESS);
 		}
 		tmp = tmp->next;
@@ -49,10 +52,10 @@ int	add_env(t_env **env, char **split_line)
 {
 	int	i;
 
-	i = 0;
 	if (!split_line)
-		return (g_error = MALL_KO, err(ERR_MALLOC_KO), ERROR);
-	while (split_line[i])
+		return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
+	i = 0;
+	while (split_line && split_line[i] && split_line[i][0])
 	{
 		if (existing_var(env, split_line[i]))
 		{
@@ -65,7 +68,7 @@ int	add_env(t_env **env, char **split_line)
 			{
 				free_matrice(split_line);
 				g_error = MALL_KO;
-				return (err(ERR_MALLOC_KO), ERROR);
+				return (msg(ERR_MALLOC_KO), ERROR);
 			}
 		}
 		i++;
@@ -82,17 +85,14 @@ void	print_env_export(t_env **env)
 	{
 		if (tmp->name && tmp->content)
 		{
-			ft_putstr_fd(1, "export ");
-			ft_putstr_fd(1, tmp->name);
-			ft_putstr_fd(1, "=\"");
-			ft_putstr_fd(1, tmp->content);
-			ft_putstr_fd(1, "\"\n");
+			printf(BOLD YELLOW "export" RESET);
+			printf(YELLOW " %s=" RESET, tmp->name);
+			printf(CYAN "\"%s\"\n" RESET, tmp->content);
 		}
 		if (tmp->name && !tmp->content)
 		{
-			ft_putstr_fd(1, "export ");
-			ft_putstr_fd(1, tmp->name);
-			ft_putstr_fd(1, "\n");
+			printf(BOLD YELLOW "export" RESET);
+			printf(YELLOW " %s\n" RESET, tmp->name);
 		}
 		tmp = tmp->next;
 	}
@@ -100,7 +100,9 @@ void	print_env_export(t_env **env)
 
 int	cmd_export(t_env **env, char *line_env)
 {
-	if (!*line_env)
+	if (!line_env)
+		return (ERROR);
+	if (!ft_strcmp(line_env, "export"))
 		return (print_env_export(env), SUCCESS);
 	if (add_env(env, fill_split_line(line_env)) == ERROR)
 		return (ERROR);//FREE ALL---------------------------------------------------

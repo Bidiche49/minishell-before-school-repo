@@ -6,13 +6,13 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 03:40:08 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 03:41:46 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:36:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	err(char *str)
+void	msg(char *str)
 {
 	int	i;
 

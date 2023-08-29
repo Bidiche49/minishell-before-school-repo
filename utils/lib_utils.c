@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 23:10:25 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 21:39:43 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,11 @@ char	*ft_strdup(const char *src)
 	i = -1;
 	if (!src)
 		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(src) + 1));
-	if (str == NULL)
+	str = ft_calloc((ft_strlen(src) + 1),sizeof(char));
+	if (!str)
 		return (NULL);
 	while (src[++i])
 		str[i] = src[i];
-	str[i] = '\0';
 	return (str);
 }
 
@@ -75,11 +74,11 @@ char	*ft_strcat_dup(char *dest, char *str)
 	i = 0;
 	j = 0;
 	tmp = ft_strdup(dest);
-	if (tmp == NULL)
+	if (!tmp)
 		return (NULL);
 	free (dest);
-	dest = malloc(sizeof(char) * (ft_strlen(tmp) + ft_strlen(str) + 1));
-	if (dest == NULL)
+	dest = ft_calloc((ft_strlen(tmp) + ft_strlen(str) + 1), sizeof(char));
+	if (!dest)
 		return (NULL);
 	while (tmp[j])
 	{
@@ -105,7 +104,7 @@ char	*ft_substr(char const *s, int start, int len)
 		return (ft_strdup(""));
 	if (ft_strlen(s) - start < len)
 		len = ft_strlen(s) - start;
-	str = malloc(sizeof (char) * (len + 1));
+	str = ft_calloc((len + 1), sizeof (char));
 	if (!str)
 		return (NULL);
 	i = 0;

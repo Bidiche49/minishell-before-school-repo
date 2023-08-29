@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/29 15:33:14 by ntardy           ###   ########.fr        #
+#    Updated: 2023/08/29 22:39:35 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils3.c			\
 				$(UTILS_LOC)split.c					\
 				$(UTILS_LOC)free.c					\
+				$(UTILS_LOC)error.c					\
 				$(UTILS_LOC)signal.c				\
 				$(PARS_LOC)parsing.c				\
 				$(PARS_LOC)pars_utils.c				\

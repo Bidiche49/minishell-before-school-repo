@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:17:52 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 06:04:31 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:13:31 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ int	cmd_env(t_env **env)
 	{
 		if (tmp->name && tmp->content)
 		{
-			write(1, tmp->name, ft_strlen(tmp->name));
-			write(1, "=", 1);
-			write(1, tmp->content, ft_strlen(tmp->content));
-			write(1, "\n", 1);
+			printf(BOLD YELLOW "%s=" RESET, tmp->name);
+			printf(CYAN "%s\n" RESET, tmp->content);
 		}
 		tmp = tmp->next;
 	}

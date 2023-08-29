@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 22:46:06 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:23:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,4 @@ void free_all(t_token **lst_token, t_env **env)
 		free_list_token(lst_token);
 	if (env)
 		free_env(env);
-	printf("fin free\n");
 }

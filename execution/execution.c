@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 15:21:07 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:37:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_cmd(char *src, char *env, t_section *section)
 		if (ft_strcpy_token(src, section) != 0)
 				return (ERROR);
 		return (SUCCESS);
-	}	
+	}
 	while (tmp[i])
 	{
 		if (ft_strcat_token(tmp[i], src, section) != 0)
@@ -81,7 +81,7 @@ char	*ft_get_env(t_env	**env, char *str)
 void	find_cmd(t_token *token, t_section *section)
 {
 	char	*path;
-	
+
 	path = ft_get_env(section->env, "PATH");
 	if (!path)
 		return ;
@@ -119,7 +119,7 @@ int	gathering(t_token *token, t_section *section) // foction a refaire ainsi que
 
 int	is_clear(t_token *token, t_section *section)
 {
-	printf("in is_clear\n");
+	// printf("in is_clear\n");
 	while (section)
 	{
 		if (token->type == PIPE)
@@ -169,14 +169,14 @@ int	master_exec(t_section *section)
 	pid_t		*pid;
 	int		j[2];
 	int		ret;
-	
+
 	if (!section->cmd)
 		return (0);
 	ret = 0;
 	pid = malloc(sizeof(int) * ft_lstsize_section(section));
 	if (!pid)
 		return (0);
-	printf("est dans master exec\n");
+	// printf("est dans master exec\n");
 	pid[0] = -1;
 	j[1] = dup(1);
 	j[0] = dup(0);	// printf("passe signal\n");
@@ -196,16 +196,16 @@ int	execution(t_token *token, t_env **env)
 {
 	t_section	list_section;
 	t_file		list_file;
-	
+
 	init_file(token, &list_file);
 	init_list_section(token, &list_section, env);
 	find_cmd(token, &list_section);
-	printf("section->cmd = %s\n", list_section.cmd);
-	printf("init done\n");
+	// printf("section->cmd = %s\n", list_section.cmd);
+	// printf("init done\n");
 	if (is_clear(token, &list_section) != 0) // scan des differents token et verification de la validation des commandes
 		return (ERROR); // free la structure
 	// printf("valeur de cmd = %s \t||\t valeur de absPath = %s \t|| \t valeur des option = %s\n", list_section.cmd, list_section.abs_path, list_section.option);
-	printf("avant\n");
+	// printf("avant\n");
 	if (master_exec(&list_section) == -1)
 		return (ERROR);
 	return (SUCCESS);

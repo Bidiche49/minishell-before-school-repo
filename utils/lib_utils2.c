@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 22:38:54 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 07:03:50 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 20:15:38 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ void free_matrice(char **matrice)
 	i = 0;
 	if (!matrice)
 		return ;
-	while (matrice)
+	while (matrice[i])
 		free(matrice[i++]);
 	free(matrice);
 	matrice = NULL;
+
 }
 
 void	ft_putstr_fd(int fd, char *s)
@@ -57,6 +58,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	i = 0;
 	while (n--)
 	{
+		printf("%c = %c\n", tmp1[i], tmp2[i]);
 		if (tmp1[i] != tmp2[i] || tmp1[i] == 0 || tmp2[i] == 0)
 			return (tmp1[i] - tmp2[i]);
 		i++;

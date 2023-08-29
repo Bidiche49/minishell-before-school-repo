@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:56 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 05:50:29 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:34:08 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	expand_word(t_token **token, t_env **env)
 			free((*token)->str);
 			(*token)->str = ft_strdup(tmp_env->content);
 			if (!(*token)->str)
-				return (g_error = MALL_KO, err(ERR_MALLOC_KO), ERROR);
+				return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
 			return (SUCCESS);
 		}
 		tmp_env = tmp_env->next;
@@ -47,7 +47,7 @@ int	expand_to_token(t_token **list_token)
 		{
 			tmp->str = ft_strcat_dup(tmp->str, tmp->next->str);
 			if (tmp->str == NULL)
-				return (g_error = MALL_KO, err(ERR_MALLOC_KO), ERROR);
+				return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
 			del_next_token(&tmp);
 		}
 		tmp = tmp->next;

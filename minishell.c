@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 13:40:16 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:41:03 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ int main(int argc, char **argv, char **envd)
 	t_env	*env;
 
 	if (argc != 1)
-		return (err(ERR_MANY_ARG), ERROR);
+		return (msg(ERR_MANY_ARG), ERROR);
 	if (!envd)
-		return (err(ERR_ENV_KO), ERROR);
+		return (msg(ERR_ENV_KO), ERROR);
 	input = NULL;
 	list_token = NULL;
 	env = NULL;
@@ -111,7 +111,7 @@ int main(int argc, char **argv, char **envd)
 	config_minishell_signal();
 	while (1)
 	{
-		input = readline("Minishell > ");
+		input = readline(BOLD CYAN "Minishell > " RESET);
 		if (!input || ft_strlen(input) <= 0 || space_only(input) == 0)
 			break ;//malloc readline error
 		else
@@ -134,6 +134,6 @@ int main(int argc, char **argv, char **envd)
 	}
 	free_all(&list_token, &env);
 	rl_clear_history();
-	write(STDOUT_FILENO, "exit\n", 5);
+	printf(BOLD GREEN "exit\n" RESET);
 	return (g_error);
 }

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 15:33:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/29 22:32:53 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# define RESET   "\033[0m"
+# define RED     "\033[31m"
+# define GREEN   "\033[32m"
+# define YELLOW  "\033[33m"
+# define BLUE    "\033[34m"
+# define CYAN    "\033[36m"
+# define BOLD    "\033[1m"
 
 # define SUCCESS 0
 # define ERROR 1
@@ -108,7 +116,7 @@ int		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*fill_new_env(char *line_env);
 int		expand(t_token **list_token, t_env **env);
 void	free_matrice(char **matrice);
-void	err(char *str);
+void	msg(char *str);
 void	ft_putstr_fd(int fd, char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen_char(char *str, char c);
