@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:17:52 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 13:25:46 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 06:04:31 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	cmd_env(t_env **env)
 {
 	t_env *tmp;
+
 	tmp = *env;
 	while(tmp)
 	{
@@ -27,5 +28,5 @@ int	cmd_env(t_env **env)
 		}
 		tmp = tmp->next;
 	}
-	return (0/*---------------------A VOIR----------------------------------*/);
+	return (g_error = 0, 1);
 }

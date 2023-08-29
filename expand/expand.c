@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 03:00:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/28 22:57:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,32 @@ int	if_forest(t_token *token)
 	return (1);
 }
 
+int	is_type_wq(t_token *token)
+{
+	if (token->type == WORD || token->type == S_QUOTES || token->type == D_QUOTES)
+		return (1);
+	return (0);
+}
+
+int	first_tok_null(t_token *list_token)
+{
+	if (list_token->next && is_type_wq(list_token) && !list_token->str
+		&& is_type_wq(list_token->next) && list_token->next->str)
+		return (0);
+	if (list_token->next && is_type_wq(list_token) && !list_token->str
+		&& list_token->next->type == SEPARATOR && list_token->next->next
+		&& is_type_wq(list_token->next->next) && list_token->next->next->str)
+		return (0);
+	if (list_token->next && list_token->type == SEPARATOR
+		&& is_type_wq(list_token->next) && list_token->next->str)
+		return (0);
+	return (1);
+}
+
 int	is_token_ok(t_token *list_token)
 {
+	if (first_tok_null(list_token) == 0)
+		return (0);
 	while (list_token)
 	{
 		if (list_token->next && is_op(list_token))
@@ -89,11 +113,24 @@ void	del_all_token(t_token **list_token)
 	tmp->str = NULL;
 }
 
+void	clean_first_token(t_token **list_token)
+{
+	t_token	*tmp;
+
+	tmp = *list_token;
+	(*list_token) = (*list_token)->next;
+	if (tmp->str)
+		free(tmp->str);
+	free(tmp);
+}
+
 void	clean_token(t_token **list_token)
 {
 	t_token	*tmp;
 
 	tmp = *list_token;
+	if (first_tok_null(*list_token) == 0)
+		clean_first_token(list_token);
 	while (tmp)
 	{
 		if (tmp->next && tmp->next->type == SEPARATOR && !tmp->next->next)
@@ -111,6 +148,42 @@ void	clean_token(t_token **list_token)
 		tmp = tmp->next;
 	}
 }
+
+
+void print_lsttoken(t_token *list_token)
+{
+	printf("print_toke\n");
+	while (list_token)
+	{
+		printf("[");
+		if (list_token->type == WORD)
+			printf("WORD");
+		if (list_token->type == SEPARATOR)
+			printf("SEPARATOR");
+		if (list_token->type == D_QUOTES)
+			printf("D_QUOTES");
+		if (list_token->type == S_QUOTES)
+			printf("S_QUOTES");
+		if (list_token->type == OUT)
+			printf("OUT");
+		if (list_token->type == IN)
+			printf("IN");
+		if (list_token->type == HEREDOC)
+			printf("HEREDOC");
+		if (list_token->type == APPEND)
+			printf("APPEND");
+		if (list_token->type == PIPE)
+			printf("PIPE");
+		printf(" =");
+		if (list_token)
+			printf("%s", list_token->str);
+		printf("] ");
+
+		list_token = list_token->next;
+	}
+	printf("\n");
+}
+
 
 int	expand(t_token **list_token, t_env **env)
 {
@@ -134,27 +207,30 @@ int	expand(t_token **list_token, t_env **env)
 		break ;
 	}
 	while (!is_token_ok(*list_token))
+	{
 		clean_token(list_token);
+	}
 	return (SUCCESS);
 }
 /*
 !!!!!!!!!!!!!!!!!!!!!!!!!A GERER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-bien gerer la lecture des variable d'environnement
-(si le premier caractere apres le $ est un chiffre,
-considerer la suite comme un word : echo $0HBDHUE        {value$0}HBDHUE)
+bien gerer la lecture des variable d'environnement-------------------------------------------------------------------------------OK
+(si le premier caractere apres le $ est un chiffre,------------------------------------------------------------------------------OK
+considerer la suite comme un word : echo $0HBDHUE        {value$0}HBDHUE)--------------------------------------------------------OK
 
-gerer aussi $?   = 0 normalement ok
+gerer aussi $?   = 0 normalement ok----------------------------------------------------------------------------------------------OK
 gerer [SEPARATOR =(null)] [WORD =(null)] [SEPARATOR =(null)]
-gerer les \$ \ en gerneral
+gerer les \$ \ en gerneral-------------------------------------------------------------------------------------------------------OK
 
 
-gerer echo | $gggrtg    -ou-  echo | uerigh
-doit garder le mot apres le pipe
-gerer iggi | $vintg
+gerer echo | $gggrtg    -ou-  echo | uerigh--------------------------------------------------------------------------------------OK
+doit garder le mot apres le pipe-------------------------------------------------------------------------------------------------OK
+gerer iggi | $vintg--------------------------------------------------------------------------------------------------------------OK
 
 
-echo "$USER$$$\$HOME$UHO$UINJ$$$"
-[WORD =echo] [SEPARATOR =(null)]
-[D_QUOTES =ntardy/mnt/nfs/homes/ntardy$] (manque un$etun\)
-echo "$$" ko
+echo "$USER$$$\$HOME$UHO$UINJ$$$"------------------------------------------------------------------------------------------------OK
+[WORD =echo] [SEPARATOR =(null)]-------------------------------------------------------------------------------------------------OK
+[D_QUOTES =ntardy/mnt/nfs/homes/ntardy$] (manque un$etun\)-----------------------------------------------------------------------OK
+echo "$$" ko---------------------------------------------------------------------------------------------------------------------OK
+gerer les double $$ dans les D_QUOTES quand l'expand est pas detecte-------------------------------------------------------------OK
 */

@@ -1,31 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/28 04:32:57 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 06:34:33 by ntardy           ###   ########.fr       */
+/*   Created: 2023/08/28 22:59:51 by ntardy            #+#    #+#             */
+/*   Updated: 2023/08/29 07:04:50 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../minishell.h"
 
-int	is_op_char(char c)
-{
-	if (c == '<' || c == '>' || c == '|')
-		return (1);
-	return (0);
-}
-
-void	ft_echo(t_section *section)
-{
-	int	i;
-
-	i = 0;
-	while (section->option[i] && section->option[i] != ' ')
-		i++;
-	while (section->option[i] && !is_op_char(section->option[i]))
-		write(1, &section->option[i++], 1);
-}
+int	is_in_env(char *env_var, t_env *env);

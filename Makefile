@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: audrye <audrye@student.42.fr>              +#+  +:+       +#+         #
+#    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/29 04:44:13 by audrye           ###   ########.fr        #
+#    Updated: 2023/08/29 02:28:58 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,16 @@ CFLAGS =		-Wall -Werror -Wextra -g3
 PARS_LOC =		parsing/
 UTILS_LOC =		utils/
 EXEC_LOC =		execution/
+BUILTINS_LOC =	$(EXEC_LOC)builtins/
 EXPAND_LOC =	expand/
+ENV_LOC =		env/
 
+# Couleurs
+RESET   = \033[0m
+GREEN   = \033[32m
+RED     = \033[31m
+YELLOW  = \033[33m
+CYAN    = \033[36m
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)lib_utils.c				\
@@ -38,11 +46,11 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)fill.c					\
 				$(PARS_LOC)fill_utils.c				\
 				$(PARS_LOC)init.c					\
-				$(EXPAND_LOC)env_utils.c			\
+				$(ENV_LOC)env_utils.c				\
+				$(ENV_LOC)env.c						\
 				$(EXPAND_LOC)expand_word.c			\
 				$(EXPAND_LOC)expand_dquotes.c		\
 				$(EXPAND_LOC)expand_dquotes_utils.c	\
-				$(EXPAND_LOC)env.c					\
 				$(EXPAND_LOC)expand.c				\
 				$(EXPAND_LOC)expand_utils.c			\
 				$(EXEC_LOC)execution.c				\
@@ -52,24 +60,101 @@ SRCS =			minishell.c							\
 				$(EXEC_LOC)utils_exe4.c				\
 				$(EXEC_LOC)redir.c					\
 				$(EXEC_LOC)pipe.c					\
-				$(EXEC_LOC)/builtins/cmd_env.c		\
-				$(EXEC_LOC)/builtins/echo.c
+				$(BUILTINS_LOC)cmd_env.c			\
+				$(BUILTINS_LOC)echo.c
 
 OBJS =			$(SRCS:.c=.o)
 
-.PHONY: all
+# Options de compilation
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra -g3
+CREADLINE = -lreadline
+
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(CREADLINE) -o $(NAME)
+	@echo "$(YELLOW)Compiling in progress...$(RESET)"
+	@{ $(CC) $(CFLAGS) $(OBJS) $(CREADLINE) -o $(NAME) || \
+		(echo "$(RED)Compilation failed.$(RESET)"; exit 1)}
+	@echo -n "$(GREEN)[                    ]$(RESET)"
+	@echo -n "\r$(GREEN)[=>                  ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===>                ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[=====>              ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[========>           ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===========>        ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==============>     ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==================>  ]$(RESET)"
+	@sleep 0.1
+	@echo "\r$(GREEN)[=====================$(RESET)"
+	@echo "$(GREEN)Compilation completed.$(RESET)"
+	@echo "$(CYAN)          _____    __ ____   __          __  __    __  $(RESET)"
+	@echo "$(CYAN)  /\/\    \_  _\/\ \ \\_  _\ / __\ /\  /\/__\/ /   / /  $(RESET)"
+	@echo "$(CYAN) /    \    / / /  \/ / / /  \ \  / /_/ /_\ / /   / /   $(RESET)"
+	@echo "$(CYAN)/ /\/\ \/\/ /_/ /\  /\/ /_ __\ \/ __  //__/ /___/ /___ $(RESET)"
+	@echo "$(CYAN)\/    \/\____/\_\ \/\____/ \___/\/ /_/\__/\____/\____/ $(RESET)"
+	@echo "$(CYAN)                                                       $(RESET)"
+	@echo "$(RED)⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠛⢉⢉⠉⠉⠻⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⣿⣿⣿⠟⠠⡰⣕⣗⣷⣧⣀⣅⠘⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⣿⣿⠃⣠⣳⣟⣿⣿⣷⣿⡿⣜⠄⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⡿⠁⠄⣳⢷⣿⣿⣿⣿⡿⣝⠖⠄⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⠃⠄⢢⡹⣿⢷⣯⢿⢷⡫⣗⠍⢰⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⡏⢀⢄⠤⣁⠋⠿⣗⣟⡯⡏⢎⠁⢸⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⠄⢔⢕⣯⣿⣿⡲⡤⡄⡤⠄⡀⢠⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⠇⠠⡳⣯⣿⣿⣾⢵⣫⢎⢎⠆⢀⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⠄⢨⣫⣿⣿⡿⣿⣻⢎⡗⡕⡅⢸⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⠄⢜⢾⣾⣿⣿⣟⣗⢯⡪⡳⡀⢸⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⠄⢸⢽⣿⣷⣿⣻⡮⡧⡳⡱⡁⢸⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⡄⢨⣻⣽⣿⣟⣿⣞⣗⡽⡸⡐⢸⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⡇⢀⢗⣿⣿⣿⣿⡿⣞⡵⡣⣊⢸⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⡀⡣⣗⣿⣿⣿⣿⣯⡯⡺⣼⠎⣿⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣧⠐⡵⣻⣟⣯⣿⣷⣟⣝⢞⡿⢹⣿⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⡆⢘⡺⣽⢿⣻⣿⣗⡷⣹⢩⢃⢿⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⣷⠄⠪⣯⣟⣿⢯⣿⣻⣜⢎⢆⠜⣿⣿⣿⣿⣿\n \
+⣿⣿⣿⣿⣿⡆⠄⢣⣻⣽⣿⣿⣟⣾⡮⡺⡸⠸⣿⣿⣿⣿\n \
+⣿⣿⡿⠛⠉⠁⠄⢕⡳⣽⡾⣿⢽⣯⡿⣮⢚⣅⠹⣿⣿⣿\n \
+⡿⠋⠄⠄⠄⠄⢀⠒⠝⣞⢿⡿⣿⣽⢿⡽⣧⣳⡅⠌⠻⣿\n \
+⠁⠄⠄⠄⠄⠄⠐⡐⠱⡱⣻⡻⣝⣮⣟⣿⣻⣟⣻⡺⣊\n$(RESET)"
 
-.PHONY: clean
+
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
+
+
 clean:
-	rm -f $(OBJS)
+	@echo "$(YELLOW)Removing object files...$(RESET)"
+	@echo -n "$(GREEN)[                    ]$(RESET)"
+	@rm -f $(OBJS)
+	@echo -n "\r$(GREEN)[=>                  ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===>                ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[=====>              ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[========>           ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[===========>        ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==============>     ]$(RESET)"
+	@sleep 0.1
+	@echo -n "\r$(GREEN)[==================>  ]$(RESET)"
+	@sleep 0.1
+	@echo "\r$(GREEN)[=====================$(RESET)"
+	@echo "$(GREEN)Object files removed.$(RESET)"
 
-.PHONY: fclean
 fclean: clean
-	rm -f $(NAME)
+	@sleep 0.1
+	@echo "$(YELLOW)Removing the executable...$(RESET)"
+	@rm -f $(NAME)
+	@sleep 0.1
+	@echo "$(GREEN)Executable removed.$(RESET)"
 
-.PHONY: re
-re: fclean $(NAME)
+re: fclean all

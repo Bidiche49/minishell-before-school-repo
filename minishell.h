@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 13:15:23 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/29 09:11:24 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define SUCCESS 0
 # define ERROR 1
 # define NEW_LINE 2
+# define MALL_KO 55
 # define ERR_MANY_ARG "minishell: too many arguments\n"
 # define ERR_ENV_KO "minishell: Error while retrieving the environment.\n"
 # define ERR_MALLOC_KO "minishell: Error malloc\n"
@@ -64,7 +65,7 @@ struct s_env{
 	char	*content;
 	t_env	*next;
 };
-	
+
 typedef struct s_file
 {
 	char	*name;
@@ -96,7 +97,9 @@ char	*ft_strdup(const char *src);
 char	*ft_strcat_dup(char *dest, char *str);
 char	*ft_substr(char const *s, int start, int len);
 char	**ft_split(char const *s, char c);
-void	*ft_calloc(size_t nmemb, size_t size);
+int		is_num(char c);
+int		is_alnum_und(char c);
+
 
 int		parsing(char *input, t_token **list_token);
 int		general_exe(t_token *token);
@@ -104,6 +107,20 @@ int		create_env(char **envd, t_env **env);
 int		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*fill_new_env(char *line_env);
 int		expand(t_token **list_token, t_env **env);
+void	free_matrice(char **matrice);
+void	err(char *str);
+void	ft_putstr_fd(int fd, char *s);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strlen_char(char *str, char c);
+
+
+/* EXPORT */
+
+int		contain_equal(char *line);
+int		check_var_name(char *name);
+int		existing_var(t_env **env, char *line);
+void	error_export(char *line);
+char	**fill_split_line(char *line_env);
 
 /* SIGNAL */
 
