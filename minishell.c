@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:34:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 11:17:09 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,19 @@ int	parsing_expand(char *input, t_token **token, t_env **env)
 {
 	int		return_val;
 
+	printf("parsing_expand\n");
 	return_val = parsing(input, token);
 	if (return_val == ERROR)
-		return (ERROR);
+		return (free_all(input, token, env), ERROR);
 	if (return_val == SUCCESS)
 	{
-		print_token(token);
 		return_val = expand(token, env);
 		if (return_val == ERROR)
-			return (ERROR);
+			return (free_all(input, token, env), ERROR);
 		if (return_val == SUCCESS)
 			return (SUCCESS);
 	}
+	return (NEW_LINE);
 }
 
 int main(int argc, char **argv, char **envd)
@@ -144,7 +145,7 @@ int main(int argc, char **argv, char **envd)
 				print_token(list_token);
 			}
 		}
-		free_all(input, &list_token, NULL);
+		free_list_token(&list_token);
 	}
 	free_all(input, &list_token, &env);
 	rl_clear_history();

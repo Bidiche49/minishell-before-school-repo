@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:56 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 11:06:10 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	expand_to_token(t_token **list_token, t_env **env)
 		if (tmp->type == WORD && tmp->str && tmp->str[0] == '$'
 			&& tmp->str[1] && is_alnum_und(tmp->str[1]))
 			if (expand_word(&tmp, env) == ERROR)
-				return (free_all(list_token, env), ERROR);
+				return (ERROR);
 		tmp = tmp->next;
 	}
 	return (SUCCESS);

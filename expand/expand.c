@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:19:33 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 11:33:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,53 +39,70 @@ int	special_case_expand(t_token **token)
 	return (1);
 }
 
-int	if_forest(t_token *token)
+int	if_forest(t_token *tok)
 {
-		if (token->next && token->next->type == WORD
-			&& token->next->str == NULL)
+		if (tok->next && tok->next->type == WORD
+			&& tok->next->str == NULL)
 			return (0);
-		else if (token->next && token->next->type == D_QUOTES
-			&& token->next->str == NULL)
+		else if (tok->next && tok->next->type == D_QUOTES
+			&& tok->next->str == NULL)
 			return (0);
-		else if (token->next && token->next->type == S_QUOTES
-			&& token->next->str == NULL)
+		else if (tok->next && tok->next->type == S_QUOTES
+			&& tok->next->str == NULL)
 			return (0);
-		else if (!token->next && token->type == SEPARATOR)
+		else if (!tok->next && tok->type == SEPARATOR)
 			return (0);
-		else if (token->next && token->type == SEPARATOR
-			&& token->next->type == SEPARATOR)
+		else if (tok->next && tok->type == SEPARATOR
+			&& tok->next->type == SEPARATOR)
 			return (0);
-		else if (token->type != HEREDOC && is_op(token) && (!token->next || (token->next && !token->next->next && token->next->type == SEPARATOR)))
+		else if (tok->type != HEREDOC && is_op(tok)
+			&& (!tok->next || (tok->next && !tok->next->next
+			&& tok->next->type == SEPARATOR)))
 			return (0);
 	return (1);
 }
 
-int	first_tok_null(t_token *list_token)
+int	first_tok_null(t_token *tok)
 {
-	if (list_token->next && is_type_wq(list_token) && !list_token->str
-		&& is_type_wq(list_token->next) && list_token->next->str)
+	if (tok->next && is_type_wq(tok) && !tok->str
+		&& is_type_wq(tok->next) && tok->next->str)
 		return (0);
-	if (list_token->next && is_type_wq(list_token) && !list_token->str
-		&& list_token->next->type == SEPARATOR && list_token->next->next
-		&& is_type_wq(list_token->next->next) && list_token->next->next->str)
+	if (tok->next && is_type_wq(tok) && !tok->str
+		&& tok->next->type == SEPARATOR && tok->next->next
+		&& is_type_wq(tok->next->next) && tok->next->next->str)
 		return (0);
-	if (list_token->next && list_token->type == SEPARATOR
-		&& is_type_wq(list_token->next) && list_token->next->str)
+	if (tok->next && tok->type == SEPARATOR
+		&& is_type_wq(tok->next) && tok->next->str)
 		return (0);
 	return (1);
 }
 
-int	is_token_ok(t_token *list_token)
+int	dble_op(t_token *tok)
 {
-	if (first_tok_null(list_token) == 0)
-		return (0);
-	while (list_token)
+	if (tok->next && is_op(tok))
 	{
-		// if (list_token->next && is_op(list_token))
+		if (is_op(tok->next))
+			return (1);
+		if (tok->next->next && is_op(tok->next->next)
+			&& tok->next->type == SEPARATOR)
+			return (1);
+	}
+	return (0);
+}
+
+int	is_token_ok(t_token *tok)
+{
+	if (first_tok_null(tok) == 0)
+		return (0);
+	while (tok)
+	{
+		// if (tok->next && is_op(tok))
 		// 	return (1);
-		if (if_forest(list_token) == 0)
+		if (if_forest(tok) == 0)
 			return (0);
-		list_token = list_token->next;
+		if (dble_op(tok))
+			return (0);
+		tok = tok->next;
 	}
 	return (1);
 }
@@ -133,7 +150,10 @@ int	clean_token(t_token **list_token)
 			del_next_token(&tmp);
 		if (tmp->next && tmp->type == SEPARATOR && tmp->next->type == SEPARATOR)
 			del_next_token(&tmp);
-		if (is_op(tmp) && (!tmp->next || (tmp->next && !tmp->next->next && tmp->next->type == SEPARATOR)))
+		if (is_op(tmp) && (!tmp->next || (tmp->next
+			&& !tmp->next->next && tmp->next->type == SEPARATOR)))
+			return (err_end_token(tmp), del_all_token(list_token), ERROR);
+		if (dble_op(tmp))
 			return (err_end_token(tmp), del_all_token(list_token), ERROR);
 		tmp = tmp->next;
 	}
@@ -192,9 +212,9 @@ int	expand(t_token **list_token, t_env **env)
 	// while (!isexpand_ok(*list_token))
 	// {
 	if (expand_d_quotes(list_token, *env) == ERROR)
-		return (free_all(list_token, env), ERROR);
+		return (ERROR);
 	if (expand_to_token(list_token, env) == ERROR)
-		return (free_all(list_token, env), ERROR);
+		return (ERROR);
 	// 	break ;
 	// }
 	while (!is_token_ok(*list_token))
