@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:56 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 22:34:08 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:00:24 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,17 @@ int	expand_word(t_token **token, t_env **env)
 	return (SUCCESS);
 }
 
-int	expand_to_token(t_token **list_token)
+int	expand_to_token(t_token **list_token, t_env **env)
 {
 	t_token	*tmp;
 
 	tmp = *list_token;
 	while (tmp)
 	{
-		if (tmp->next && tmp->type == WORD && tmp->next->type == WORD)
-		{
-			tmp->str = ft_strcat_dup(tmp->str, tmp->next->str);
-			if (tmp->str == NULL)
-				return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
-			del_next_token(&tmp);
-		}
+		if (tmp->type == WORD && tmp->str && tmp->str[0] == '$'
+			&& tmp->str[1] && is_alnum_und(tmp->str[1]))
+			if (expand_word(&tmp, env) == ERROR)
+				return (free_all(list_token, env), ERROR);
 		tmp = tmp->next;
 	}
 	return (SUCCESS);

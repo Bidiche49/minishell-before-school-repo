@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 22:57:22 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:03:21 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ int	special_case_expand(t_token **token)
 
 int	if_forest(t_token *token)
 {
-		if (token->next && token->type == WORD
-			&& token->next->type == WORD)
-			return (0);
-		else if (token->next && token->next->type == WORD
+		if (token->next && token->next->type == WORD
 			&& token->next->str == NULL)
 			return (0);
 		else if (token->next && token->next->type == D_QUOTES
@@ -58,16 +55,9 @@ int	if_forest(t_token *token)
 		else if (token->next && token->type == SEPARATOR
 			&& token->next->type == SEPARATOR)
 			return (0);
-		else if (!token->next && is_op(token))
+		else if (!token->next && is_op(token) && token->type != HEREDOC)
 			return (0);
 	return (1);
-}
-
-int	is_type_wq(t_token *token)
-{
-	if (token->type == WORD || token->type == S_QUOTES || token->type == D_QUOTES)
-		return (1);
-	return (0);
 }
 
 int	first_tok_null(t_token *list_token)
@@ -91,8 +81,8 @@ int	is_token_ok(t_token *list_token)
 		return (0);
 	while (list_token)
 	{
-		if (list_token->next && is_op(list_token))
-			return (1);
+		// if (list_token->next && is_op(list_token))
+		// 	return (1);
 		if (if_forest(list_token) == 0)
 			return (0);
 		list_token = list_token->next;
@@ -187,25 +177,25 @@ void print_lsttoken(t_token *list_token)
 
 int	expand(t_token **list_token, t_env **env)
 {
-	t_token	*tmp;
+	// t_token	*tmp;
 
-	tmp = *list_token;
-	while (tmp)
-	{
-		if (tmp->type == WORD && tmp->str && tmp->str[0] == '$'
-			&& tmp->str[1] && is_alnum_und(tmp->str[1]))
-			if (expand_word(&tmp, env) == ERROR)
-				return (free_all(list_token, env), ERROR);
-		tmp = tmp->next;
-	}
-	while (!isexpand_ok(*list_token))
-	{
-		if (expand_d_quotes(list_token, *env) == ERROR)
-			return (free_all(list_token, env), ERROR);
-		if (expand_to_token(list_token) == ERROR)
-			return (free_all(list_token, env), ERROR);
-		break ;
-	}
+	// tmp = *list_token;
+	// while (tmp)
+	// {
+	// 	if (tmp->type == WORD && tmp->str && tmp->str[0] == '$'
+	// 		&& tmp->str[1] && is_alnum_und(tmp->str[1]))
+	// 		if (expand_word(&tmp, env) == ERROR)
+	// 			return (free_all(list_token, env), ERROR);
+	// 	tmp = tmp->next;
+	// }
+	// while (!isexpand_ok(*list_token))
+	// {
+	if (expand_d_quotes(list_token, *env) == ERROR)
+		return (free_all(list_token, env), ERROR);
+	if (expand_to_token(list_token, env) == ERROR)
+		return (free_all(list_token, env), ERROR);
+	// 	break ;
+	// }
 	while (!is_token_ok(*list_token))
 	{
 		clean_token(list_token);

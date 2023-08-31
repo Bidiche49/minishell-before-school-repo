@@ -3,45 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 00:05:53 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:20:07 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// char	*ft_strcpy(char *s1, char const *s2)
-// {
-
-// }
-
-char	*ft_strjoin(char *str1, const char *str2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*res;
 	int		i;
 	int		j;
-	
-	if (!str1)
+
+	if (s1 == NULL)
 	{
-		res = ft_strdup(str2);
-		if (!res)
-			return (NULL);
-		return (res);
+		res = ft_strdup(s2);
+		return (free(s2), res);
 	}
-	if (!str2)
-		return (str1);
-	res = calloc((ft_strlen(str1) + ft_strlen(str2) + 1), sizeof(char));
+	else if (s2 == NULL)
+		return (s1);
+	res = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
 	if (!res)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (str1[i])
-		res[j++] = str1[i++];
-	i = 0;
-	while (str2[i])
-		res[j++] = str2[i++];
+	while (s1[i])
+		res[i] = s1[i++];
+	while (s2[i])
+		res[j++] = s2[i++];
 	return (res);
 }
 
