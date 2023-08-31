@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 15:21:30 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 02:26:13 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	exec_pipe(t_section *section, int x, int y)
 {
 	int	tmp_pipe[2];
-	
+
 	section->fd[0] = y;
 	// printf("vas dans exec_pipe\n");
 	while (section->next)
@@ -24,7 +24,7 @@ int	exec_pipe(t_section *section, int x, int y)
 		if (pipe(tmp_pipe) > 0)
 		{
 			// message d'erreur = echec de la creation du pipe;
-			return (-1);	
+			return (-1);
 		}
 		section->pipe[0] = tmp_pipe[0];
 		section->pipe[1] = tmp_pipe[1];
@@ -37,24 +37,22 @@ int	exec_pipe(t_section *section, int x, int y)
 	return (1);
 }
 
-int	open_all(t_section *section, t_file *file)
+int	open_all(t_section *section, t_token *token)
 {
-	// printf("valeur 1 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
-	// printf("valeur de file->name = %s\n", file->name);
-	if (file->type == OUT)
+	if (token->type == OUT)
 	{
 		// printf("OUT\n");
-		section->fd[1] = open(file->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		section->fd[1] = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	}
-	if (file->type == APPEND)
+	if (token->type == APPEND)
 	{
 		// printf("APPEND\n");
-		section->fd[1] = open(file->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		section->fd[1] = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
-	if (file->type == IN || file->type == HEREDOC)
+	if (token->type == IN || token->type == HEREDOC)
 	{
 		// printf("IN ou HEREDOC\n");
-		section->fd[0] = open(file->name, O_RDONLY);
+		section->fd[0] = open(token->str, O_RDONLY);
 	}
 	// printf("valeur 2 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
 	if (section->fd[0] == -1 || section->fd[1] == -1)
@@ -64,28 +62,28 @@ int	open_all(t_section *section, t_file *file)
 
 int file_open(t_section *section)
 {
-	t_file *file;
+	t_token *token;
 
-	file = section->file;
-	// printf("valeur avent open_all de file->name =\n");
-	while (file != NULL)
+	token = section->token;
+	// printf("valeur avent open_all de token->name =\n");
+	while (token != NULL)
 	{
-		if (open_all(section, file) == 0)
+		if (open_all(section, token) == 0)
 		{
 			// printf("vas dans open all\n");
 			return (0);
 		}
-		if (file->next && file->next->type != HEREDOC && file->next->type != IN && file->type != HEREDOC && file->type != IN)
+		if (token->next && token->next->type != HEREDOC && token->next->type != IN && token->type != HEREDOC && token->type != IN)
 		{
 			// printf("vas dans le premier close\n");
 			close (section->fd[1]);
 		}
-		if (file->next && file->next->type == IN && file->next->type == HEREDOC && file->type == IN && file->type == HEREDOC)
+		if (token->next && token->next->type == IN && token->next->type == HEREDOC && token->type == IN && token->type == HEREDOC)
 		{
 			// printf("vas dans le deuxieme close\n");
 			close (section->fd[0]);
 		}
-		file = file->next;
+		token = token->next;
 	}
 	return (1);
 }
@@ -98,7 +96,7 @@ void	convert_file(int x, int y)
 
 int	is_bultin(t_section *section)
 {
-	printf("est dans is_bultin\n");
+	// printf("est dans is_bultin\n");
 	if (ft_strcmp(section->cmd, "echo") == 0)
 		ft_echo(section);
 	else if (ft_strcmp(section->cmd, "cd") == 0)
@@ -108,9 +106,9 @@ int	is_bultin(t_section *section)
 	else if (ft_strcmp(section->cmd, "export") == 0)
 		return (0);
 	else if (ft_strcmp(section->cmd, "unset") == 0)
-		return ();
+		return (0);
 	else if (ft_strcmp(section->cmd, "env") == 0)
-		cmd_env(section->env);
+		return(cmd_env(section->env));
 	else if (ft_strcmp(section->cmd, "exit") == 0)
 		return (0);
 	else
@@ -123,9 +121,9 @@ int	is_bultin(t_section *section)
 int	util_dup2(t_section *section, int x, int y)
 {
 	int i;
-	
+
 	convert_file(section->fd[0], section->fd[1]);
-	printf("avant is bultin\n");
+	// printf("avant is bultin\n");
 	i = is_bultin(section);
 	convert_file(x, y);
 	return (i);
@@ -134,7 +132,7 @@ int	util_dup2(t_section *section, int x, int y)
 int	assigne_file(t_section *section, int *j, int i)
 {
 	i = file_open(section);
-	printf("valeur 1 de i = %d\n", i);
+	// printf("valeur 1 de i = %d\n", i);
 	if (i >= 1)
 		i = util_dup2(section, j[0], j[1]);
 	// printf("valeur 2 de i = %d\n", i);
@@ -261,7 +259,7 @@ char	**ft_get_env_bis(t_env	**env)
 void free_env_char(char **env)
 {
 	int i;
-	
+
 	i = 0;
 	while (env)
 		free(env[i++]);
@@ -271,11 +269,12 @@ void free_env_char(char **env)
 void	exec_cmd(t_section *section)
 {
 	char **env_tmp;
-	
+
 	env_tmp = ft_get_env_bis(section->env);
-	signal(SIGINT, &kill_child);
-	signal(SIGQUIT, SIG_DFL);
+	config_default_signal();
+	// printf("abs pth = %s\n", section->abs_path);
 	execve(section->abs_path, ft_split(section->option, ' '), env_tmp);
+	// printf("dans exec\n");
 	free(section->abs_path);
 	// free_alllllllllll!!!!!
 }
@@ -302,11 +301,11 @@ int	fork_using(t_section *section, int *pid, int *j)
 
 	i[1] = 0;
 	i[0] = 1;
-	printf("valeur de file->name \n");
+	// printf("valeur de file->name \n");
 	while (section && i[0] > -1)
 	{
 		i[0] = assigne_file(section, j, i[0]);
-		printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
+		// printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
 		if (i[0] == -1)
 			return (-1);
 		if (i[0] == 1)
@@ -319,6 +318,7 @@ int	fork_using(t_section *section, int *pid, int *j)
 				return (free(section->option), i[0]);
 			if (i[0] != 0)
 			{
+				// printf("in if\n");
 				pid[i[1]] = fork();
 				if (pid[i[1]] == 0 && i[0] == 1)
 					exec_not_pipe(section, pid, j);

@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 15:10:28 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 02:04:00 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef struct s_section
 	int		deep;
 	t_env	**env;
 	struct s_token	*token;
-	struct s_file	*file;
 	struct s_section *next;
 }	t_section;
 
@@ -114,6 +113,8 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen_char(char *str, char c);
 void	*ft_calloc(size_t nmemb, size_t size);
 
+void print_token(t_token *list_token);
+
 
 /* EXPORT */
 
@@ -126,6 +127,7 @@ char	**fill_split_line(char *line_env);
 /* SIGNAL */
 
 void	config_minishell_signal(void);
+void	config_default_signal(void);
 
 /* FREE */
 
@@ -138,18 +140,19 @@ int	execution(t_token *token, t_env **env);
 int	master_exec(t_section *section);
 void	end_of_exit(int *pid, int x, int y);
 char	*ft_get_env(t_env	**env, char *str);
-int	is_clear(t_token *token, t_section *section);
+void	find_cmd(t_section *section);
 
 /* Utils_exe */
 
 int	ft_lstsize(t_token *token);
 int	ft_lstadd_back_exec(t_section **lst, t_section *new);
 t_section	*ft_lstlast(t_section *lst);
-void	init_list_section(t_token *token, t_section *section, t_env **env);
-int	ft_lstsize_section(t_section *section);
+int	init_section(t_token *token, t_section **section, t_env **env);
 t_file *ft_newsection_file(t_token *token);
 int ft_lstadd_back_exec_file(t_file **lst, t_file *new);
 void	init_file(t_token *token, t_file *file);
+
+int	ft_lstsize_section(t_section *section);
 
 /* Utils_exe2 */
 
@@ -163,7 +166,6 @@ int		ft_strcat_exec_sec_s(t_section *section, char *exec);
 int		ft_strcpy_exec_s(char *src, t_section *section);
 int		ft_strcpy_exec_d(char *src, t_section *section);
 int		is_meta_c(char *simple_c);
-void	add_space(t_section *section);
 
 /* Utils_exe3 */
 
@@ -180,7 +182,7 @@ int	is_operator_exec(t_token *token);
 /* PIPE */
 
 int	exec_pipe(t_section *section, int x, int y);
-int	open_all(t_section *section, t_file *file);
+int	open_all(t_section *section, t_token *file);
 int file_open(t_section *section);
 void	convert_file(int x, int y);
 int	is_bultin(t_section *section);
@@ -200,6 +202,8 @@ char	**ft_get_env_bis(t_env	**env);
 int	cmd_env(t_env **env);
 int	ft_strcmp(const char *s1, const char *s2);
 void	ft_echo(t_section *section);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, const char *s2);
+
+
 
 #endif
