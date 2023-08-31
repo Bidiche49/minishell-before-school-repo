@@ -6,19 +6,11 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:50:18 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/08 12:46:11 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/30 21:42:54 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_redir(int type)
-{
-	if (type == OUT || type == IN 
-		|| type == HEREDOC || type == APPEND)
-		return (1);
-	return (0);	
-}
 
 int	is_operator_exec(t_token *token)
 {
