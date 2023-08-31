@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 01:14:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:31:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int space_only(char *input)
 			if (ft_isspace(input[i]))
 				i++;
 			else
-				return (1);
+				return (0);
 		}
-		return (0);
+		return (1);
 	}
 	else
-		return (0);
+		return (1);
 }
 
 int check_end_token(t_token *lst_token)

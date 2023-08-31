@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 07:03:21 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:19:33 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	if_forest(t_token *token)
 		else if (token->next && token->type == SEPARATOR
 			&& token->next->type == SEPARATOR)
 			return (0);
-		else if (!token->next && is_op(token) && token->type != HEREDOC)
+		else if (token->type != HEREDOC && is_op(token) && (!token->next || (token->next && !token->next->next && token->next->type == SEPARATOR)))
 			return (0);
 	return (1);
 }
@@ -114,7 +114,7 @@ void	clean_first_token(t_token **list_token)
 	free(tmp);
 }
 
-void	clean_token(t_token **list_token)
+int	clean_token(t_token **list_token)
 {
 	t_token	*tmp;
 
@@ -133,10 +133,11 @@ void	clean_token(t_token **list_token)
 			del_next_token(&tmp);
 		if (tmp->next && tmp->type == SEPARATOR && tmp->next->type == SEPARATOR)
 			del_next_token(&tmp);
-		if (!tmp->next && is_op(tmp))
-			return (del_all_token(list_token), (void)0);
+		if (is_op(tmp) && (!tmp->next || (tmp->next && !tmp->next->next && tmp->next->type == SEPARATOR)))
+			return (err_end_token(tmp), del_all_token(list_token), ERROR);
 		tmp = tmp->next;
 	}
+	return (SUCCESS);
 }
 
 
@@ -198,7 +199,8 @@ int	expand(t_token **list_token, t_env **env)
 	// }
 	while (!is_token_ok(*list_token))
 	{
-		clean_token(list_token);
+		if (clean_token(list_token))
+			return (NEW_LINE);
 	}
 	return (SUCCESS);
 }

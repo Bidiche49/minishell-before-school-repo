@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 04:26:46 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int gathering(t_token *token, t_section **section)
 				tmp = tmp->next;
 			(*section)->option = ft_strjoin((*section)->option, " ");
 			if ((*section)->option == NULL)
-				return (g_error = MALL_KO, ERROR);
+				return (malloc_error(), ERROR);
 			if (!tmp || tmp->type == PIPE)
 				break ;
 		}
@@ -74,7 +74,7 @@ int gathering(t_token *token, t_section **section)
 		{
 			(*section)->option = ft_strjoin((*section)->option, tmp->str);
 			if ((*section)->option == NULL)
-				return (g_error = MALL_KO, ERROR);
+				return (malloc_error(), ERROR);
 		}
 		tmp = tmp->next;
 	}
@@ -88,14 +88,14 @@ t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 
 	new = ft_calloc(1, sizeof(t_section));
 	if (!new)
-		return (g_error = MALL_KO, NULL);
+		return (malloc_error(), NULL);
 	if (tmp_token->type == SEPARATOR)
 		tmp_token = tmp_token->next;
 	if (is_word(tmp_token->type))
 	{
 		new->cmd = ft_strdup(tmp_token->str);
 		if (!new->cmd)
-			return (free(new), g_error = MALL_KO, NULL);
+			return (free(new), malloc_error(), NULL);
 	}
 	if (gathering(tmp_token, &new) == ERROR)
 		return (free(new), NULL);

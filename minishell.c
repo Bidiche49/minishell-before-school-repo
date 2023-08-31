@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:06:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:34:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,27 @@ void	print_env(t_env *env)
 // 	}
 // }
 
+int	parsing_expand(char *input, t_token **token, t_env **env)
+{
+	int		return_val;
+
+	return_val = parsing(input, token);
+	if (return_val == ERROR)
+		return (ERROR);
+	if (return_val == SUCCESS)
+	{
+		print_token(token);
+		return_val = expand(token, env);
+		if (return_val == ERROR)
+			return (ERROR);
+		if (return_val == SUCCESS)
+			return (SUCCESS);
+	}
+}
+
 int main(int argc, char **argv, char **envd)
 {
-	int		return_pars;
+	int		return_val;
 	char	*input;
 	t_token	*list_token;
 	t_env	*env;
@@ -105,32 +123,30 @@ int main(int argc, char **argv, char **envd)
 	env = NULL;
 	(void)argv;
 	if (create_env(envd, &env) == ERROR)
-		return(free_all(&list_token, &env), ERROR);
-	// print_env(env);
+		return(free_all(input, &list_token, &env), ERROR);
 	config_minishell_signal();
 	while (input == NULL || ft_strcmp(input, "stop"))
 	{
 		input = readline(BOLD CYAN "Minishell > " RESET);
-		if (!input || ft_strlen(input) <= 0 || space_only(input) == 0)
+		if (!input || ft_strlen(input) <= 0 || space_only(input))
 			break ;//malloc readline error
 		else
 		{
 			add_history(input);
-			return_pars = parsing(input, &list_token);
-			if (return_pars == ERROR)
-				return (free_all(&list_token, &env), ERROR);
-			if (return_pars == SUCCESS)
+			return_val = parsing_expand(input, &list_token, &env);
+			if (return_val == ERROR)
+				return(free_all(input, &list_token, &env), ERROR);
+			if (return_val == SUCCESS)
 			{
-				print_token(list_token);
-				expand(&list_token, &env);
+					printf("expand_ok\n");
 					// if (execution(list_token, &env) == ERROR)
 					// 	return (ERROR);
 				print_token(list_token);
 			}
 		}
-		free_list_token(&list_token);
+		free_all(input, &list_token, NULL);
 	}
-	free_all(&list_token, &env);
+	free_all(input, &list_token, &env);
 	rl_clear_history();
 	printf(BOLD GREEN "exit\n" RESET);
 	return (g_error);

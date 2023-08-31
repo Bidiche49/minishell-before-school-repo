@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 23:51:09 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int ft_strdup_remake(char *str, t_token *new)
 		return (new->str = NULL, SUCCESS);
 	new->str = malloc(sizeof(char) * (len + 1));
 	if (new->str == NULL)
-		return (ERROR); // malloc error
+		return (malloc_error(), ERROR); // malloc error
 	while (*str && i < len && *str != c)
 		new->str[i++] = *str++;
 	new->str[i] = '\0';
@@ -117,12 +117,12 @@ t_token *ft_newtoken(char *str)
 		return (NULL);  // error fill token
 	new = malloc(sizeof(t_token));
 	if (new == NULL)
-		return (NULL); // malloc error
+		return (malloc_error(), NULL);
 	ft_test_type(str, new);
-	if (new->type == -1)
-		return (free(new), NULL); //syntax error near unexpected token `|'
+	// if (new->type == -1)
+	// 	return (free(new), NULL); //syntax error near unexpected token `|'
 	if (ft_strdup_remake(str, new) == ERROR)
-		return (free(new), NULL); // malloc error
+		return (malloc_error(), free(new), NULL);
 	new->next = NULL;
 	return (new);
 }

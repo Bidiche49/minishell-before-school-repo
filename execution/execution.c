@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 09:24:55 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char *ft_get_env(t_env **env, char *str)
 		return (NULL);
 	res = ft_calloc((ft_strlen(tmp->name) + ft_strlen(tmp->content) + 2), sizeof(char));
 	if (!res)
-		return (NULL); // FREE ALLLLLLL
+		return (malloc_error(), NULL); // FREE ALLLLLLL
 	while (tmp->name[j])
 		res[i] = tmp->name[j++];
 	j = 0;

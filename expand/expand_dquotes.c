@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:09:59 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*dup_dquotes(int len_tot, char *str, t_env *env)
 
 	d_quotes = malloc(sizeof(char) * len_tot);
 	if (d_quotes == NULL)
-		return (g_error = MALL_KO, msg(ERR_MALLOC_KO), NULL);
+		return (malloc_error(), NULL);
 	fill_dquote(str, env, d_quotes);
 	if (str)
 		free(str);

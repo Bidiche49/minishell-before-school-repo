@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 09:16:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (s1);
 	res = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
 	if (!res)
-		return (NULL);
+		return (malloc_error(), NULL);
 	i = 0;
 	j = 0;
 	while (s1[i])

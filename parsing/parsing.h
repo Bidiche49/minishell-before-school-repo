@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/22 22:37:56 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:12:34 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define ERR_QUOTE "not handle by minishell\n"
 # define ERR_HOME "cd: HOME not set\n"
 # define ERR_EXPORT "not a valid identifier\n"
-# define ERR_END_TOKEN "syntax error near unexpected token `"
 
 int		ft_error(char *error);
 int		fill_tokens(char *input, t_token **list_token);

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 07:20:53 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:47:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 void	print_token(t_token *list_token);
 int	init_section(t_token *token, t_section **section, t_env **env);
 void	cmd_unset(t_env **env, char *line_env);
+void	malloc_error(void);
 
 /* EXPORT */
 
@@ -140,8 +141,8 @@ void	config_default_signal(void);
 
 /* FREE */
 
-void free_list_token(t_token **lst_token);
-void free_all(t_token **lst_token, t_env **env);
+void	free_list_token(t_token **lst_token);
+void	free_all(char *input, t_token **lst_token, t_env **env);
 
 /* Execution */
 

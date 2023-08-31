@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:19:32 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 02:47:54 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_strcat_exec_sec_d(t_section *section, char *exec)
 	len = ft_strlen(section->option) + ft_strlen(exec);
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
-		return (ERROR);
+		return (malloc_error(), ERROR);
 	while (section->option != NULL && section->option[i])
 	{
 		tmp[i] = section->option[i];

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 00:23:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/29 02:57:23 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	operator_mod(t_token *lst_token)
 			{
 				operator->str = ft_strdup(opt->str);
 				if (operator->str == NULL)
-					return (ERROR); // malloc error
+					return (malloc_error(), ERROR); // malloc error
 				del_word_sep(operator, opt);
 			}
 		}

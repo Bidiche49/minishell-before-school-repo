@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 21:39:43 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ char	*first_word(char *str)
 		i++;
 	while (str[i] && ft_isspace(str[i]) == 0 && str[i] != '|')
 		i++;
-	first_word = malloc(sizeof(char) * (i + 1));
+	first_word = ft_calloc((i + 1), sizeof(char));
 	if (first_word == NULL)
-		return (NULL);
+		return (malloc_error(), NULL);
 	i = 0;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
@@ -45,7 +45,6 @@ char	*first_word(char *str)
 		first_word[i] = str[i];
 		i++;
 	}
-	first_word[i] = '\0';
 	return (first_word);
 }
 
@@ -59,7 +58,7 @@ char	*ft_strdup(const char *src)
 		return (NULL);
 	str = ft_calloc((ft_strlen(src) + 1),sizeof(char));
 	if (!str)
-		return (NULL);
+		return (malloc_error(), NULL);
 	while (src[++i])
 		str[i] = src[i];
 	return (str);
@@ -79,7 +78,7 @@ char	*ft_strcat_dup(char *dest, char *str)
 	free (dest);
 	dest = ft_calloc((ft_strlen(tmp) + ft_strlen(str) + 1), sizeof(char));
 	if (!dest)
-		return (NULL);
+		return (malloc_error(), NULL);
 	while (tmp[j])
 	{
 		dest[j] = tmp[j];
@@ -106,7 +105,7 @@ char	*ft_substr(char const *s, int start, int len)
 		len = ft_strlen(s) - start;
 	str = ft_calloc((len + 1), sizeof (char));
 	if (!str)
-		return (NULL);
+		return (malloc_error(), NULL);
 	i = 0;
 	y = 0;
 	while (s[i])

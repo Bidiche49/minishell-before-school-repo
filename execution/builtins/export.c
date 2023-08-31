@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 22:33:50 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	mod_exist_var(t_env **env, char *line)
 				free(tmp->content);
 			tmp->content = ft_strdup(line + len_name + 1);
 			if (!tmp->content)
-				return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
+				return (malloc_error(), ERROR);
 			return (SUCCESS);
 		}
 		tmp = tmp->next;
@@ -53,7 +53,7 @@ int	add_env(t_env **env, char **split_line)
 	int	i;
 
 	if (!split_line)
-		return (g_error = MALL_KO, msg(ERR_MALLOC_KO), ERROR);
+		return (malloc_error(), ERROR);
 	i = 0;
 	while (split_line && split_line[i] && split_line[i][0])
 	{

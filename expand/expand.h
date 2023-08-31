@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:13:19 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 07:04:10 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:12:50 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define EXPAND_H
 
 # include "../minishell.h"
+
+# define ERR_END_TOKEN "syntax error near unexpected token `"
 
 int		is_in_env(char *env_var, t_env *env);
 int		isexpand_ok(t_token *list_token);
@@ -31,5 +33,6 @@ int		calc_len_tot(char *str, t_env *env);
 char	*dup_dquotes(int len_tot, char *str, t_env *env);
 void	fill_dquote(char *str, t_env *env, char *d_quotes);
 void	del_next_token(t_token **token);
+void	err_end_token(t_token *token);
 
 #endif
