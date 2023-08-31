@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 03:48:45 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:12:23 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	exec_pipe(t_section *section, int x, int y)
 	int	tmp_pipe[2];
 
 	section->fd[0] = y;
-	// printf("vas dans exec_pipe\n");
 	while (section->next)
 	{
 		// printf("entre dans la boucle \n");
@@ -34,6 +33,7 @@ int	exec_pipe(t_section *section, int x, int y)
 		printf("est dans la fin de exec pipe\n");
 	}
 	section->fd[1] = x;
+		printf("valeur de tmp_pipe 1 & 2 = %d\t%d\n", y, x);
 	// printf("ici\n");
 	return (1);
 }
@@ -67,7 +67,7 @@ int file_open(t_section *section)
 
 	token = section->token;
 	printf("valeur avent open_all de token->name = %s\n", token->str);
-	while (token != NULL)
+	while (token)
 	{
 		if (open_all(section, token) == 0)
 		{
@@ -181,6 +181,7 @@ void	fork_apli(t_section *section, int *pid, int *j)
 {
 	free(pid);
 	convert_file(section->fd[0], section->fd[1]);
+	printf("valeur de deep = %d\n", section->deep);
 	while (section)
 	{
 		if (section->deep == 0)
@@ -268,23 +269,20 @@ void free_env_char(char **env)
 	free(env);
 }
 
-void	exec_cmd(t_section *section)
+void    exec_cmd(t_section *section)
 {
-	char **env_tmp;
+    char **env_tmp;
 
-	env_tmp = ft_get_env_bis(section->env);
-	config_default_signal();
-	// printf("abs pth = %s\n", section->abs_path);
-	execve(section->abs_path, ft_split(section->option, ' '), env_tmp);
-	// printf("dans exec\n");
-	free(section->abs_path);
-	// free_alllllllllll!!!!!
+    env_tmp = ft_get_env_bis(section->env);
+    signal(SIGINT, &kill_child);
+    signal(SIGQUIT, SIG_DFL);
+    execve(section->abs_path, ft_split(section->option, ' '), env_tmp);
+	free_section(section);
 }
 
 void	exec_not_pipe(t_section *section, int *pid, int *j)
 {
 	fork_apli(section, pid, j);
-	// printf("exec_pipe\n");
 	exec_cmd(section);
 	exit(127);
 }
@@ -312,18 +310,17 @@ int	fork_using(t_section *section, int *pid, int *j)
 			return (-1);
 		if (i[0] == 1)
 		{
-			// printf("rentre dans le if \n");
-			// i[0] = is_clear(token, section);
-			// printf("valeur de i[]0 = %d\n", i[0]);
-			// printf("valeur option = %s\n", section->option);
 			if (i[0] == -1)
 				return (free(section->option), i[0]);
 			if (i[0] != 0)
 			{
-				// printf("in if\n");
+				printf("in if\n");
 				pid[i[1]] = fork();
 				if (pid[i[1]] == 0 && i[0] == 1)
+				{
+					printf(" valeur du PID[i[1]] = %d\t | \t  val i =  %d\n", pid[i[1]], i[0]);
 					exec_not_pipe(section, pid, j);
+				}
 				you_pipe(pid, i[1]++, section);
 			}
 		}

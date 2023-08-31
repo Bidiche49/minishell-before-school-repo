@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 03:34:06 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 04:48:22 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void back_to_home(int *pid, int ret)
 	if (error == 130 || error == 131)
 		write(1, "\n", 1);
 }
+
 void end_of_exec(int *pid, int x, int y)
 {
 	free(pid);
@@ -117,6 +118,7 @@ void end_of_exec(int *pid, int x, int y)
 	close(x);
 	close(y);
 }
+
 int master_exec(t_section *section)
 {
 	pid_t *pid;
@@ -129,10 +131,9 @@ int master_exec(t_section *section)
 	pid = calloc(ft_lstsize_section(section), sizeof(int));
 	if (!pid)
 		return (0);
-	// printf("est dans master exec\n");
 	pid[0] = -1;
 	j[1] = dup(1);
-	// j[0] = dup(0); // printf("passe signal\n");
+	j[0] = dup(0);
 	if (exec_pipe(section, j[1], j[0]) == -1)
 		return (close(j[1]), close(j[0]), -1);
 	signal(SIGINT, SIG_IGN);
