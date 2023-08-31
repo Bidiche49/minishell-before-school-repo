@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:47:48 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,23 @@
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*res;
-	int		i;
-	int		j;
+	char		*res;
+	int			i;
+	int const	j = ft_strlen(s1);
 
 	if (s1 == NULL)
-	{
-		res = ft_strdup(s2);
-		return (res);
-	}
+		return (ft_strdup(s2));
 	else if (s2 == NULL)
 		return (s1);
-	res = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	res = ft_calloc((j + ft_strlen(s2) + 1), sizeof(char));
 	if (!res)
 		return (malloc_error(), NULL);
-	i = 0;
-	j = 0;
-	while (s1[i])
-	{
+	i = -1;
+	while (s1[++i])
 		res[i] = s1[i];
-		i++;
-	}
-	while (s2[i])
-		res[j++] = s2[i++];
+	i =  -1;
+	while (s2[++i])
+		res[j + i] = s2[i];
 	return (res);
 }
 

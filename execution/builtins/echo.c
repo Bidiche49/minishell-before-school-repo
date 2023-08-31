@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 04:32:57 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 15:19:49 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:26:15 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_echo(t_section *section)
 	while (section->option[i] && section->option[i] != ' ')
 		i++;
 	i++;
+	printf(" option = %s\n", section->option);
 	while (section->option[i] && !is_op_char(section->option[i]))
 		write(1, &section->option[i++], 1);
 	write(1, "\n", 1);

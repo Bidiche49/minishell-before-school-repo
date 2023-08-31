@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 11:17:09 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:54:38 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,9 @@ int main(int argc, char **argv, char **envd)
 				return(free_all(input, &list_token, &env), ERROR);
 			if (return_val == SUCCESS)
 			{
-					printf("expand_ok\n");
-					// if (execution(list_token, &env) == ERROR)
-					// 	return (ERROR);
-				print_token(list_token);
+					print_token(list_token);
+					if (execution(list_token, &env) == ERROR)
+						return (ERROR);
 			}
 		}
 		free_list_token(&list_token);

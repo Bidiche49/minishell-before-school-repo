@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:34:17 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int	add_env(t_env **env, char **split_line)
 			if (ft_lstadd_back_env(env, fill_new_env(split_line[i])))
 			{
 				free_matrice(split_line);
-				g_error = MALL_KO;
-				return (msg(ERR_MALLOC_KO), ERROR);
+				return (malloc_error(), ERROR);
 			}
 		}
 		i++;

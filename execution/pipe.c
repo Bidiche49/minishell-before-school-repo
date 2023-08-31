@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:25:08 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	convert_file(int x, int y)
 
 int	is_bultin(t_section *section)
 {
-	// printf("est dans is_bultin\n");
+	printf("est dans is_bultin\n");
 	if (ft_strcmp(section->cmd, "echo") == 0)
 		ft_echo(section);
 	else if (ft_strcmp(section->cmd, "cd") == 0)
@@ -112,11 +112,7 @@ int	is_bultin(t_section *section)
 		return(cmd_env(section->env));
 	else if (ft_strcmp(section->cmd, "exit") == 0)
 		return (0);
-	else
-		return (1);
-	if (section->next)
-		return (2);
-	return (0);
+	return (1);
 }
 
 int	util_dup2(t_section *section, int x, int y)

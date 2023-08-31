@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 21:02:37 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 04:20:11 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 12:33:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int    ft_strcat_token(char *path, char *cmd, t_section *section)
     free(section->abs_path);
     section->abs_path = ft_calloc((len + 2), sizeof(char));
     if (!section->abs_path)
-        return (msg(ERR_MALLOC_KO), g_error = MALL_KO, ERROR);
+        return (malloc_error(), ERROR);
     while (path[i])
     {
         section->abs_path[i] = path[i];
