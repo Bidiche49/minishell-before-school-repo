@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 04:31:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 09:24:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ int execution(t_token *token, t_env **env)
 {
 	t_section	*list_section;
 
+	list_section = NULL;
 	init_section(token, &list_section, env);
 	find_cmd(list_section);
 	// printf("section->cmd = %s\n", list_section.cmd);

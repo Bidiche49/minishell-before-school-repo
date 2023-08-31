@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 22:33:59 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:09:59 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	copy_var_env(char *dest, char *str, t_env *env)
 		}
 		if (is_in_env(str, env) == 1)
 		{
-			printf("str in if str = %s\n", str);
+			// printf("str in if str = %s\n", str);
 			while (env->content[i])
 			{
 				dest[i] = env->content[i];
@@ -53,12 +53,12 @@ void	fill_dquote(char *str, t_env *env, char *d_quotes)
 	while (str && str[i])
 	{
 
-		printf("char  = %c\n", str[i]);
+		// printf("char  = %c\n", str[i]);
 		if (str[i] == '$')
 		{
 			j += copy_var_env(d_quotes + j, str + i, env);
 			i += count_len_var_name(str + i);
-			printf("fill_quote str = %s\n", str +i);
+			// printf("fill_quote str = %s\n", str +i);
 			if (str[i] && str[i] == '$' && str[i + 1] != '$' && (!is_alnum_und(str[i + 1])))
 			{
 				d_quotes[j++] = '$';
@@ -67,7 +67,7 @@ void	fill_dquote(char *str, t_env *env, char *d_quotes)
 		}
 		if (str[i] && str[i] != '$')
 		{
-			printf("printf char simple = %c\n", str[i]);
+			// // printf("printf char simple = %c\n", str[i]);
 			d_quotes[j++] = str[i++];
 		}
 	}

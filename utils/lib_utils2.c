@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 22:38:54 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 20:15:38 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 09:29:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strcmp(const char *s1, const char *s2)
 	size_t	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return(-1);
 	while (s1[i] || s2[i])
 	{
 		if (s1[i] != s2[i])

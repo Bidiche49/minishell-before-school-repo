@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 22:50:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:09:50 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ int	count_len_var_name(char *str)
 		return (0);
 	while (str && str[i + 1] && is_alnum_und(str[i + 1]))
 		i++;
-	printf("len_VARNAME %s = %d\n", str + i + 1, i);
+	// printf("len_VARNAME %s = %d\n", str + i + 1, i);
 	return (i + 1);
 }

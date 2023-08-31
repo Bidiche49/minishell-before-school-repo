@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 07:17:14 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 10:06:51 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int main(int argc, char **argv, char **envd)
 		return(free_all(&list_token, &env), ERROR);
 	// print_env(env);
 	config_minishell_signal();
-	while (1)
+	while (input == NULL || ft_strcmp(input, "stop"))
 	{
 		input = readline(BOLD CYAN "Minishell > " RESET);
 		if (!input || ft_strlen(input) <= 0 || space_only(input) == 0)
@@ -123,12 +123,11 @@ int main(int argc, char **argv, char **envd)
 			{
 				print_token(list_token);
 				expand(&list_token, &env);
-					if (execution(list_token, &env) == ERROR)
-						return (ERROR);
+					// if (execution(list_token, &env) == ERROR)
+					// 	return (ERROR);
 				print_token(list_token);
 			}
 		}
-		free_list_token(&list_token);
 		free_list_token(&list_token);
 	}
 	free_all(&list_token, &env);
@@ -136,3 +135,6 @@ int main(int argc, char **argv, char **envd)
 	printf(BOLD GREEN "exit\n" RESET);
 	return (g_error);
 }
+
+
+//make && valgrind --leak-check=full --show-leak-kinds=all --suppressions=minishell.supp ./minishell

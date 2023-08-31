@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 07:22:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 09:16:01 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (s1 == NULL)
 	{
 		res = ft_strdup(s2);
-		return (free(s2), res);
+		return (res);
 	}
 	else if (s2 == NULL)
 		return (s1);
