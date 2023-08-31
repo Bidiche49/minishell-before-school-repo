@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 23:10:17 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:03:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ int	is_op(t_token *token)
 {
 	if (token->type == OUT || token->type == IN || token->type == HEREDOC
 		|| token->type == APPEND || token->type == PIPE)
+		return (1);
+	return (0);
+}
+
+int	is_type_wq(t_token *token)
+{
+	if (token->type == WORD || token->type == S_QUOTES || token->type == D_QUOTES)
 		return (1);
 	return (0);
 }

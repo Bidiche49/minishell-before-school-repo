@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/29 22:32:53 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:09:01 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,6 @@ char	**ft_get_env_bis(t_env	**env);
 int	cmd_env(t_env **env);
 int	ft_strcmp(const char *s1, const char *s2);
 void	ft_echo(t_section *section);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/29 08:53:30 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 07:11:29 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,16 @@ char	*ft_strcpy(char *s1, char const *s2)
 	return (s1);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*ram;
 	int		len;
 
 	if (s1 == NULL)
-		return ((char *)s2);
+	{
+		ram = ft_strdup(s2);
+		return (free(s2), ram);
+	}
 	else if (s2 == NULL)
 		return ((char *)s1);
 	len = ft_strlen(s1) + ft_strlen(s2);
