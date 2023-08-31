@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 02:26:13 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 03:48:45 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	exec_pipe(t_section *section, int x, int y)
 		section->fd[1] = tmp_pipe[1];
 		section->next->fd[0] = tmp_pipe[0];
 		section = section->next;
+		printf("est dans la fin de exec pipe\n");
 	}
 	section->fd[1] = x;
 	// printf("ici\n");
@@ -41,20 +42,20 @@ int	open_all(t_section *section, t_token *token)
 {
 	if (token->type == OUT)
 	{
-		// printf("OUT\n");
+		printf("OUT\n");
 		section->fd[1] = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	}
 	if (token->type == APPEND)
 	{
-		// printf("APPEND\n");
+		printf("APPEND\n");
 		section->fd[1] = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
 	if (token->type == IN || token->type == HEREDOC)
 	{
-		// printf("IN ou HEREDOC\n");
+		printf("IN ou HEREDOC\n");
 		section->fd[0] = open(token->str, O_RDONLY);
 	}
-	// printf("valeur 2 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
+	printf("valeur 2 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
 	if (section->fd[0] == -1 || section->fd[1] == -1)
 		return (0);
 	return (1);
@@ -65,22 +66,22 @@ int file_open(t_section *section)
 	t_token *token;
 
 	token = section->token;
-	// printf("valeur avent open_all de token->name =\n");
+	printf("valeur avent open_all de token->name = %s\n", token->str);
 	while (token != NULL)
 	{
 		if (open_all(section, token) == 0)
 		{
-			// printf("vas dans open all\n");
+			printf("vas dans open all\n");
 			return (0);
 		}
 		if (token->next && token->next->type != HEREDOC && token->next->type != IN && token->type != HEREDOC && token->type != IN)
 		{
-			// printf("vas dans le premier close\n");
+			printf("vas dans le premier close\n");
 			close (section->fd[1]);
 		}
 		if (token->next && token->next->type == IN && token->next->type == HEREDOC && token->type == IN && token->type == HEREDOC)
 		{
-			// printf("vas dans le deuxieme close\n");
+			printf("vas dans le deuxieme close\n");
 			close (section->fd[0]);
 		}
 		token = token->next;
@@ -123,19 +124,20 @@ int	util_dup2(t_section *section, int x, int y)
 	int i;
 
 	convert_file(section->fd[0], section->fd[1]);
-	// printf("avant is bultin\n");
+	printf("valeur dans util dup2 de section->fd[0] = %d \t|\t section->fd[1] = %d\n", section->fd[0], section->fd[1]);
 	i = is_bultin(section);
 	convert_file(x, y);
+		printf("valeur dans util dup2 de x = %d \t|\t y = %d\n", x, y);
 	return (i);
 }
 
 int	assigne_file(t_section *section, int *j, int i)
 {
 	i = file_open(section);
-	// printf("valeur 1 de i = %d\n", i);
+	printf("valeur 1 de i = %d\n", i);
 	if (i >= 1)
 		i = util_dup2(section, j[0], j[1]);
-	// printf("valeur 2 de i = %d\n", i);
+	printf("valeur 2 de i = %d\n", i);
 	return (i);
 }
 
@@ -305,7 +307,7 @@ int	fork_using(t_section *section, int *pid, int *j)
 	while (section && i[0] > -1)
 	{
 		i[0] = assigne_file(section, j, i[0]);
-		// printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
+		printf("rentre dans le ift valeur de i[0] = %d\n", i[0]);
 		if (i[0] == -1)
 			return (-1);
 		if (i[0] == 1)

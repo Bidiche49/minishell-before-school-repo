@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:24:29 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 02:23:31 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 03:34:06 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int master_exec(t_section *section)
 	if (!section->cmd)
 		return (0);
 	ret = 0;
-	pid = malloc(sizeof(int) * ft_lstsize_section(section));
+	pid = calloc(ft_lstsize_section(section), sizeof(int));
 	if (!pid)
 		return (0);
 	// printf("est dans master exec\n");
