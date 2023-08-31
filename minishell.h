@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 02:04:00 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 05:07:52 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ int	cmd_env(t_env **env);
 int	ft_strcmp(const char *s1, const char *s2);
 void	ft_echo(t_section *section);
 char	*ft_strjoin(char *s1, const char *s2);
+void	free_section(t_section *section);
 
 
 
