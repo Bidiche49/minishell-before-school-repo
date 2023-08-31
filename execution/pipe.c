@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:40:39 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 04:13:07 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 04:33:11 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	is_bultin(t_section *section)
 	else if (ft_strcmp(section->cmd, "export") == 0)
 		return (cmd_export(section->env, section->option));
 	else if (ft_strcmp(section->cmd, "unset") == 0)
-		return ();
+		return (cmd_unset(section->env, section->option), 0);
 	else if (ft_strcmp(section->cmd, "env") == 0)
 		return(cmd_env(section->env));
 	else if (ft_strcmp(section->cmd, "exit") == 0)

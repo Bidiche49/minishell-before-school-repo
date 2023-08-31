@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_section.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 02:10:18 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 04:26:46 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ int	is_word(int type)
 {
 	if (type == WORD || type == S_QUOTES || type == D_QUOTES)
 		return (1);
-	return (0);		
+	return (0);
 }
 
 int	is_redir(int type)
 {
 	if (type == IN || type == OUT || type == APPEND || type == HEREDOC)
 		return (1);
-	return (0);		
+	return (0);
 }
 
 int	count_section(t_token *token)
 {
 	int	i;
-	
+
 	i = 1;
 	while (token)
 	{
@@ -56,7 +56,7 @@ int	count_section(t_token *token)
 int gathering(t_token *token, t_section **section)
 {
 	t_token *tmp;
-	
+
 	tmp = token;
 	while (tmp && tmp->type != PIPE)
 	{
@@ -66,7 +66,7 @@ int gathering(t_token *token, t_section **section)
 				tmp = tmp->next;
 			(*section)->option = ft_strjoin((*section)->option, " ");
 			if ((*section)->option == NULL)
-				return (g_error = MALL_KO, ERROR); 
+				return (g_error = MALL_KO, ERROR);
 			if (!tmp || tmp->type == PIPE)
 				break ;
 		}
@@ -85,7 +85,7 @@ int gathering(t_token *token, t_section **section)
 t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 {
 	t_section *new;
-	
+
 	new = ft_calloc(1, sizeof(t_section));
 	if (!new)
 		return (g_error = MALL_KO, NULL);
@@ -103,11 +103,8 @@ t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 	new->env = env;
 	new->deep = count_section(token);
 	new->abs_path = NULL;
-	// ft_calloc(1, sizeof(char));
-	// if (!new->abs_path)
-	// 	return (free_section(new), g_error = MALL_KO, NULL);
 	new->pipe[0] = 0;
-	new->pipe[1] = 0;	
+	new->pipe[1] = 0;
 	new->fd[0] = 0;
 	new->fd[1] = 0;
 	new->next = NULL;
@@ -135,7 +132,7 @@ int	list_add_back_section(t_section **section, t_section *new)
 void	free_list_section(t_section **section)
 {
 	t_section *tmp;
-	
+
 	if (!section)
 		return ;
 	while (section)
@@ -143,7 +140,7 @@ void	free_list_section(t_section **section)
 		tmp =(*section);
 		while (tmp->next)
 			tmp = tmp->next;
-		free_section(tmp);	
+		free_section(tmp);
 	}
 	free(section);
 }

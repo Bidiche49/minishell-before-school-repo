@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 22:41:03 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/08/31 04:25:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	g_error;
 
 void print_token(t_token *list_token)
 {
-	printf("print_toke\n");
 	while (list_token)
 	{
 		printf("[");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 04:13:35 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 04:32:53 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ void	ft_putstr_fd(int fd, char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen_char(char *str, char c);
 void	*ft_calloc(size_t nmemb, size_t size);
-
+void	print_token(t_token *list_token);
+int	init_section(t_token *token, t_section **section, t_env **env);
+void	cmd_unset(t_env **env, char *line_env);
 
 /* EXPORT */
 
@@ -157,8 +159,6 @@ t_section	*ft_lstlast(t_section *lst);
 int	init_section(t_token *token, t_section **section, t_env **env);
 t_file *ft_newsection_file(t_token *token);
 int ft_lstadd_back_exec_file(t_file **lst, t_file *new);
-void	init_file(t_token *token, t_file *file);
-
 int	ft_lstsize_section(t_section *section);
 
 /* Utils_exe2 */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exe2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 21:02:37 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 02:17:43 by audrye           ###   ########.fr       */
+/*   Updated: 2023/08/31 04:20:11 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int    ft_strcat_token(char *path, char *cmd, t_section *section)
     j = 0;
     len = ft_strlen(path) + ft_strlen(cmd);
     free(section->abs_path);
-    section->abs_path = malloc(sizeof(char) * (len + 2));
+    section->abs_path = ft_calloc((len + 2), sizeof(char));
     if (!section->abs_path)
-        return (ERROR);
+        return (msg(ERR_MALLOC_KO), g_error = MALL_KO, ERROR);
     while (path[i])
     {
         section->abs_path[i] = path[i];
@@ -38,7 +38,6 @@ int    ft_strcat_token(char *path, char *cmd, t_section *section)
         i++;
         j++;
     }
-    section->abs_path[i] = '\0';
     return (SUCCESS);
 }
 
