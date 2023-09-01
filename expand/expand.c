@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 11:33:44 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/01 21:05:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,30 +196,30 @@ void print_lsttoken(t_token *list_token)
 }
 
 
-int	expand(t_token **list_token, t_env **env)
+int	expand(t_token **token, t_env **env)
 {
 	// t_token	*tmp;
 
-	// tmp = *list_token;
+	// tmp = *token;
 	// while (tmp)
 	// {
 	// 	if (tmp->type == WORD && tmp->str && tmp->str[0] == '$'
 	// 		&& tmp->str[1] && is_alnum_und(tmp->str[1]))
 	// 		if (expand_word(&tmp, env) == ERROR)
-	// 			return (free_all(list_token, env), ERROR);
+	// 			return (free_all(token, env), ERROR);
 	// 	tmp = tmp->next;
 	// }
-	// while (!isexpand_ok(*list_token))
+	// while (!isexpand_ok(*token))
 	// {
-	if (expand_d_quotes(list_token, *env) == ERROR)
+	if (expand_d_quotes(token, *env) == ERROR)
 		return (ERROR);
-	if (expand_to_token(list_token, env) == ERROR)
+	if (expand_to_token(token, env) == ERROR)
 		return (ERROR);
 	// 	break ;
 	// }
-	while (!is_token_ok(*list_token))
+	while (!is_token_ok(*token))
 	{
-		if (clean_token(list_token))
+		if (clean_token(token))
 			return (NEW_LINE);
 	}
 	return (SUCCESS);
