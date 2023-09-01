@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 10:47:22 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/01 21:03:41 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int		is_num(char c);
 int		is_alnum_und(char c);
 
 
-int		parsing(char *input, t_token **list_token);
+int		parsing(char *input, t_token **token, t_env **env);
 int		general_exe(t_token *token);
 int		create_env(char **envd, t_env **env);
 int		ft_lstadd_back_env(t_env **lst, t_env *new);

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 11:19:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/01 21:30:38 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int space_only(char *input)
 		{
 			if (ft_isspace(input[i]))
 				i++;
-			else
+			else if (input[i] && !ft_isspace(input[i]))
 				return (0);
 		}
 		return (1);
@@ -57,16 +57,12 @@ int check_end_token(t_token *lst_token)
 	return (SUCCESS);
 }
 
-int parsing(char *input, t_token **list_token)
+int parsing(char *input, t_token **token, t_env **env)
 {
-	*list_token = NULL;
-	if (fill_tokens(input, list_token) == ERROR)
+	*token = NULL;
+	if (fill_tokens(input, token) == ERROR)
 		return (ERROR);
-	if (input)
-		free(input);
-	// if (check_end_token(*list_token) == ERROR)
-	// 	return (ERROR);
-	if (operator_mod(*list_token) == ERROR)
+	if (operator_mod(*token) == ERROR)
 		return (ERROR);
-	return (SUCCESS);
+	return (expand(token, env));
 }
