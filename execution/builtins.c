@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/29 03:40:08 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 07:55:28 by ntardy           ###   ########.fr       */
+/*   Created: 2023/09/02 09:38:25 by ntardy            #+#    #+#             */
+/*   Updated: 2023/09/02 09:46:12 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
-void	msg(char *str)
+int	is_builtin(t_section *sec)
 {
-	int	i;
-
-	i = 0;
-	i = ft_strlen(str);
-	write(STDERR_FILENO, str, i);
-}
-
-void	malloc_error(void)
-{
-	g_error = MALL_KO;
-	msg(ERR_MALLOC_KO);
-}
-
-void	cmd_not_found(char *cmd)
-{
-	g_error = CMD_KO;
-	msg("minishell: ");
-	msg(cmd);
-	msg(ERR_CMD_NOT_FOUND);
+	if (!ft_strcmp(sec->cmd, "echo") || !ft_strcmp(sec->cmd, "unset"))
+		return (1);
+	if (!ft_strcmp(sec->cmd, "pwd") || !ft_strcmp(sec->cmd, "cd"))
+		return (1);
+	if (!ft_strcmp(sec->cmd, "export") || !ft_strcmp(sec->cmd, "env"))
+		return (1);
+	if (!ft_strcmp(sec->cmd, "exit"))
+		return (1); // return EXIT directement !!
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 05:31:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 06:21:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,3 @@ int fill_tokens(char *input, t_token **list_token)
 	print_token(*list_token);
 	return (SUCCESS);
 }
-
-
-/* PAS OUBLIER DE CONCATENER LES HEREDOCS AVEC LES MOTS SIUIVANT2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222 */

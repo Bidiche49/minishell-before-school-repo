@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/02 01:24:47 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/02 10:08:23 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,6 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)error.c					\
 				$(PARS_LOC)fill.c					\
 				$(PARS_LOC)fill_utils.c				\
-				$(PARS_LOC)init.c					\
 				$(ENV_LOC)env_utils.c				\
 				$(ENV_LOC)env.c						\
 				$(EXPAND_LOC)expand_word.c			\
@@ -59,11 +58,9 @@ SRCS =			minishell.c							\
 				$(EXPAND_LOC)expand.c				\
 				$(EXEC_LOC)execution.c				\
 				$(EXEC_LOC)init_section.c			\
-				$(EXEC_LOC)utils_exe2.c				\
-				$(EXEC_LOC)utils_exe3.c				\
-				$(EXEC_LOC)utils_exe4.c				\
-				$(EXEC_LOC)redir.c					\
-				$(EXEC_LOC)pipe.c					\
+				$(EXEC_LOC)find_path.c				\
+				$(EXEC_LOC)builtins.c				\
+				$(EXEC_LOC)exec.c					\
 				$(BUILTINS_LOC)cmd_env.c			\
 				$(BUILTINS_LOC)export.c				\
 				$(BUILTINS_LOC)export_utils.c		\

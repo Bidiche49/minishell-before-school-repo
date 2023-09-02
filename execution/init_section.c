@@ -6,14 +6,16 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 08:36:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
 void	free_section(t_section *section)
 {
+	if (!section)
+		return ;
 	if (section->cmd)
 		free(section->cmd);
 	if (section->abs_path)
@@ -133,16 +135,17 @@ void	free_list_section(t_section **section)
 {
 	t_section *tmp;
 
+	tmp = NULL;
 	if (!section)
 		return ;
-	while (section)
+	while (section && (*section)->next)
 	{
-		tmp =(*section);
-		while (tmp->next)
-			tmp = tmp->next;
-		free_section(tmp);
+		tmp = (*section)->next;
+		free_section(*section);
+		(*section) = tmp;
 	}
-	free(section);
+	free_section(*section);
+	section = NULL;
 }
 
 int	init_section(t_token *token, t_section **section, t_env **env)
