@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:17:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 01:37:39 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 05:30:10 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ int	if_forest_is_token_ok(t_token *tok)
 		return (0);
 	else if (!tok->next && tok->type == SEPARATOR)
 		return (0);
-	else if (tok && is_type_wq(tok)
+	else if (tok && !is_sep_pipe(tok)
 		&& tok->next && is_type_wq(tok->next))
 		return (0);
 	else if (tok->next && tok->type == SEPARATOR
 		&& tok->next->type == SEPARATOR)
 		return (0);
 	else if (tok->type != HEREDOC && is_op(tok)
-		&& (!tok->next || (tok->next && !tok->next->next
+		&& !tok->str && (!tok->next || (tok->next && !tok->next->next
 				&& tok->next->type == SEPARATOR)))
 		return (0);
 	return (1);

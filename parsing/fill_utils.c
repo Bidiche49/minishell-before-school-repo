@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:54:17 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 03:32:19 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ void	ft_test_type(char *str, t_token *new)
 		new->type = WORD;
 }
 
-int ft_strlen_remake(char *str, int type)
+int ft_strlen_remake(char *str)
 {
 	int i;
 
 	i = 0;
-	if (type == WORD)
+	if (!str)
+		return (0);
+	if (str[0] != '\'' && str[0] != '"')
 	{
 		if (str[0] == '$')
 			i++;
@@ -48,17 +50,13 @@ int ft_strlen_remake(char *str, int type)
 	}
 	else
 	{
-		if (type == S_QUOTES)
-		{
-			while (str[i] && str[i] != '\'')
+		if (str[0] == '\'')
+			while (str[i + 1] && str[i + 1] != '\'')
 				i++;
-		}
-		else if (type == D_QUOTES)
-		{
-			while (str[i] && str[i] != '"')
+		else if (str[0] == '"')
+			while (str[i + 1] && str[i + 1] != '"')
 				i++;
-		}
-		if (!str[i])
+		if (!str[i + 1])
 			return (-1);
 	}
 	return (i);
@@ -71,41 +69,25 @@ int ft_strdup_remake(char *str, t_token *new)
 	char c;
 
 	i = 0;
+	c = 0;
 	if (str[0] == '$' && str[1] && str[1] == '$')
-	{
-		new->type = WORD;
-		new->str = NULL;
-		printf("str = %s\n", str);
-		return (SUCCESS);
-	}
+		return (new->type = WORD, new->str = NULL, SUCCESS);
 	if (new->type == WORD )
-		c = ' '; // ATTENTION GERER POUR LES WORDS QUI NE SARRETTENT QUE POUR ESPACE
+		c = ' ';
 	else if (new->type == S_QUOTES)
-	{
 		c = '\'';
-		str++;
-	}
 	else if (new->type == D_QUOTES)
-	{
 		c = '"';
-		str++;
-	}
-	else
-	{
-		new->str = NULL;
-		return (SUCCESS);
-	}
-	len = ft_strlen_remake(str, new->type);
-	if (len == -1)
-		return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN)), ERROR);
-	if (len == 0)
+	len = ft_strlen_remake(str);
+	if (len == 0 || c == 0)
 		return (new->str = NULL, SUCCESS);
-	new->str = malloc(sizeof(char) * (len + 1));
+	if (new->type != WORD)
+		str++;
+	new->str = ft_calloc((len + 1), sizeof(char));
 	if (new->str == NULL)
-		return (malloc_error(), ERROR); // malloc error
+		return (malloc_error(), ERROR);
 	while (*str && i < len && *str != c)
 		new->str[i++] = *str++;
-	new->str[i] = '\0';
 	return (SUCCESS);
 }
 

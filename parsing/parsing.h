@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:12:34 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 04:36:14 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		ft_lstadd_back(t_token **lst, t_token *new);
 int		operator_mod(t_token *lst_token);
 int		is_operator(t_token *token);
 int		is_word_quote(t_token *token);
+int		ft_strlen_remake(char *str);
 void	free_list_token(t_token **token);
 void	err_end_token(t_token *token);
 t_token	*ft_newtoken(char *str);

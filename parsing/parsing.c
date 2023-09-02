@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/01 21:30:38 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 03:04:24 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,14 @@ int check_end_token(t_token *lst_token)
 
 int parsing(char *input, t_token **token, t_env **env)
 {
+	int	return_val;
+
 	*token = NULL;
-	if (fill_tokens(input, token) == ERROR)
+	return_val = fill_tokens(input, token);
+	if (return_val == ERROR)
 		return (ERROR);
+	if (return_val == NEW_LINE)
+		return (NEW_LINE);
 	if (operator_mod(*token) == ERROR)
 		return (ERROR);
 	return (expand(token, env));

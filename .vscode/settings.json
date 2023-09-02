@@ -1,5 +1,7 @@
 {
 	"files.associations": {
-		"expand.h": "c"
+		"expand.h": "c",
+		"compare": "c",
+		"type_traits": "c"
 	}
 }

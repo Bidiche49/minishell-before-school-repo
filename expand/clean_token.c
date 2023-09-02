@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 01:35:21 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 05:08:12 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,24 @@ void	del_all_token(t_token **list_token)
 	tmp->str = NULL;
 }
 
-int	if_forest_clean_token(t_token *token)
+int	if_forest_clean_token(t_token *tok)
 {
-	if (token->next && token->next->type == SEPARATOR && !token->next->next)
-		del_next_token(&token);
-	if (token->next && token->next->type == WORD && !token->next->str)
-		del_next_token(&token);
-	if (token->next && token->next->type == D_QUOTES && !token->next->str)
-		del_next_token(&token);
-	if (token->next && token->next->type == S_QUOTES && !token->next->str)
-		del_next_token(&token);
-	if (token->next && token->type == SEPARATOR
-		&& token->next->type == SEPARATOR)
-		del_next_token(&token);
-	if (is_op(token) && (!token->next || (token->next
-				&& !token->next->next && token->next->type == SEPARATOR)))
-		return (err_end_token(token), NEW_LINE);
-	if (dble_op(token))
-		return (err_end_token(token), NEW_LINE);
+	if (tok->next && tok->next->type == SEPARATOR && !tok->next->next)
+		del_next_token(&tok);
+	if (tok->next && tok->next->type == WORD && !tok->next->str)
+		del_next_token(&tok);
+	if (tok->next && tok->next->type == D_QUOTES && !tok->next->str)
+		del_next_token(&tok);
+	if (tok->next && tok->next->type == S_QUOTES && !tok->next->str)
+		del_next_token(&tok);
+	if (tok->next && tok->type == SEPARATOR
+		&& tok->next->type == SEPARATOR)
+		del_next_token(&tok);
+	if (tok->type != HEREDOC && is_op(tok) && (!tok->next || (tok->next
+				&& !tok->next->next && tok->next->type == SEPARATOR)))
+		return (err_end_token(tok), NEW_LINE);
+	if (dble_op(tok))
+		return (err_end_token(tok), NEW_LINE);
 	return (SUCCESS);
 }
 
@@ -79,7 +79,7 @@ int	clean_token(t_token **token)
 		clean_first_token(token);
 	while (tmp)
 	{
-		if (is_type_wq(tmp) && tmp->next && is_type_wq(tmp->next))
+		if (!is_sep_pipe(tmp) && tmp->next && is_type_wq(tmp->next))
 			if (cat_word(tmp) == ERROR)
 				return (ERROR);
 		tmp = tmp ->next;

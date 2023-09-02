@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/01 21:03:41 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 03:18:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ char	**ft_split(char const *s, char c);
 int		is_num(char c);
 int		is_alnum_und(char c);
 
+void	print_token(t_token *list_token);
 
 int		parsing(char *input, t_token **token, t_env **env);
 int		general_exe(t_token *token);

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 01:42:34 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 05:20:10 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,30 @@ int	special_case_expand(t_token **token)
 	return (1);
 }
 
+void	check_heredoc(t_token **token)
+{
+	t_token	*tmp;
+
+	tmp = *token;
+	while (tmp)
+	{
+		if (tmp->type == HEREDOC)
+		{
+			tmp = tmp->next;
+			while (tmp && is_type_wq(tmp))
+			{
+				tmp->type = S_QUOTES;
+				tmp = tmp->next;
+			}
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+}
+
 int	expand(t_token **token, t_env **env)
 {
+	check_heredoc(token);
 	if (expand_d_quotes(token, *env) == ERROR)
 		return (ERROR);
 	if (expand_to_token(token, env) == ERROR)

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 02:07:14 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 05:30:02 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,31 +55,9 @@ void	err_end_token(t_token *token)
 	g_error = 1;
 }
 
-int	is_in_env(char *env_var, t_env *env)
+int	is_sep_pipe(t_token *token)
 {
-	int	i;
-
-	i = -1;
-	if (env_var[i + 2] && !is_alnum_und(env_var[i + 2]))
-		return (0);
-	while (env->name && env_var && env->name[++i])
-	{
-		if (env->name[i] == env_var[i + 1])
-		{
-			if (is_num(env_var[i + 1]) == 1)
-			{
-				if (env->name[i + 1] == '\0')
-					return (1);
-				else
-					break ;
-			}
-		}
-		else
-			break ;
-	}
-	if (env->name[i] == '\0' && (env_var[i + 1] == '\0'
-			|| env_var[i + 1] == ' ' || env_var[i + 1] == '$'
-			|| env_var[i + 1] == '\\'))
+	if (token->type == SEPARATOR || token->type == PIPE)
 		return (1);
 	return (0);
 }

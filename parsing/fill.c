@@ -6,20 +6,27 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/27 22:29:45 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 05:31:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-char *next_token(char *str)
+char	*find_next_quote(char *str, char c)
 {
-	if (ft_isspace(*str))
+	if (*str == c)
 	{
-		while (*str && ft_isspace(*str))
+		str++;
+		while (*str && *str != c)
 			str++;
+		str++;
 		return (str);
 	}
+	return (NULL);
+}
+
+char	*pass_word(char *str)
+{
 	if (*str == '>' && *(str + 1) && *(str + 1) == '>')
 		return (str + 2);
 	if (*str == '<' && *(str + 1) && *(str + 1) == '<')
@@ -30,27 +37,28 @@ char *next_token(char *str)
 		return (str + 1);
 	if (*str == '|')
 		return (str + 1);
-	if (*str == '"')
+	if (find_next_quote(str, '"'))
+		return (find_next_quote(str, '"'));
+	if (find_next_quote(str, '\''))
+		return (find_next_quote(str, '\''));
+	return (NULL);
+}
+
+char	*next_token(char *str)
+{
+	if (ft_isspace(*str))
 	{
-		str++;
-		while (*str && *str != '"')
+		while (*str && ft_isspace(*str))
 			str++;
-		str++;
 		return (str);
 	}
-	if (*str == '\'')
-	{
-		str++;
-		while (*str && *str != '\'')
-			str++;
-		str++;
-		return (str);
-	}
+	if (pass_word(str))
+		return (pass_word(str));
 	if (*str == '$')
 	{
 		str++;
 		if (*str == '$')
-			return(++str);
+			return (++str);
 		while (*str && !is_sep_op(*str))
 			str++;
 		return (str);
@@ -65,8 +73,8 @@ char *next_token(char *str)
 
 int fill_tokens(char *input, t_token **list_token)
 {
-	char *tmp_input;
-	t_token *new_token;
+	char	*tmp_input;
+	t_token	*new_token;
 
 	tmp_input = input;
 	while (*tmp_input && ft_isspace(*tmp_input))
@@ -74,9 +82,16 @@ int fill_tokens(char *input, t_token **list_token)
 	while (*tmp_input)
 	{
 		new_token = ft_newtoken(tmp_input);
+		if (ft_strlen_remake(tmp_input) == -1)
+			return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN)), NEW_LINE);
 		if (ft_lstadd_back(list_token, new_token) == ERROR)
 			return (ERROR);
+		printf("tsest\n");
 		tmp_input = next_token(tmp_input);
 	}
+	print_token(*list_token);
 	return (SUCCESS);
 }
+
+
+/* PAS OUBLIER DE CONCATENER LES HEREDOCS AVEC LES MOTS SIUIVANT2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222 */
