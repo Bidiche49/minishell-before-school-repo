@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/31 07:17:58 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/02 01:24:47 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,8 +52,11 @@ SRCS =			minishell.c							\
 				$(EXPAND_LOC)expand_word.c			\
 				$(EXPAND_LOC)expand_dquotes.c		\
 				$(EXPAND_LOC)expand_dquotes_utils.c	\
-				$(EXPAND_LOC)expand.c				\
+				$(EXPAND_LOC)check_is_expand.c		\
+				$(EXPAND_LOC)is_token_clean.c		\
+				$(EXPAND_LOC)clean_token.c			\
 				$(EXPAND_LOC)expand_utils.c			\
+				$(EXPAND_LOC)expand.c				\
 				$(EXEC_LOC)execution.c				\
 				$(EXEC_LOC)init_section.c			\
 				$(EXEC_LOC)utils_exe2.c				\
