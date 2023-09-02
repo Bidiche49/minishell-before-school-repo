@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 12:34:17 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 02:10:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,25 @@ void	print_env_export(t_env **env)
 		tmp = tmp->next;
 	}
 }
+
+// char	**fill_split_line(t_token *token)
+// {
+// 	if (!ft_strcmp(token->str, "export") && token->next->type)
+// }
+
+// int	cmd_export(t_env **env, t_section *section)
+// {
+// 	t_token	*token;
+
+// 	token = section->token;
+// 	if (section->next)
+// 		return (SUCCESS);
+// 	if (!ft_strcmp(token->str, "export") && !token->next)
+// 		return (print_env_export(env), SUCCESS);
+// 	if (add_env(env, fill_split_line(line_env)) == ERROR)
+// 		return (ERROR);//FREE ALL---------------------------------------------------
+// 	return (SUCCESS);
+// }
 
 int	cmd_export(t_env **env, char *line_env)
 {

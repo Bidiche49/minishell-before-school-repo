@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:09:50 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 01:34:24 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,6 @@ int	calc_len_tot(char *str, t_env *env)
 	return (len_tot);
 }
 
-int	is_an_exp_dquotes(t_token *list_token)
-{
-	int	i;
-
-	i = 0;
-	if (list_token->type == D_QUOTES)
-	{
-		while (list_token->str && list_token->str[i])
-		{
-			if (list_token->str[i + 1] && list_token->str[i] == '$'
-				&& list_token->str[i + 1] == '$')
-				return (1);
-			if (list_token->str[i + 1] && list_token->str[i] == '$'
-				&& is_alnum_und(list_token->str[i + 1]))
-				return (1);
-			i++;
-		}
-	}
-	return (0);
-}
-
 int	count_len_var_content(char *str, t_env *env)
 {
 	while (env)
@@ -93,6 +72,5 @@ int	count_len_var_name(char *str)
 		return (0);
 	while (str && str[i + 1] && is_alnum_und(str[i + 1]))
 		i++;
-	// printf("len_VARNAME %s = %d\n", str + i + 1, i);
 	return (i + 1);
 }

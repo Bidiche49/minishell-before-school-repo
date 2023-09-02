@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 23:01:34 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 02:01:18 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,4 @@ int	ft_strlen_char(char *str, char c)
 	while (str && str[i] && str[i] != c)
 		i++;
 	return (i);
-}
-
-int	is_in_env(char *env_var, t_env *env)
-{
-	int	i;
-
-	i = 0;
-	if (env_var[i + 1] && !is_alnum_und(env_var[i + 1]))
-		return (0);
-	while (env->name && env_var && env->name[i])
-	{
-		if (env->name[i] == env_var[i + 1])
-		{
-			if (is_num(env_var[i + 1]) == 1)
-			{
-				if (env->name[i + 1] == '\0')
-					return (1);
-				else
-					break ;
-			}
-			i++;
-		}
-		else
-			break ;
-	}
-	if (env->name[i] == '\0' && (env_var[i + 1] == '\0'
-			|| env_var[i + 1] == ' ' || env_var[i + 1] == '$'
-			|| env_var[i + 1] == '\\'))
-		return (1);
-	return (0);
 }
