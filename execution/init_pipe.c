@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exe2.c                                       :+:      :+:    :+:   */
+/*   init_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 21:02:37 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/02 00:22:33 by audrye           ###   ########.fr       */
+/*   Created: 2023/09/02 00:26:25 by audrye            #+#    #+#             */
+/*   Updated: 2023/09/02 01:25:49 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "execution.h"
 #include "../minishell.h"
 
-int	ft_lstsize(t_token *token)
+int	init_pipe(t_section *section, int x, int y)
 {
-	int	i;
+	int	tmp_pipe[2];
 
-	i = 0;
-	while (token)
+	section->fd[0] = y;
+	while (section->next)
 	{
-		token = token->next;
-		i++;
+		if (pipe(tmp_pipe) > 0)
+		{
+			// message d'erreur = echec de la creation du pipe;
+			return (-1);
+		}
+		section->pipe[0] = tmp_pipe[0];
+		section->pipe[1] = tmp_pipe[1];
+		section->fd[1] = tmp_pipe[1];
+		section->next->fd[0] = tmp_pipe[0];
+		section = section->next;
 	}
-	return (i);
+	section->fd[1] = x;
+	return (1);
 }
-

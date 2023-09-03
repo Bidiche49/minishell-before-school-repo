@@ -6,52 +6,11 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 02:10:18 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/02 00:08:24 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	free_section(t_section *section)
-{
-	if (section->cmd)
-		free(section->cmd);
-	if (section->abs_path)
-		free(section->abs_path);
-	if (section->option)
-		free(section->option);
-	// fermer les fd
-	free(section);
-	section = NULL;
-}
-
-int	is_word(int type)
-{
-	if (type == WORD || type == S_QUOTES || type == D_QUOTES)
-		return (1);
-	return (0);		
-}
-
-int	is_redir(int type)
-{
-	if (type == IN || type == OUT || type == APPEND || type == HEREDOC)
-		return (1);
-	return (0);		
-}
-
-int	count_section(t_token *token)
-{
-	int	i;
-	
-	i = 1;
-	while (token)
-	{
-		if (token->type == PIPE)
-			i++;
-		token = token->next;
-	}
-	return (i);
-}
 
 int gathering(t_token *token, t_section **section)
 {
@@ -81,7 +40,6 @@ int gathering(t_token *token, t_section **section)
 	return (SUCCESS);
 }
 
-
 t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 {
 	t_section *new;
@@ -103,11 +61,8 @@ t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 	new->env = env;
 	new->deep = count_section(token);
 	new->abs_path = NULL;
-	// ft_calloc(1, sizeof(char));
-	// if (!new->abs_path)
-	// 	return (free_section(new), g_error = MALL_KO, NULL);
 	new->pipe[0] = 0;
-	new->pipe[1] = 0;	
+	new->pipe[1] = 0;
 	new->fd[0] = 0;
 	new->fd[1] = 0;
 	new->next = NULL;
@@ -130,22 +85,6 @@ int	list_add_back_section(t_section **section, t_section *new)
 		tmp->next = new;
 	}
 	return (SUCCESS);
-}
-
-void	free_list_section(t_section **section)
-{
-	t_section *tmp;
-	
-	if (!section)
-		return ;
-	while (section)
-	{
-		tmp =(*section);
-		while (tmp->next)
-			tmp = tmp->next;
-		free_section(tmp);	
-	}
-	free(section);
 }
 
 int	init_section(t_token *token, t_section **section, t_env **env)

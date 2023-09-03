@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/08/31 05:07:52 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/02 03:23:40 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_section
 }	t_section;
 
 
+int main(int argc, char **argv, char **envd);
+
 int		ft_strlen(const char *str);
 int		ft_strcat_pars(char *abs_path, char *path, char *cmd, char sep);
 int		ft_isspace(char c);
@@ -136,11 +138,11 @@ void free_all(t_token **lst_token, t_env **env);
 
 /* Execution */
 
-int	execution(t_token *token, t_env **env);
-int	master_exec(t_section *section);
-void	end_of_exit(int *pid, int x, int y);
-char	*ft_get_env(t_env	**env, char *str);
-void	find_cmd(t_section *section);
+void back_to_home(int *pid, int ret);
+void end_of_exec(int *pid, int x, int y);
+int	orchestra_cmd(t_section *section, int *pid, int *j);
+int master_exec(t_section *section);
+int execution(t_token *token, t_env **env);
 
 /* Utils_exe */
 
@@ -156,7 +158,7 @@ int	ft_lstsize_section(t_section *section);
 
 /* Utils_exe2 */
 
-int	ft_strcat_token(char *path, char *cmd, t_section *section);
+int	ft_strcat_path(char *path, char *cmd, t_section *section);
 int	ft_strcpy_token(char *src, t_section *section);
 
 /* Utils_exe3 */
@@ -179,9 +181,27 @@ int	is_pipe(t_section *section);
 int	is_redir(int type);
 int	is_operator_exec(t_token *token);
 
+/* find_path */
+
+int ft_strcat_path(char *path, char *cmd, t_section *section);
+int is_bubul(char *src);
+int check_path(char *src, char *env, t_section *section);
+void	find_path(t_section *section);
+
+/* init_pipe */
+
+int	init_pipe(t_section *section, int x, int y);
+
+/* file_master */
+
+void	convert_file(int x, int y);
+int	open_all(t_section *section, t_token *token);
+int file_open(t_section *section);
+int	assigne_file(t_section *section, int *j, int i);
+
 /* PIPE */
 
-int	exec_pipe(t_section *section, int x, int y);
+int	init_pipe(t_section *section, int x, int y);
 int	open_all(t_section *section, t_token *file);
 int file_open(t_section *section);
 void	convert_file(int x, int y);
@@ -191,13 +211,13 @@ int	assigne_file(t_section *section, int *j, int i);
 void	first_close_cmd(t_section *section, int n, int j);
 void	last_close_cmd(t_section *section);
 void	other_close_cmd(t_section *section, int n);
-void	fork_apli(t_section *section, int *pid, int *j);
+void	fork_close(t_section *section, int *pid, int *j);
 t_section	*next_section(t_section *section, int x, int *i);
 void	kill_child(int num);
 void	exec_cmd(t_section *section);
-void	exec_not_pipe(t_section *section, int *pid, int *j);
-int	fork_using(t_section *section, int *pid, int *j);
-char	**ft_get_env_bis(t_env	**env);
+void	dispatch_cmd(t_section *section, int *pid, int *j);
+int	orchestra_cmd(t_section *section, int *pid, int *j);
+char	**ft_get_all_env(t_env	**env);
 
 int	cmd_env(t_env **env);
 int	ft_strcmp(const char *s1, const char *s2);
@@ -205,6 +225,22 @@ void	ft_echo(t_section *section);
 char	*ft_strjoin(char *s1, const char *s2);
 void	free_section(t_section *section);
 
+void	you_pipe(int *pid, int y, t_section *section);
+void	free_list_section(t_section **section);
 
+
+int	is_word(int type);
+int	is_redir(int type);
+int	count_section(t_token *token);
+char *ft_get_env(t_env **env, char *str);
+void print_section(t_section *section);
+
+/* close_fd */
+
+void first_close_cmd(t_section *section, int n, int j);
+void last_close_cmd(t_section *section);
+void other_close_cmd(t_section *section, int n);
+void	fork_close(t_section *section, int *pid, int *j);
+t_section	*next_section(t_section *section, int x, int *i);
 
 #endif

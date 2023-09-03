@@ -6,69 +6,69 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 13:40:16 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/02 03:03:41 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/ioctl.h>
 
-int	g_error;
+int				g_error;
 
-void print_token(t_token *list_token)
-{
-	printf("print_toke\n");
-	while (list_token)
-	{
-		printf("[");
-		if (list_token->type == WORD)
-			printf("WORD");
-		if (list_token->type == SEPARATOR)
-			printf("SEPARATOR");
-		if (list_token->type == D_QUOTES)
-			printf("D_QUOTES");
-		if (list_token->type == S_QUOTES)
-			printf("S_QUOTES");
-		if (list_token->type == OUT)
-			printf("OUT");
-		if (list_token->type == IN)
-			printf("IN");
-		if (list_token->type == HEREDOC)
-			printf("HEREDOC");
-		if (list_token->type == APPEND)
-			printf("APPEND");
-		if (list_token->type == PIPE)
-			printf("PIPE");
-		printf(" =");
-		if (list_token)
-			printf("%s", list_token->str);
-		printf("] ");
+// void print_token(t_token *list_token)
+// {
+// 	printf("print_toke\n");
+// 	while (list_token)
+// 	{
+// 		printf("[");
+// 		if (list_token->type == WORD)
+// 			printf("WORD");
+// 		if (list_token->type == SEPARATOR)
+// 			printf("SEPARATOR");
+// 		if (list_token->type == D_QUOTES)
+// 			printf("D_QUOTES");
+// 		if (list_token->type == S_QUOTES)
+// 			printf("S_QUOTES");
+// 		if (list_token->type == OUT)
+// 			printf("OUT");
+// 		if (list_token->type == IN)
+// 			printf("IN");
+// 		if (list_token->type == HEREDOC)
+// 			printf("HEREDOC");
+// 		if (list_token->type == APPEND)
+// 			printf("APPEND");
+// 		if (list_token->type == PIPE)
+// 			printf("PIPE");
+// 		printf(" =");
+// 		if (list_token)
+// 			printf("%s", list_token->str);
+// 		printf("] ");
 
-		list_token = list_token->next;
-	}
-	printf("\n");
-}
+// 		list_token = list_token->next;
+// 	}
+// 	printf("\n");
+// }
 
-void	print_envd(char **env)
-{
-	int	i;
+// void	print_envd(char **env)
+// {
+// 	int	i;
 
-	i = 0;
-	printf("\n\n env = \n");
-	while (env[i])
-		printf("%s\n", env[i++]);
-}
+// 	i = 0;
+// 	printf("\n\n env = \n");
+// 	while (env[i])
+// 		printf("%s\n", env[i++]);
+// }
 
-void	print_env(t_env *env)
-{
-	while(env)
-	{
-		if(!env->content)
-			printf("%s\n", env->name);
-		printf("%s=%s\n", env->name, env->content);
-		env = env->next;
-	}
-}
+// void	print_env(t_env *env)
+// {
+// 	while(env)
+// 	{
+// 		if(!env->content)
+// 			printf("%s\n", env->name);
+// 		printf("%s=%s\n", env->name, env->content);
+// 		env = env->next;
+// 	}
+// }
 
 // int	isan_export(char *str)
 // {

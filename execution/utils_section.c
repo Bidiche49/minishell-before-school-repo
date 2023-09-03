@@ -1,28 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exe2.c                                       :+:      :+:    :+:   */
+/*   utils_section.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 21:02:37 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/02 00:22:33 by audrye           ###   ########.fr       */
+/*   Created: 2023/09/02 00:06:50 by audrye            #+#    #+#             */
+/*   Updated: 2023/09/02 00:07:02 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "execution.h"
 #include "../minishell.h"
 
-int	ft_lstsize(t_token *token)
+int	is_word(int type)
+{
+	if (type == WORD || type == S_QUOTES || type == D_QUOTES)
+		return (1);
+	return (0);		
+}
+
+int	is_redir(int type)
+{
+	if (type == IN || type == OUT || type == APPEND || type == HEREDOC)
+		return (1);
+	return (0);		
+}
+
+int	count_section(t_token *token)
 {
 	int	i;
-
-	i = 0;
+	
+	i = 1;
 	while (token)
 	{
+		if (token->type == PIPE)
+			i++;
 		token = token->next;
-		i++;
 	}
 	return (i);
 }
-

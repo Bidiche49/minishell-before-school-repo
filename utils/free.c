@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/28 22:46:06 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 00:51:49 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,14 @@ void free_all(t_token **lst_token, t_env **env)
 	if (env)
 		free_env(env);
 	printf("fin free\n");
+}
+
+void free_env_char(char **env)
+{
+	int i;
+
+	i = 0;
+	while (env)
+		free(env[i++]);
+	free(env);
 }

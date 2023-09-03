@@ -6,7 +6,7 @@
 #    By: audrye <audrye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/08/31 04:18:19 by audrye           ###   ########.fr        #
+#    Updated: 2023/09/02 05:22:00 by audrye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,8 +60,19 @@ SRCS =			minishell.c							\
 				$(EXEC_LOC)utils_exe4.c				\
 				$(EXEC_LOC)redir.c					\
 				$(EXEC_LOC)pipe.c					\
+				$(EXEC_LOC)close_fd.c				\
+				$(EXEC_LOC)file_master.c			\
+				$(EXEC_LOC)find_path.c				\
+				$(EXEC_LOC)free_section.c			\
+				$(EXEC_LOC)get_env.c				\
+				$(EXEC_LOC)init_pipe.c				\
+				$(EXEC_LOC)is_bultin.c				\
+				$(EXEC_LOC)utils_section.c			\
 				$(BUILTINS_LOC)cmd_env.c			\
-				$(BUILTINS_LOC)echo.c
+				$(BUILTINS_LOC)echo.c				\
+				$(BUILTINS_LOC)export_utils.c		\
+				$(BUILTINS_LOC)export.c				\
+				$(BUILTINS_LOC)unset.c
 
 OBJS =			$(SRCS:.c=.o)
 

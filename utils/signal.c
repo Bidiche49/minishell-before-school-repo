@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:50:40 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/30 00:58:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/02 00:38:13 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,10 @@ void	signal_heredoc(int sig)
 	close(STDIN_FILENO);
 	g_error = 128;
 	return ;
+}
+
+void	kill_child(int num)
+{
+	if (num == SIGINT)
+		exit(130);
 }
