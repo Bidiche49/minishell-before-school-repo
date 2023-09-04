@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 22:13:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 06:35:57 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/03 23:46:20 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	ft_countword(char const *s, char c)
+int	ft_countword(char const *s, char c)
 {
 	int	i;
 	int	count_word;

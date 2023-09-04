@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 11:57:12 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/03 23:44:26 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	conductor(t_section **section)
 	pid = ft_calloc(ft_lstsize_section(*section), sizeof(int));
 	if (!pid)
 		return (malloc_error(), ERROR);
+	int i = 0;
 	pid[0] = fork();
 	printf("deep = %d\n", (*section)->deep);
 	if ((*section)->deep == 1)
