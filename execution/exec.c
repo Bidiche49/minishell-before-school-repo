@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/03 23:44:26 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/06 02:22:12 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,50 +86,123 @@ char	**convert_env(t_env **env)
 	return (env_tmp);
 }
 
-int	exec(t_section **section, int *pid)
+void	redirection(int fd[2], int index, int last, int prev)
 {
-	char	**matrix_env;
-	char	**matrix_option;
+	if (index != 0)
+	{
+		dup2(prev, STDIN_FILENO);
+		close(prev);
+	}
+	if (index != last)
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	
+	// pour heredoc / in, out / append
+	// openfiles(	)
+	// int fd;
+	// while (fichier[i])
+	// {
+	// 	if (type[i] == OUT)
+	// 	{
+	// 		fd = open(fichier[i], O_CREAT | O_TRUNC, 0644);
+	// 	}
+	// 	if (type[i] == APPEND)
+	// 	{
+	// 		fd = open(fichier[i], O_CREAT | O_APPEND, 0644);
+	// 	}
+	// 	if (type[i] == IN)
+	// 	{
+	// 		fd = open(fichier[i], O_RDONLY);
+	// 	}
+	// 	if (fd == -1)
+	// 		exit(1);;
+	// 	if (type[i] == OUT || type[i] == APPEND)
+	// 		dup2(fd, STDOUT_FILENO);
+	// 	else 
+	// 		dup2(fd, STDIN_FILENO);
+	// }
+	// if (!cmd)
+	// 	exit(1);
+	// je lis dans minishell.c
+	// jecris dans c
+	// execve()
+}
 
-	matrix_env = convert_env((*section)->env);
-	if (!matrix_env)
-		return (malloc_error(), ERROR);
-	matrix_option = ft_split((*section)->option, ' ');
-	if (!matrix_option)
-		return (malloc_error(), ERROR);
-	if (pid[0] == -1)
-	{
-		perror("fork");
-		return ERROR;
-	}
-	if (pid[0] == 0)
-	{
-		execve((*section)->abs_path, matrix_option, matrix_env);
-		free_section((*section));
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		int status;
-		waitpid(pid[0], &status, 0);
-		// exit(127);
-		// return (msg(ERR_FORK), g_error = FORK_KO, ERROR);
-	}
-	return (SUCCESS);
+int	exec(t_section *section, int *fd, int *pid, int i, int prev)
+{
+	char	**arg;
+	char	**env;
+	
+	free(pid);
+	// printf("dans le fork\n");
+	redirection(fd, i, section->deep - 1, prev);
+	arg = ft_split(section->option, ' ');
+	env = convert_env(section->env);
+	execve(section->abs_path, arg, env);
+	// fprintf(stderr, "%s command not found\n", section->cmd);
+	exit(127);
+}
+
+void	end_of_pid(int *fd, int i, int *prev)
+{
+	close(fd[1]);
+	if (i > 0)
+		close(*prev);
+	*prev = fd[0];
+
 }
 
 int	conductor(t_section **section)
 {
-	pid_t	*pid;
-
-	pid = ft_calloc(ft_lstsize_section(*section), sizeof(int));
+	pid_t		*pid;
+	t_section	*tmp;
+	int			tmpfd[2];
+	int			prev;
+	int			i;
+	
+	prev = -1;	
+	i = 0;
+	tmp = *section;
+	pid = ft_calloc(tmp->deep, sizeof(int));
 	if (!pid)
 		return (malloc_error(), ERROR);
-	int i = 0;
-	pid[0] = fork();
-	printf("deep = %d\n", (*section)->deep);
-	if ((*section)->deep == 1)
-		if (exec(section, pid) == ERROR)
-			return (ERROR);
+	while (i < (*section)->deep)
+	{
+		pipe(tmpfd);
+		if (find_path(tmp) != SUCCESS)
+			return (free_list_section(section), ERROR);
+		pid[i] = fork();
+		if (pid[i] == 0)
+			exec(tmp , tmpfd, pid, i, prev);
+		else if (pid[i] > 0)
+		{
+			// fprintf(stderr, "%i %i %i\n", tmpfd[0], tmpfd[1], prev);
+			end_of_pid(tmpfd, i, &prev);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	i = 0;
+	while (i < (*section)->deep)
+		waitpid(pid[i++], NULL, 0);
+	close(tmpfd[0]);
 	return (SUCCESS);
 }
+
+
+/*
+
+checker la syntax
+si elle est pas bonne
+	on recommence
+fork()
+	tokenize
+	redirection
+		tout rediriger
+		if (!)
+			exit(1);
+	chercher si la commande existe
+		execute
+
+*/

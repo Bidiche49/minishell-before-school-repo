@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:23:22 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 11:23:16 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 02:23:43 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ int	execution(t_token *token, t_env **env)
 	section = NULL;
 	if (init_section(token, &section, env) == ERROR)
 		return (ERROR);
-	return_val = find_path(&section);
-	if (return_val != SUCCESS)
-		return (free_list_section(&section), return_val);
+	// return_val = find_path(&section);
+	// if (return_val != SUCCESS)
+	// 	return (free_list_section(&section), return_val);
 	return_val = conductor(&section);
 	if (return_val != SUCCESS)
 		return (free_list_section(&section), return_val);
-	print_section(section);
+	// print_section(section);
 	(void)return_val;
 	return (SUCCESS);
 }

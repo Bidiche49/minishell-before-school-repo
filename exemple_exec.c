@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 23:45:21 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/04 07:18:28 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/05 14:34:25 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	*redirection(int fd[2], int index, int last, int prev)
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
+	
+	// pour heredoc / in, out / append
 	// openfiles(	)
 	/*
 	int fd;

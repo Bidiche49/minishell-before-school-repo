@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 06:21:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 02:25:12 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int fill_tokens(char *input, t_token **list_token)
 			return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN)), NEW_LINE);
 		if (ft_lstadd_back(list_token, new_token) == ERROR)
 			return (ERROR);
-		printf("tsest\n");
 		tmp_input = next_token(tmp_input);
 	}
 	print_token(*list_token);

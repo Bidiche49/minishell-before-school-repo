@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 11:24:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 01:02:54 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	valid_path(char *path, t_section *tmp)
 	return (return_val);
 }
 
-int	find_path(t_section **section)
+int	find_path(t_section *section)
 {
 	t_section	*tmp;
 	char		*path;
@@ -78,7 +78,7 @@ int	find_path(t_section **section)
 	int			final_return;
 
 	final_return = NEWLINE;
-	tmp = (*section);
+	tmp = section;
 	path = getenv("PATH");
 	while (tmp)
 	{
