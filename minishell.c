@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 11:15:38 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 02:47:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main_loop(char *input, t_token **token, t_env **env)
 	config_minishell_signal();
 	while (1)
 	{
-		input = readline(BOLD CYAN "Minishell > " RESET);
+		input = readline("\001" BOLD CYAN "\002" "Minishell > " "\001" RESET "\002");
 		if (!input)
 			break ;
 		else if (ft_strlen(input) > 0 && !space_only(input))
