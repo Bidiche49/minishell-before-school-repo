@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_section.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/02 08:36:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 04:56:49 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	free_section(t_section *section)
 		free(section->abs_path);
 	if (section->option)
 		free(section->option);
-	// fermer les fd
 	free(section);
 	section = NULL;
 }
@@ -131,21 +130,19 @@ int	list_add_back_section(t_section **section, t_section *new)
 	return (SUCCESS);
 }
 
-void	free_list_section(t_section **section)
+void free_list_section(t_section **section)
 {
-	t_section *tmp;
+    t_section *current;
+    t_section *next;
 
-	tmp = NULL;
-	if (!section)
-		return ;
-	while (section && (*section)->next)
-	{
-		tmp = (*section)->next;
-		free_section(*section);
-		(*section) = tmp;
-	}
-	free_section(*section);
-	section = NULL;
+	current = *section;
+    while (current != NULL)
+    {
+        next = current->next;
+        free_section(current);
+        current = next;
+    }
+    *section = NULL;
 }
 
 int	init_section(t_token *token, t_section **section, t_env **env)

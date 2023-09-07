@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 02:22:12 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/06 04:46:05 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_lstsize_env(t_env *env)
 	return (i);
 }
 
-int	ft_lstsize_section(t_section *section)
+ int	ft_lstsize_section(t_section *section)
 {
 	int	i;
 
@@ -86,8 +86,36 @@ char	**convert_env(t_env **env)
 	return (env_tmp);
 }
 
-void	redirection(int fd[2], int index, int last, int prev)
+int	openfiles(t_token *token)
 {
+	int fd;
+
+	while (token)
+	{
+		if (token->type == OUT)
+			fd = open(token->str, O_CREAT | O_TRUNC, 0644);
+		if (token->type == APPEND)
+			fd = open(token->str, O_CREAT | O_APPEND, 0644);
+		if (token->type == IN)
+			fd = open(token->str, O_RDONLY);
+		if (fd == -1)
+			exit(1);
+		if (token->type == OUT || token->type == APPEND)
+			dup2(fd, STDOUT_FILENO);
+		else 
+			dup2(fd, STDIN_FILENO);
+		if (!token->str)
+			exit(1);
+		token = token->next;
+	}
+	return (fd);
+}
+
+void	redirection(int fd[2], int index, int last, int prev, t_section *section)
+{
+	t_token *token;
+	
+	token = section->token;	
 	if (index != 0)
 	{
 		dup2(prev, STDIN_FILENO);
@@ -97,9 +125,9 @@ void	redirection(int fd[2], int index, int last, int prev)
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
+//	pour heredoc / in, out / append
+	openfiles(token);
 	
-	// pour heredoc / in, out / append
-	// openfiles(	)
 	// int fd;
 	// while (fichier[i])
 	// {
@@ -124,8 +152,8 @@ void	redirection(int fd[2], int index, int last, int prev)
 	// }
 	// if (!cmd)
 	// 	exit(1);
-	// je lis dans minishell.c
-	// jecris dans c
+	// // je lis dans minishell.c
+	// // jecris dans c
 	// execve()
 }
 
@@ -136,10 +164,11 @@ int	exec(t_section *section, int *fd, int *pid, int i, int prev)
 	
 	free(pid);
 	// printf("dans le fork\n");
-	redirection(fd, i, section->deep - 1, prev);
+	redirection(fd, i, section->deep - 1, prev, section);
 	arg = ft_split(section->option, ' ');
 	env = convert_env(section->env);
-	execve(section->abs_path, arg, env);
+	if (execve(section->abs_path, arg, env) == -1)
+		perror(section->option);
 	// fprintf(stderr, "%s command not found\n", section->cmd);
 	exit(127);
 }
