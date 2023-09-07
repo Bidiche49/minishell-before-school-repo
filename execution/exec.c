@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 02:22:12 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/07 10:46:19 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	redirection(int fd[2], int index, int last, int prev)
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
-	
+
 	// pour heredoc / in, out / append
 	// openfiles(	)
 	// int fd;
@@ -119,7 +119,7 @@ void	redirection(int fd[2], int index, int last, int prev)
 	// 		exit(1);;
 	// 	if (type[i] == OUT || type[i] == APPEND)
 	// 		dup2(fd, STDOUT_FILENO);
-	// 	else 
+	// 	else
 	// 		dup2(fd, STDIN_FILENO);
 	// }
 	// if (!cmd)
@@ -133,13 +133,21 @@ int	exec(t_section *section, int *fd, int *pid, int i, int prev)
 {
 	char	**arg;
 	char	**env;
-	
+
+	// (void)i;
+	// (void)prev;
+	// (void)fd;
 	free(pid);
 	// printf("dans le fork\n");
 	redirection(fd, i, section->deep - 1, prev);
-	arg = ft_split(section->option, ' ');
-	env = convert_env(section->env);
-	execve(section->abs_path, arg, env);
+	if (is_builtin(section))
+		exec_builtins(section, 1);
+	else
+	{
+		arg = ft_split(section->option, ' ');
+		env = convert_env(section->env);
+		execve(section->abs_path, arg, env);
+	}
 	// fprintf(stderr, "%s command not found\n", section->cmd);
 	exit(127);
 }
@@ -160,8 +168,8 @@ int	conductor(t_section **section)
 	int			tmpfd[2];
 	int			prev;
 	int			i;
-	
-	prev = -1;	
+
+	prev = -1;
 	i = 0;
 	tmp = *section;
 	pid = ft_calloc(tmp->deep, sizeof(int));
@@ -170,7 +178,7 @@ int	conductor(t_section **section)
 	while (i < (*section)->deep)
 	{
 		pipe(tmpfd);
-		if (find_path(tmp) != SUCCESS)
+		if (!is_builtin(tmp) && find_path(tmp) != SUCCESS)
 			return (free_list_section(section), ERROR);
 		pid[i] = fork();
 		if (pid[i] == 0)

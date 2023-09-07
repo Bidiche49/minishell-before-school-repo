@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 02:10:35 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/07 10:44:31 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,17 @@ int	add_env(t_env **env, char **split_line)
 	return (free_matrice(split_line), SUCCESS);
 }
 
-void	print_env_export(t_env **env)
+void	print_env_export(t_env **env, int fd)
 {
 	t_env *tmp;
 
 	tmp = *env;
+	(void)fd;
 	while(tmp)
 	{
 		if (tmp->name && tmp->content)
 		{
+			// put
 			printf(BOLD YELLOW "export" RESET);
 			printf(YELLOW " %s=" RESET, tmp->name);
 			printf(CYAN "\"%s\"\n" RESET, tmp->content);
@@ -116,13 +118,16 @@ void	print_env_export(t_env **env)
 // 	return (SUCCESS);
 // }
 
-int	cmd_export(t_env **env, char *line_env)
+int	cmd_export(t_section *sec, int fd)
 {
-	if (!line_env)
+	// write(1, sec->option, ft_strlen(sec->option));
+	// printf("%s\n", sec->option);
+	// printf("test\ntest\n");
+	if (!sec->option)
 		return (ERROR);
-	if (!ft_strcmp(line_env, "export"))
-		return (print_env_export(env), SUCCESS);
-	if (add_env(env, fill_split_line(line_env)) == ERROR)
+	if (!ft_strcmp(sec->option, "export"))
+		return (print_env_export(sec->env, fd), SUCCESS);
+	if (add_env(sec->env, fill_split_line(sec->option)) == ERROR)
 		return (ERROR);//FREE ALL---------------------------------------------------
 	return (SUCCESS);
 }

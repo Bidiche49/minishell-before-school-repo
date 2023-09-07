@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/02 11:17:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/07 10:23:37 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int		check_var_name(char *name);
 int		existing_var(t_env **env, char *line);
 void	error_export(char *line);
 char	**fill_split_line(char *line_env);
-int		cmd_export(t_env **env, char *line_env);
+int		cmd_export(t_section *sec, int fd);
 
 /* SIGNAL */
 

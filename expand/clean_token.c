@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 04:20:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/07 11:11:10 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	del_all_token(t_token **list_token)
 
 int	if_forest_clean_token(t_token *tok)
 {
-	if (tok->next && tok->next->type == SEPARATOR && !tok->next->next)
+	if (tok->next && tok->next->type == SEPARATOR && ((!tok->next->next)
+		|| (tok->next->next && tok->next->next->type == PIPE)))
 		del_next_token(&tok);
 	if (tok->next && tok->next->type == WORD && !tok->next->str)
 		del_next_token(&tok);
