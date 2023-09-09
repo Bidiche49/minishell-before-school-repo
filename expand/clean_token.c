@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 05:08:12 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/09 15:13:22 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	del_all_token(t_token **list_token)
 
 int	if_forest_clean_token(t_token *tok)
 {
-	if (tok->next && tok->next->type == SEPARATOR && !tok->next->next)
+	if (tok->next && tok->next->type == SEPARATOR && ((!tok->next->next)
+		|| (tok->next->next && tok->next->next->type == PIPE)))
 		del_next_token(&tok);
 	if (tok->next && tok->next->type == WORD && !tok->next->str)
 		del_next_token(&tok);
@@ -62,9 +63,9 @@ int	if_forest_clean_token(t_token *tok)
 	if (tok->next && tok->type == SEPARATOR
 		&& tok->next->type == SEPARATOR)
 		del_next_token(&tok);
-	if (tok->type != HEREDOC && is_op(tok) && (!tok->next || (tok->next
+	if (is_op(tok) && (!tok->next || (tok->next
 				&& !tok->next->next && tok->next->type == SEPARATOR)))
-		return (err_end_token(tok), NEW_LINE);
+		return (err_end_token(NULL), NEW_LINE);
 	if (dble_op(tok))
 		return (err_end_token(tok), NEW_LINE);
 	return (SUCCESS);

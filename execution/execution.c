@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:23:22 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 02:23:43 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/09 13:16:26 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	execution(t_token *token, t_env **env)
 	section = NULL;
 	if (init_section(token, &section, env) == ERROR)
 		return (ERROR);
+	printf("icci\n");
 	// return_val = find_path(&section);
 	// if (return_val != SUCCESS)
 	// 	return (free_list_section(&section), return_val);

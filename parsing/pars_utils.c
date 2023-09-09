@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 21:44:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/29 01:17:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 03:56:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,12 @@ int	is_word_quote(t_token *token)
 	if (token->type == WORD || token->type == D_QUOTES || token->type == S_QUOTES)
 		return (1);
 	return (0);
+}
+
+int	ft_isspecial(char c)
+{
+	if (c == '!' || c == '@' || c == '#')
+		return (1);
+	else
+		return (0);
 }

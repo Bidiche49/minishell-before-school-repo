@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 03:04:24 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/06 04:07:24 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ int space_only(char *input)
 	i = 0;
 	if (input != NULL)
 	{
+		if (input[0] && input[1] && !input[2] && input[0] == '\\' && input[1] == 'n')
+			return (1);
+		if(input[0] && ft_isspecial(input[0]))
+			return (1);
 		while (input[i])
 		{
-			if (ft_isspace(input[i]))
+			if (ft_isspace(input[i]) || input[i] == '#')
 				i++;
 			else if (input[i] && !ft_isspace(input[i]))
 				return (0);

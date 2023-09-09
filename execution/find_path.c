@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 01:02:54 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/09 13:19:48 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ int	find_path(t_section *section)
 	while (tmp)
 	{
 		return_val = valid_path(path, tmp);
-		printf("return_val = %d\n", return_val);
-		printf("final_return = %d\n", final_return);
 		if (return_val == ERROR)
 			return (ERROR);
 		else if (return_val == SUCCESS || is_builtin(tmp))
