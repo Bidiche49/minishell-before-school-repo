@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:46:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 11:13:02 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/09 19:58:14 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	create_env(char **envd, t_env **env)
 	i = 0;
 	while (envd[i])
 	{
-
 		if (ft_lstadd_back_env(env, fill_new_env(envd[i])))
 			return (ERROR);
 		i++;
