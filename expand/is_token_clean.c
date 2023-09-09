@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:17:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/07 11:09:41 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/09 18:34:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	if_forest_is_token_ok(t_token *tok)
 		&& tok->next->type == SEPARATOR)
 		return (0);
 	else if (is_op(tok)
-		&& !tok->str && (!tok->next || (tok->next && !tok->next->next
+		&& !tok->str && ((!tok->next  && !tok->str)|| (tok->next && !tok->next->next
 				&& tok->next->type == SEPARATOR)))
 		return (0);
 	return (1);

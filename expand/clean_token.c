@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 15:13:22 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/09 18:34:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	if_forest_clean_token(t_token *tok)
 	if (tok->next && tok->type == SEPARATOR
 		&& tok->next->type == SEPARATOR)
 		del_next_token(&tok);
-	if (is_op(tok) && (!tok->next || (tok->next
+	if (is_op(tok) && ((!tok->next && !tok->str)|| (tok->next
 				&& !tok->next->next && tok->next->type == SEPARATOR)))
 		return (err_end_token(NULL), NEW_LINE);
 	if (dble_op(tok))
