@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 15:30:57 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/10 12:02:16 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,8 @@ int	conductor(t_section **section)
 	while (i < (*section)->deep)
 	{
 		pipe(tmpfd);
-		if (!is_builtin(tmp) && find_path(tmp) != SUCCESS)
-			return (NEW_LINE);
+		// if (!is_builtin(tmp) && find_path(tmp) != SUCCESS)
+		// 	return (1);
 		pid[i] = fork();
 		if (pid[i] == 0)
 			exec(tmp , tmpfd, pid, i, prev);
