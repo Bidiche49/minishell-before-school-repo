@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 11:14:31 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:32:29 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,8 @@ void	print_env_export(t_env **env)
 
 t_token	*find_tok(t_token *tok)
 {
-	int			i;
 	t_token		*tmp;
 
-	i = 0;
 	tmp = tok;
 	while (tmp)
 	{

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/10 11:09:21 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:38:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		ft_strlen_char(char *str, char c);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	print_token(t_token *list_token);
 int		init_section(t_token *token, t_section **section, t_env **env);
-void	cmd_unset(t_section *sec);
+int		cmd_unset(t_section *sec);
 void	malloc_error(void);
 
 /* EXPORT */
