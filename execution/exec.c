@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 15:30:57 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/10 00:56:15 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**convert_env(t_env **env)
 int	openfiles(t_token *token)
 {
 	int fd;
-	
+
 	fd = -1;
 	while (token && token->type != PIPE)
 	{
@@ -105,7 +105,7 @@ int	openfiles(t_token *token)
 				exit(1);
 			if (token->type == OUT || token->type == APPEND)
 				dup2(fd, STDOUT_FILENO);
-			else 
+			else
 				dup2(fd, STDIN_FILENO);
 		}
 		token = token->next;
@@ -117,7 +117,7 @@ void	redirection(int fd[2], int index, int last, int prev, t_section *section)
 {
 	t_token *token;
 	int		redir;
-	
+
 	token = section->token;
 	redir = openfiles(token);
 	if (redir >= 0)

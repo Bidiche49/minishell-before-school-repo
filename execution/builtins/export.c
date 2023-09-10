@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 19:46:57 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/10 11:14:31 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,11 @@ int	add_env(t_env **env, t_token *tok)
 	return (SUCCESS);
 }
 
-void	print_env_export(t_env **env, int fd)
+void	print_env_export(t_env **env)
 {
 	t_env *tmp;
 
 	tmp = *env;
-	(void)fd;
 	while(tmp)
 	{
 		if (tmp->name && tmp->content)
@@ -100,7 +99,7 @@ void	print_env_export(t_env **env, int fd)
 	}
 }
 
-t_token	*find_tok(t_token *tok, int nb_export)
+t_token	*find_tok(t_token *tok)
 {
 	int			i;
 	t_token		*tmp;
@@ -110,11 +109,11 @@ t_token	*find_tok(t_token *tok, int nb_export)
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->str, "export"))
-		{
-			if (i == nb_export)
+		// {
+		// 	if (i == nb_export)
 				break ;
-			i++;
-		}
+		// 	i++;
+		// }
 		tmp = tmp->next;
 	}
 	if (tmp && tmp->next && tmp->next->next && tmp->next->next->type == WORD)
@@ -122,15 +121,18 @@ t_token	*find_tok(t_token *tok, int nb_export)
 	return (NULL);
 }
 
-int	cmd_export(t_section *sec, int fd)
+int	cmd_export(t_section *sec)
 {
 	static int	nb_export = 0;
 
 	if (!sec->option)
 		return (ERROR);
 	if (!ft_strcmp(sec->option, "export"))
-		return (nb_export++, print_env_export(sec->env, fd), SUCCESS);
-	if (add_env(sec->env, find_tok(sec->token, nb_export)) == ERROR)
+		return (nb_export++, print_env_export(sec->env), SUCCESS);
+	if (sec->deep)
+		return (SUCCESS);
+	if (add_env(sec->env, find_tok(sec->token)) == ERROR)
 		return (ERROR);//FREE ALL---------------------------------------------------
+	cmd_env(sec->env);
 	return (SUCCESS);
 }
