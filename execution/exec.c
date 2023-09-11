@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 18:40:10 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 19:38:50 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,12 @@ void	redirection(int fd[2], int index, int last, int prev, t_section *section)
 	redir = openfiles(token);
 	if (redir >= 0)
 		fd[1] = redir;
-	if (token->type == HEREDOC)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		// write(fd[1], , strlen(heredoc_text));
-	}
+	// if (token->type == HEREDOC)
+	// {
+	// 	close(fd[0]);
+	// 	dup2(fd[1], STDOUT_FILENO);
+	// 	// write(fd[1], , strlen(heredoc_text));
+	// }
 	if (index != 0)
 	{
 		dup2(prev, STDIN_FILENO);
@@ -183,17 +183,22 @@ int	conductor(t_section **section)
 	savefd[0] = dup(STDIN_FILENO);
 	savefd[1] = dup(STDOUT_FILENO);
 	if (tmp->deep == 1 && is_builtin(tmp) == 1)
-		exec_builtins(tmp);
-	while (i < (*section)->deep && tmp->deep != 1 && is_builtin(tmp) != 1)
 	{
-		pipe(tmpfd);
-		pid[i] = fork();
-		if (pid[i] == 0)
-			exec(tmp , tmpfd, pid, i, prev);
-		else if (pid[i] > 0)
-			end_of_pid(tmpfd, i, &prev);
-		tmp = tmp->next;
-		i++;
+		exec_builtins(tmp);
+	}
+	else
+	{
+		while (i < (*section)->deep)// && (*section)->deep != 1 && is_builtin(tmp) != 1)
+		{
+			pipe(tmpfd);
+			pid[i] = fork();
+			if (pid[i] == 0)
+				exec(tmp , tmpfd, pid, i, prev);
+			else if (pid[i] > 0)
+				end_of_pid(tmpfd, i, &prev);
+			tmp = tmp->next;
+			i++;
+		}
 	}
 	dup2(savefd[0], STDIN_FILENO);
 	dup2(savefd[1], STDOUT_FILENO);
@@ -205,7 +210,7 @@ int	conductor(t_section **section)
 		waitpid(pid[i], NULL, 0);
 		i++;
 	}
-	if (tmp->deep != 1)
+	if ((*section)->deep != 1)
 		close(tmpfd[0]);
 	free_list_section(section);
 	return (SUCCESS);
