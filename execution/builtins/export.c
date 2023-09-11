@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/07 10:44:31 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:32:29 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,44 +48,44 @@ int	mod_exist_var(t_env **env, char *line)
 	return (0);
 }
 
-int	add_env(t_env **env, char **split_line)
+int	add_env(t_env **env, t_token *tok)
 {
-	int	i;
-
-	if (!split_line)
-		return (malloc_error(), ERROR);
-	i = 0;
-	while (split_line && split_line[i] && split_line[i][0])
+	printf("tok->str = %s\n", tok->str);
+	while (tok)
 	{
-		if (existing_var(env, split_line[i]))
+		if (tok->type == WORD)
 		{
-			if (mod_exist_var(env, split_line[i]) == ERROR)
-				return (ERROR);
-		}
-		else if (check_line(split_line[i]))
-		{
-			if (ft_lstadd_back_env(env, fill_new_env(split_line[i])))
+			if (existing_var(env, tok->str))
 			{
-				free_matrice(split_line);
-				return (malloc_error(), ERROR);
+				printf("existing_var\n");
+				if (mod_exist_var(env, tok->str) == ERROR)
+					return (ERROR);
 			}
+			else if (check_line(tok->str))
+			{
+				printf("check_line ok\n");
+				if (ft_lstadd_back_env(env, fill_new_env(tok->str)))
+					return (malloc_error(), ERROR);
+			}
+			tok = tok->next;
 		}
-		i++;
+		else if (tok->type == SEPARATOR)
+			tok = tok->next;
+		else
+			break ;
 	}
-	return (free_matrice(split_line), SUCCESS);
+	return (SUCCESS);
 }
 
-void	print_env_export(t_env **env, int fd)
+void	print_env_export(t_env **env)
 {
 	t_env *tmp;
 
 	tmp = *env;
-	(void)fd;
 	while(tmp)
 	{
 		if (tmp->name && tmp->content)
 		{
-			// put
 			printf(BOLD YELLOW "export" RESET);
 			printf(YELLOW " %s=" RESET, tmp->name);
 			printf(CYAN "\"%s\"\n" RESET, tmp->content);
@@ -99,35 +99,38 @@ void	print_env_export(t_env **env, int fd)
 	}
 }
 
-// char	**fill_split_line(t_token *token)
-// {
-// 	if (!ft_strcmp(token->str, "export") && token->next->type)
-// }
-
-// int	cmd_export(t_env **env, t_section *section)
-// {
-// 	t_token	*token;
-
-// 	token = section->token;
-// 	if (section->next)
-// 		return (SUCCESS);
-// 	if (!ft_strcmp(token->str, "export") && !token->next)
-// 		return (print_env_export(env), SUCCESS);
-// 	if (add_env(env, fill_split_line(line_env)) == ERROR)
-// 		return (ERROR);//FREE ALL---------------------------------------------------
-// 	return (SUCCESS);
-// }
-
-int	cmd_export(t_section *sec, int fd)
+t_token	*find_tok(t_token *tok)
 {
-	// write(1, sec->option, ft_strlen(sec->option));
-	// printf("%s\n", sec->option);
-	// printf("test\ntest\n");
+	t_token		*tmp;
+
+	tmp = tok;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->str, "export"))
+		// {
+		// 	if (i == nb_export)
+				break ;
+		// 	i++;
+		// }
+		tmp = tmp->next;
+	}
+	if (tmp && tmp->next && tmp->next->next && tmp->next->next->type == WORD)
+		return (tmp->next->next);
+	return (NULL);
+}
+
+int	cmd_export(t_section *sec)
+{
+	static int	nb_export = 0;
+
 	if (!sec->option)
 		return (ERROR);
 	if (!ft_strcmp(sec->option, "export"))
-		return (print_env_export(sec->env, fd), SUCCESS);
-	if (add_env(sec->env, fill_split_line(sec->option)) == ERROR)
+		return (nb_export++, print_env_export(sec->env), SUCCESS);
+	if (sec->deep)
+		return (SUCCESS);
+	if (add_env(sec->env, find_tok(sec->token)) == ERROR)
 		return (ERROR);//FREE ALL---------------------------------------------------
+	cmd_env(sec->env);
 	return (SUCCESS);
 }

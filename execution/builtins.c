@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 09:38:25 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 12:03:57 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:45:37 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	exec_builtins(t_section *sec)
 	if (!ft_strcmp(sec->cmd, "echo"))
 		ft_echo(sec);
 	if (!ft_strcmp(sec->cmd, "unset"))
-		return (cmd_unset(sec->env, sec->option), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
+		return (cmd_unset(sec), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "pwd"))
 		return (0);
 	if (!ft_strcmp(sec->cmd, "cd"))
 		return (0);
 	if (!ft_strcmp(sec->cmd, "export"))
-		return (cmd_export(sec, 1), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
+		return (cmd_export(sec), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "env"))
 		return (cmd_env(sec->env), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "exit"))

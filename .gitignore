@@ -1,3 +1,12 @@
 .nfs*
 *.o
 minishell
+Backups
+blob_storage
+Cache
+CahedDATA
+Code Cache
+Crashpad
+Dictionaries
+Network Persistent State
+Preferences

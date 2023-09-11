@@ -6,13 +6,13 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 08:45:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 21:57:44 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:38:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	de_env_var(t_env **actual)
+void	del_env_var(t_env **actual)
 {
 	t_env	*tmp2;
 
@@ -38,67 +38,66 @@ void	del_first_env_var(t_env **lst)
 	(*lst) = tmp2;
 }
 
-int	del_var_env(t_env **env, char *line)
+int	check_var_name_unset(char *line)
+{
+	int	i;
+
+	i = 1;
+	if (is_num(line[0]) || !is_alnum_und(line[0]))
+		return (0);
+	while (line[i] && (is_alnum_und(line[i])))
+		i++;
+	if (!line[i])
+		return (1);
+	return (0);
+}
+
+int	del_in_env(t_env **env, t_token *tok)
 {
 	t_env	*tmp;
-	int		len_name;
-	char	*name;
 
-	if (!line || !line[0])
-		return (0);
-	if (*line == ' ')
-		line++;
 	tmp = *env;
-	len_name = ft_strlen_char(line, '=');
-	name = line;
-	name[len_name] = '\0';
-	if ((!ft_strcmp(name, (*env)->name)))
-			return (del_first_env_var(env), ft_strlen_char(line, ' ') + 1);
+	if (!check_var_name_unset(tok->str))
+		return (error_export(tok->str), ERROR);
+	if (!ft_strcmp(tok->str, tmp->name))
+		return (del_first_env_var(env), SUCCESS);
 	while (tmp)
 	{
-		// printf("%s ?= %s\n",tmp->next->name, line);
-		if (tmp->next && (!ft_strcmp(name, tmp->next->name)))
-			return (de_env_var(&tmp), ft_strlen_char(line, ' ') + 1);
+		if (tmp->next && !ft_strcmp(tok->str, tmp->next->name))
+			return (del_env_var(&tmp), SUCCESS);
 		tmp = tmp->next;
 	}
-	return (ft_strlen_char(line, ' ') + 1);
+	return (SUCCESS);
 }
 
-int	pass_cmd(char *line)
+int	del_var_env(t_env **env, t_token *tok)
 {
-	int	i;
+	int	return_val;
 
-	i = 0;
-	while (line[i] && line[i] != ' ')
-		i++;
-	if (line[i] && line[i] == ' ')
-		i++;
-	return (i);
-}
-
-void	cmd_unset(t_env **env, char *line_env)
-{
-	int	i;
-	int	quotes;
-
-	i = 0;
-	quotes = 0;
-	(void)quotes;
-	if (!line_env)
-		return ;
-	i = pass_cmd(line_env);
-	// if (line_env[i] && (line_env[i] != '"' || line_env[i] == '\''))
-	// {
-	// 	quotes = 1;
-	// 	i++;
-	// }
-	// printf("c = |%c|\n", line_env[i]);
-	while (line_env[i])
+	return_val = SUCCESS;
+	if (!tok->str)
+		return (1);
+	while (tok)
 	{
-		// if (line_env[i] && line_env[i] == ' ')
-		// 	i++;
-		i += del_var_env(env, line_env + i);
-		// while (line_env[i] && line_env[i] == '"')
-		// 	i++;
+		if (tok->type == WORD)
+			if (return_val == SUCCESS)
+				return_val = del_in_env(env, tok);
+		if (tok && tok->next && tok->next->type == SEPARATOR && tok->next->next && tok->next->next->type == WORD)
+			tok = tok->next->next;
+		else
+			break ;
 	}
+	return (return_val);
+}
+
+int	cmd_unset(t_section *sec)
+{
+	t_token	*tok;
+
+	tok = sec->token;
+	if (sec->deep > 1)
+		return (SUCCESS);
+	if (tok && tok->next && tok->next->next && tok->next->next->type == WORD)
+		return (del_var_env(sec->env, tok->next->next));
+	return (ERROR);
 }

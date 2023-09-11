@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 12:02:16 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:33:35 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**convert_env(t_env **env)
 int	openfiles(t_token *token)
 {
 	int fd;
-	
+
 	fd = -1;
 	while (token && token->type != PIPE)
 	{
@@ -101,12 +101,12 @@ int	openfiles(t_token *token)
 				fd = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (token->type == IN)
 				fd = open(token->str, O_RDONLY);
-			if (fd == -1)
-				exit(1);
 			if (token->type == OUT || token->type == APPEND)
 				dup2(fd, STDOUT_FILENO);
-			else 
+			else
 				dup2(fd, STDIN_FILENO);
+			if (fd == -1)
+				exit(1);
 		}
 		token = token->next;
 	}
@@ -117,16 +117,16 @@ void	redirection(int fd[2], int index, int last, int prev, t_section *section)
 {
 	t_token *token;
 	int		redir;
-	
+
 	token = section->token;
-	redir = openfiles(token);
-	if (redir >= 0)
-		fd[1] = redir;
 	if (index != 0)
 	{
 		dup2(prev, STDIN_FILENO);
 		close(prev);
 	}
+	redir = openfiles(token);
+	if (redir >= 0)
+		fd[1] = redir;
 	if (index != last)
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
@@ -140,14 +140,13 @@ int	exec(t_section *section, int *fd, int *pid, int i, int prev)
 
 	free(pid);
 	redirection(fd, i, section->deep - 1, prev, section);
-	if (is_builtin(section) == 1)
-	{
-		exec_builtins(section);
-		exit(127);
-	}
 	arg = ft_split(section->option, ' ');
 	env = convert_env(section->env);
-	execve(section->abs_path, arg, env);
+	find_path(section);
+	if (is_builtin(section))
+		exec_builtins(section);
+	else
+		execve(section->abs_path, arg, env);
 	exit(127);
 }
 
@@ -177,44 +176,30 @@ int	conductor(t_section **section)
 		return (malloc_error(), ERROR);
 	savefd[0] = dup(STDIN_FILENO);
 	savefd[1] = dup(STDOUT_FILENO);
+	if (tmp->deep == 1 && is_builtin(tmp) == 1)
+		exec_builtins(tmp);
 	while (i < (*section)->deep)
 	{
 		pipe(tmpfd);
-		// if (!is_builtin(tmp) && find_path(tmp) != SUCCESS)
-		// 	return (1);
 		pid[i] = fork();
 		if (pid[i] == 0)
 			exec(tmp , tmpfd, pid, i, prev);
 		else if (pid[i] > 0)
 			end_of_pid(tmpfd, i, &prev);
-		dup2(savefd[0], STDIN_FILENO);
-		dup2(savefd[1], STDOUT_FILENO);
-		close(savefd[0]);
-		close(savefd[1]);
 		tmp = tmp->next;
 		i++;
 	}
+	dup2(savefd[0], STDIN_FILENO);
+	dup2(savefd[1], STDOUT_FILENO);
+	close(savefd[0]);
+	close(savefd[1]);
 	i = 0;
 	while (i < (*section)->deep)
-		waitpid(pid[i++], NULL, 0);
+	{
+		waitpid(pid[i], NULL, 0);
+		i++;
+	}
 	close(tmpfd[0]);
 	free_list_section(section);
 	return (SUCCESS);
 }
-
-
-/*
-
-checker la syntax
-si elle est pas bonne
-	on recommence
-fork()
-	tokenize
-	redirection
-		tout rediriger
-		if (!)
-			exit(1);
-	chercher si la commande existe
-		execute
-
-*/

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:34:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/01 22:26:52 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/09 19:41:42 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,4 @@ int	existing_var(t_env **env, char *line)
 		tmp = tmp->next;
 	}
 	return (name[len_name] = is_equals, 0);
-}
-
-char **fill_split_line(char *line_env)
-{
-	int	i;
-
-	i = 0;
-	if (!line_env)
-		return (NULL);
-	while (line_env[i] && line_env[i] != ' ')
-		i++;
-	if (line_env[i] && line_env[i] == ' ')
-		i++;
-	return (ft_split(line_env + i, ' '));
 }
