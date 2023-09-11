@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 16:32:29 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:43:01 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,89 @@ int	add_env(t_env **env, t_token *tok)
 	return (SUCCESS);
 }
 
-void	print_env_export(t_env **env)
-{
-	t_env *tmp;
+t_env* create_node(char *name, char *content) {
+	t_env *new_node = malloc(sizeof(t_env));
+	new_node->name = strdup(name);
+	new_node->content = strdup(content);
+	new_node->next = NULL;
+	return new_node;
+}
 
-	tmp = *env;
-	while(tmp)
-	{
-		if (tmp->name && tmp->content)
-		{
-			printf(BOLD YELLOW "export" RESET);
-			printf(YELLOW " %s=" RESET, tmp->name);
-			printf(CYAN "\"%s\"\n" RESET, tmp->content);
+void insert_sorted(t_env **env, t_env *new_node) {
+	t_env *current;
+
+	if (*env == NULL || strcmp(new_node->name, (*env)->name) < 0) {
+		new_node->next = *env;
+		*env = new_node;
+	} else {
+		current = *env;
+		while (current->next != NULL && strcmp(new_node->name, current->next->name) > 0) {
+			current = current->next;
 		}
-		if (tmp->name && !tmp->content)
-		{
-			printf(BOLD YELLOW "export" RESET);
-			printf(YELLOW " %s\n" RESET, tmp->name);
-		}
-		tmp = tmp->next;
+		new_node->next = current->next;
+		current->next = new_node;
 	}
 }
+
+t_env* copy_and_sort_env(t_env *original_env) {
+	t_env *sorted_env = NULL;
+	t_env *current = original_env;
+
+	while (current != NULL) {
+		t_env *new_node = create_node(current->name, current->content);
+		insert_sorted(&sorted_env, new_node);
+		current = current->next;
+	}
+
+	return sorted_env;
+}
+
+// Fonction pour imprimer l'environnement trié
+int	print_env_export(t_env **env) {
+	t_env *sorted_env;
+
+	sorted_env = copy_and_sort_env(*env);
+	if (!sorted_env)
+		return (malloc_error(), ERROR);
+	while(sorted_env)
+	{
+		if (sorted_env->name && sorted_env->content)
+		{
+			printf(BOLD YELLOW "export" RESET);
+			printf(YELLOW " %s=" RESET, sorted_env->name);
+			printf(CYAN "\"%s\"\n" RESET, sorted_env->content);
+		}
+		if (sorted_env->name && !sorted_env->content)
+		{
+			printf(BOLD YELLOW "export" RESET);
+			printf(YELLOW " %s\n" RESET, sorted_env->name);
+		}
+		sorted_env = sorted_env->next;
+	}
+	return (SUCCESS);
+}
+
+// void	print_env_export(t_env **env)
+// {
+// 	t_env *tmp;
+
+// 	tmp = *env;
+// 	while(tmp)
+// 	{
+// 		if (tmp->name && tmp->content)
+// 		{
+// 			printf(BOLD YELLOW "export" RESET);
+// 			printf(YELLOW " %s=" RESET, tmp->name);
+// 			printf(CYAN "\"%s\"\n" RESET, tmp->content);
+// 		}
+// 		if (tmp->name && !tmp->content)
+// 		{
+// 			printf(BOLD YELLOW "export" RESET);
+// 			printf(YELLOW " %s\n" RESET, tmp->name);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// }
 
 t_token	*find_tok(t_token *tok)
 {
@@ -126,11 +188,12 @@ int	cmd_export(t_section *sec)
 	if (!sec->option)
 		return (ERROR);
 	if (!ft_strcmp(sec->option, "export"))
-		return (nb_export++, print_env_export(sec->env), SUCCESS);
-	if (sec->deep)
+		return (nb_export++, print_env_export(sec->env));
+	if (sec->deep > 1)
 		return (SUCCESS);
+	printf("cmd_export\n");
 	if (add_env(sec->env, find_tok(sec->token)) == ERROR)
-		return (ERROR);//FREE ALL---------------------------------------------------
+		return (printf("test\n"), ERROR);//FREE ALL---------------------------------------------------
 	cmd_env(sec->env);
 	return (SUCCESS);
 }
