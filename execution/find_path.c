@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 13:19:48 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 19:49:52 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ char	*ft_strjoin_path(char *s1, char *s2)
 
 int	check_path(char *path, t_section **section)
 {
+	if (!access((*section)->cmd, F_OK))
+	{
+		if (!access((*section)->cmd, X_OK))
+		{
+			(*section)->abs_path = ft_strdup((*section)->cmd);
+			if (!(*section)->abs_path)
+				return (malloc_error(), ERROR);
+			return(SUCCESS);
+		}
+	}
 	(*section)->abs_path = ft_strjoin_path(path, (*section)->cmd);
 	if (!(*section)->abs_path)
 		return (malloc_error(), ERROR);
