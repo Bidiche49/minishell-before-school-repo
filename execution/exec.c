@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 17:41:43 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 18:40:10 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,8 @@ int	conductor(t_section **section)
 		waitpid(pid[i], NULL, 0);
 		i++;
 	}
-	close(tmpfd[0]);
+	if (tmp->deep != 1)
+		close(tmpfd[0]);
 	free_list_section(section);
 	return (SUCCESS);
 }
