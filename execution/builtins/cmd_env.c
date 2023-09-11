@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 17:17:52 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/29 22:13:31 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 17:36:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	cmd_env(t_env **env)
 	t_env *tmp;
 
 	tmp = *env;
+	printf("start\n");
 	while(tmp)
 	{
 		if (tmp->name && tmp->content)

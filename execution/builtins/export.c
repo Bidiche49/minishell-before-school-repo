@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 17:15:30 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 17:37:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_env	*create_node(char *name, char *content)
 	t_env	*new;
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (malloc_error(), NULL);
+		return (NULL);
 	new->content = NULL;
 	new->name = strdup(name);
 	if (!new->name)
@@ -122,7 +122,7 @@ t_env	*copy_and_sort_env(t_env *env)
 	while (tmp != NULL) {
 		t_env *new = create_node(tmp->name, tmp->content);
 		if (!new)
-			return (free_env(&sorted_env), NULL);
+			return (NULL);
 		insert_sorted(&sorted_env, new);
 		tmp = tmp->next;
 	}
@@ -133,6 +133,7 @@ t_env	*copy_and_sort_env(t_env *env)
 int	print_env_export(t_env **env) {
 	t_env *sorted_env;
 
+	printf("test\n");
 	sorted_env = copy_and_sort_env(*env);
 	if (!sorted_env)
 		return (ERROR);
@@ -207,9 +208,7 @@ int	cmd_export(t_section *sec)
 		return (nb_export++, print_env_export(sec->env));
 	if (sec->deep > 1)
 		return (SUCCESS);
-	printf("cmd_export\n");
 	if (add_env(sec->env, find_tok(sec->token)) == ERROR)
-		return (printf("test\n"), ERROR);//FREE ALL---------------------------------------------------
-	cmd_env(sec->env);
+		return (ERROR);//FREE ALL---------------------------------------------------
 	return (SUCCESS);
 }
