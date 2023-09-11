@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 15:43:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 17:15:30 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,41 +77,56 @@ int	add_env(t_env **env, t_token *tok)
 	return (SUCCESS);
 }
 
-t_env* create_node(char *name, char *content) {
-	t_env *new_node = malloc(sizeof(t_env));
-	new_node->name = strdup(name);
-	new_node->content = strdup(content);
-	new_node->next = NULL;
-	return new_node;
+t_env	*create_node(char *name, char *content)
+{
+	t_env	*new;
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (malloc_error(), NULL);
+	new->content = NULL;
+	new->name = strdup(name);
+	if (!new->name)
+		return(malloc_error(), free_new_env(new), NULL);
+	new->content = strdup(content);
+	if (!new->content)
+		return (malloc_error(), free_new_env(new), NULL);
+	new->next = NULL;
+	return (new);
 }
 
-void insert_sorted(t_env **env, t_env *new_node) {
-	t_env *current;
+void insert_sorted(t_env **env, t_env *new)
+{
+	t_env *tmp;
 
-	if (*env == NULL || strcmp(new_node->name, (*env)->name) < 0) {
-		new_node->next = *env;
-		*env = new_node;
-	} else {
-		current = *env;
-		while (current->next != NULL && strcmp(new_node->name, current->next->name) > 0) {
-			current = current->next;
+	if (*env == NULL || strcmp(new->name, (*env)->name) < 0) {
+		new->next = *env;
+		*env = new;
+	}
+	else
+	{
+		tmp = *env;
+		while (tmp->next != NULL && strcmp(new->name, tmp->next->name) > 0) {
+			tmp = tmp->next;
 		}
-		new_node->next = current->next;
-		current->next = new_node;
+		new->next = tmp->next;
+		tmp->next = new;
 	}
 }
 
-t_env* copy_and_sort_env(t_env *original_env) {
-	t_env *sorted_env = NULL;
-	t_env *current = original_env;
+t_env	*copy_and_sort_env(t_env *env)
+{
+	t_env *sorted_env;
+	t_env *tmp;
 
-	while (current != NULL) {
-		t_env *new_node = create_node(current->name, current->content);
-		insert_sorted(&sorted_env, new_node);
-		current = current->next;
+	tmp = env;
+	while (tmp != NULL) {
+		t_env *new = create_node(tmp->name, tmp->content);
+		if (!new)
+			return (free_env(&sorted_env), NULL);
+		insert_sorted(&sorted_env, new);
+		tmp = tmp->next;
 	}
-
-	return sorted_env;
+	return (sorted_env);
 }
 
 // Fonction pour imprimer l'environnement trié
@@ -120,7 +135,7 @@ int	print_env_export(t_env **env) {
 
 	sorted_env = copy_and_sort_env(*env);
 	if (!sorted_env)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	while(sorted_env)
 	{
 		if (sorted_env->name && sorted_env->content)
@@ -136,7 +151,8 @@ int	print_env_export(t_env **env) {
 		}
 		sorted_env = sorted_env->next;
 	}
-	return (SUCCESS);
+	return (free_env(&sorted_env), SUCCESS);
+	// return (SUCCESS);
 }
 
 // void	print_env_export(t_env **env)

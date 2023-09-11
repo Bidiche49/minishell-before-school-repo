@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:46:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 00:52:53 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 17:14:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_env	*fill_new_env(char *line_env)
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (malloc_error(), NULL);
+	new->content = NULL;
 	new->name = ft_strdup(name);
 	if (!new->name)
 		return(malloc_error(), free_new_env(new), NULL);

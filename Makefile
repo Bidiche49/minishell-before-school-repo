@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/02 10:08:23 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/11 17:23:08 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,8 @@ OBJS =			$(SRCS:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g3
 CREADLINE = -lreadline
+VALGRIND_OPTIONS = --leak-check=full --show-leak-kinds=all --suppressions=minishell.supp
+
 
 .PHONY: all clean fclean re
 
@@ -139,3 +141,7 @@ fclean: clean
 	@echo "$(GREEN)Executable removed.$(RESET)"
 
 re: fclean all
+
+valgrind: all
+	@echo "$(YELLOW)Running minishell with valgrind...$(RESET)"
+	@valgrind $(VALGRIND_OPTIONS) ./$(NAME)

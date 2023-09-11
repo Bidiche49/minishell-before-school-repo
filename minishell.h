@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/10 16:38:52 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 17:11:01 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ void	config_default_signal(void);
 /* FREE */
 
 void	free_list_token(t_token **lst_token);
+void	free_new_env(t_env *env);
+void	free_env(t_env **env);
 void	free_all(char *input, t_token **lst_token, t_env **env);
 
 /* Execution */
