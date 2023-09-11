@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 09:38:25 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 16:45:37 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 20:55:53 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ int	exec_builtins(t_section *sec)
 	if (!ft_strcmp(sec->cmd, "echo"))
 		ft_echo(sec);
 	if (!ft_strcmp(sec->cmd, "unset"))
-		return (cmd_unset(sec), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
+		return (g_error = 0, cmd_unset(sec), SUCCESS);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "pwd"))
 		return (0);
 	if (!ft_strcmp(sec->cmd, "cd"))
 		return (0);
 	if (!ft_strcmp(sec->cmd, "export"))
-		return (cmd_export(sec), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
+		return (cmd_export(sec));//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "env"))
-		return (cmd_env(sec->env), 0);//GERER LA SORTIE !!!!!!!!!!!!!!!!!
+		return (cmd_env(sec->env));//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "exit"))
-		return (0);
+		return (g_error = EXIT, ERROR);
 	return (1);
 }

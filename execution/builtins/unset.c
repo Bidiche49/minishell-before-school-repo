@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 08:45:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 22:58:56 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 21:03:28 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,52 +52,48 @@ int	check_var_name_unset(char *line)
 	return (0);
 }
 
-int	del_in_env(t_env **env, t_token *tok)
+void	del_in_env(t_env **env, t_token *tok)
 {
 	t_env	*tmp;
 
 	tmp = *env;
 	if (!check_var_name_unset(tok->str))
-		return (error_export(tok->str), ERROR);
+		return (error_export(tok->str), (void)ERROR);
 	if (!ft_strcmp(tok->str, tmp->name))
-		return (del_first_env_var(env), SUCCESS);
+		return (del_first_env_var(env), (void)SUCCESS);
 	while (tmp)
 	{
 		if (tmp->next && !ft_strcmp(tok->str, tmp->next->name))
-			return (del_env_var(&tmp), SUCCESS);
+			return (del_env_var(&tmp), (void)SUCCESS);
 		tmp = tmp->next;
 	}
-	return (SUCCESS);
+	return ;
 }
 
-int	del_var_env(t_env **env, t_token *tok)
+void	del_var_env(t_env **env, t_token *tok)
 {
-	int	return_val;
-
-	return_val = SUCCESS;
 	if (!tok->str)
-		return (1);
+		return ;
 	while (tok)
 	{
 		if (tok->type == WORD)
-			if (return_val == SUCCESS)
-				return_val = del_in_env(env, tok);
+			return(del_in_env(env, tok), (void)SUCCESS);
 		if (tok && tok->next && tok->next->type == SEPARATOR && tok->next->next && tok->next->next->type == WORD)
 			tok = tok->next->next;
 		else
 			break ;
 	}
-	return (return_val);
+	return ;
 }
 
-int	cmd_unset(t_section *sec)
+void	cmd_unset(t_section *sec)
 {
 	t_token	*tok;
 
 	tok = sec->token;
 	if (sec->deep > 1)
-		return (SUCCESS);
+		return ;
 	if (tok && tok->next && tok->next->next && tok->next->next->type == WORD)
 		return (del_var_env(sec->env, tok->next->next));
-	return (ERROR);
+	return ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:15:54 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/09 15:26:01 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 22:44:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 # define EXECUTION_H
 
 # include "../minishell.h"
+
+typedef enum e_tab			t_tab_file;
+
+
+enum e_tab{
+	TMP_FD0,
+	TMP_FD1,
+	I,
+	PREV,
+	SAVE_FD0,
+	SAVE_FD1
+};
 
 int		is_builtin(t_section *sec);
 int		exec_builtins(t_section *sec);
@@ -23,6 +35,5 @@ char	*ft_strjoin_path(char *s1, char *s2);
 void	cmd_not_found(char *cmd);
 void	free_section(t_section *section);
 void	free_list_section(t_section **section);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 22:38:54 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/07 10:19:45 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 22:53:03 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void free_matrice(char **matrice)
 	i = 0;
 	if (!matrice)
 		return ;
+	printf("\n\n\n\nfree\n\n\n");
 	while (matrice[i])
 		free(matrice[i++]);
 	free(matrice);

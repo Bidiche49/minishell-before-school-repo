@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/10 00:48:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 21:01:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,11 @@ int	main_loop(char *input, t_token **token, t_env **env)
 				return (free_all(input, token, env), ERROR);
 			print_token(*token);
 			if (return_val == SUCCESS)
-				if (execution(*token, env) == ERROR)
+				if (execution(*token, env) == ERROR && g_error != EXIT)
 					return (ERROR);
 		}
+		if (g_error == EXIT)
+			return (g_error = SUCCESS, SUCCESS);
 		free_all(input, token, NULL);
 	}
 	return (SUCCESS);

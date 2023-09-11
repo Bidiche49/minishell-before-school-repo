@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 19:38:50 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 23:08:21 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	openfiles(t_token *token)
 	return (fd);
 }
 
-void	redirection(int fd[2], int index, int last, int prev, t_section *section)
+void	redirection(int *data, int last, t_section *section)
 {
 	t_token *token;
 	int		redir;
@@ -121,47 +121,55 @@ void	redirection(int fd[2], int index, int last, int prev, t_section *section)
 	token = section->token;
 	redir = openfiles(token);
 	if (redir >= 0)
-		fd[1] = redir;
+		data[TMP_FD1] = redir;
 	// if (token->type == HEREDOC)
 	// {
 	// 	close(fd[0]);
 	// 	dup2(fd[1], STDOUT_FILENO);
 	// 	// write(fd[1], , strlen(heredoc_text));
 	// }
-	if (index != 0)
+	if (data[I] != 0)
 	{
-		dup2(prev, STDIN_FILENO);
-		close(prev);
+		dup2(data[PREV], STDIN_FILENO);
+		close(data[PREV]);
 	}
-	if (index != last)
-		dup2(fd[1], STDOUT_FILENO);
-	close(fd[0]);
-	close(fd[1]);
+	if (data[I] != last)
+		dup2(data[TMP_FD1], STDOUT_FILENO);
+	close(data[TMP_FD0]);
+	close(data[TMP_FD1]);
 }
 
-int	exec(t_section *section, int *fd, int *pid, int i, int prev)
+int	exec(t_section *section, int *pid, int *data, char **arg, char **env)
 {
-	char	**arg;
-	char	**env;
-
 	free(pid);
+	pid = NULL;
 	find_path(section);
-	redirection(fd, i, section->deep - 1, prev, section);
+	redirection(data, section->deep - 1, section);
 	arg = ft_split(section->option, ' ');
+	if (!arg)
+		return (malloc_error(), ERROR);
 	env = convert_env(section->env);
+	if (!env)
+		return (free_matrice(arg), malloc_error(), ERROR);
 	if (is_builtin(section))
-		exec_builtins(section);
+	{
+		if (exec_builtins(section) == ERROR)
+			return (free_matrice(arg), free_matrice(env), ERROR);
+	}
 	else
-		execve(section->abs_path, arg, env);
-	exit(127);
+		if (execve(section->abs_path, arg, env) == -1)
+			return (free_matrice(env), free_matrice(arg), perror(section->cmd), exit(127), ERROR);
+	free_matrice(arg);
+	free_matrice(env);
+	exit(130);
 }
 
-void	end_of_pid(int *fd, int i, int *prev)
+void	end_of_pid(int *data)
 {
-	close(fd[1]);
-	if (i > 0)
-		close(*prev);
-	*prev = fd[0];
+	close(data[TMP_FD1]);
+	if (data[I] > 0)
+		close(data[PREV]);
+	data[PREV] = data[TMP_FD0];
 
 }
 
@@ -169,49 +177,60 @@ int	conductor(t_section **section)
 {
 	pid_t		*pid;
 	t_section	*tmp;
-	int			tmpfd[2];
-	int			savefd[2];
-	int			prev;
-	int			i;
+	int			data[6];
+	char		**arg;
+	char		**env;
 
-	prev = -1;
-	i = 0;
+	data[PREV] = -1;
+	data[I] = 0;
 	tmp = *section;
+	arg = NULL;
+	env = NULL;
+	free_matrice(arg);
+	free_matrice(env);
 	pid = ft_calloc(tmp->deep, sizeof(int));
 	if (!pid)
 		return (malloc_error(), ERROR);
-	savefd[0] = dup(STDIN_FILENO);
-	savefd[1] = dup(STDOUT_FILENO);
+	data[SAVE_FD0] = dup(STDIN_FILENO);
+	data[SAVE_FD1] = dup(STDOUT_FILENO);
 	if (tmp->deep == 1 && is_builtin(tmp) == 1)
 	{
-		exec_builtins(tmp);
+		if (exec_builtins(tmp) == ERROR)
+			return (free(pid), ERROR);
 	}
 	else
 	{
-		while (i < (*section)->deep)// && (*section)->deep != 1 && is_builtin(tmp) != 1)
+		while (data[I] < (*section)->deep)// && (*section)->deep != 1 && is_builtin(tmp) != 1)
 		{
-			pipe(tmpfd);
-			pid[i] = fork();
-			if (pid[i] == 0)
-				exec(tmp , tmpfd, pid, i, prev);
-			else if (pid[i] > 0)
-				end_of_pid(tmpfd, i, &prev);
+			pipe(data);
+			pid[data[I]] = fork();
+			if (pid[data[I]] == 0)
+			{
+				if (exec(tmp , pid, data, arg, env) == ERROR)
+					return (ERROR);
+			}
+			else if (pid[data[I]] > 0)
+				end_of_pid(data);
 			tmp = tmp->next;
-			i++;
+			free_matrice(arg);
+			free_matrice(env);
+			data[I]++;
 		}
 	}
-	dup2(savefd[0], STDIN_FILENO);
-	dup2(savefd[1], STDOUT_FILENO);
-	close(savefd[0]);
-	close(savefd[1]);
-	i = 0;
-	while (i < (*section)->deep)
+	dup2(data[SAVE_FD0], STDIN_FILENO);
+	dup2(data[SAVE_FD1], STDOUT_FILENO);
+	close(data[SAVE_FD0]);
+	close(data[SAVE_FD1]);
+	data[I] = 0;
+	while (data[I] < (*section)->deep)
 	{
-		waitpid(pid[i], NULL, 0);
-		i++;
+		waitpid(pid[data[I]], NULL, 0);
+		data[I]++;
 	}
 	if ((*section)->deep != 1)
-		close(tmpfd[0]);
+		close(data[TMP_FD0]);
 	free_list_section(section);
+	if (pid)
+		free(pid);
 	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 19:49:52 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 23:07:57 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ int	check_path(char *path, t_section **section)
 			return(SUCCESS);
 		}
 	}
+	if ((*section)->abs_path)
+	{
+		free((*section)->abs_path);
+		(*section)->abs_path = NULL;
+	}
 	(*section)->abs_path = ft_strjoin_path(path, (*section)->cmd);
 	if (!(*section)->abs_path)
 		return (malloc_error(), ERROR);
@@ -72,12 +77,36 @@ int	valid_path(char *path, t_section *tmp)
 	{
 		return_val = check_path(matrix_path[i], &tmp);
 		if (return_val == ERROR)
-			return (ERROR);
+			return (free_matrice(matrix_path), ERROR);
 		if (return_val == SUCCESS)
 			break;
 		i++;
 	}
-	return (return_val);
+	return (printf("compte pas\n"), free_matrice(matrix_path), return_val);
+}
+
+char	*ft_get_path(t_env	**env)
+{
+	char	*path;
+	t_env	*tmp;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	tmp = *env;
+	while (tmp && ft_strcmp(tmp->name, "PATH") != 0)
+		tmp=tmp->next;
+	path = ft_calloc((ft_strlen(tmp->name) + ft_strlen(tmp->content) + 2), sizeof(char));
+	if (!path)
+		return (malloc_error(), NULL); //FREE ALLLLLLL
+	while (tmp->name[j])
+		path[i] = tmp->name[j++];
+	j = 0;
+	path[i] = '=';
+	while (tmp->content[j])
+		path[i++] = tmp->content[j++];
+	return (path);
 }
 
 int	find_path(t_section *section)
@@ -89,15 +118,17 @@ int	find_path(t_section *section)
 
 	final_return = NEWLINE;
 	tmp = section;
-	path = getenv("PATH");
+	path = ft_get_path(section->env);
+	if (!path)
+		return (ERROR);
 	while (tmp)
 	{
 		return_val = valid_path(path, tmp);
 		if (return_val == ERROR)
-			return (ERROR);
+			return (free(path), ERROR);
 		else if (return_val == SUCCESS || is_builtin(tmp))
 			final_return = SUCCESS;
 		tmp = tmp->next;
 	}
-	return (final_return);
+	return (free(path), final_return);
 }

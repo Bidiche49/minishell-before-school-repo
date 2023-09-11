@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/11 17:11:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 23:04:41 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define SUCCESS 0
 # define ERROR 1
 # define NEW_LINE 2
+# define EXIT 3
 # define MALL_KO 55
 # define CMD_KO 21
 # define FORK_KO 92
@@ -119,7 +120,7 @@ int		ft_strlen_char(char *str, char c);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	print_token(t_token *list_token);
 int		init_section(t_token *token, t_section **section, t_env **env);
-int		cmd_unset(t_section *sec);
+void	cmd_unset(t_section *sec);
 void	malloc_error(void);
 
 /* EXPORT */
