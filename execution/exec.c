@@ -6,7 +6,7 @@
 /*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 15:33:35 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/11 17:41:43 by audrye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	openfiles(t_token *token)
 				fd = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (token->type == APPEND)
 				fd = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (token->type == IN)
+			if (token->type == IN || token->type == HEREDOC)
 				fd = open(token->str, O_RDONLY);
 			if (token->type == OUT || token->type == APPEND)
 				dup2(fd, STDOUT_FILENO);
@@ -119,14 +119,20 @@ void	redirection(int fd[2], int index, int last, int prev, t_section *section)
 	int		redir;
 
 	token = section->token;
+	redir = openfiles(token);
+	if (redir >= 0)
+		fd[1] = redir;
+	if (token->type == HEREDOC)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		// write(fd[1], , strlen(heredoc_text));
+	}
 	if (index != 0)
 	{
 		dup2(prev, STDIN_FILENO);
 		close(prev);
 	}
-	redir = openfiles(token);
-	if (redir >= 0)
-		fd[1] = redir;
 	if (index != last)
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
@@ -139,10 +145,10 @@ int	exec(t_section *section, int *fd, int *pid, int i, int prev)
 	char	**env;
 
 	free(pid);
+	find_path(section);
 	redirection(fd, i, section->deep - 1, prev, section);
 	arg = ft_split(section->option, ' ');
 	env = convert_env(section->env);
-	find_path(section);
 	if (is_builtin(section))
 		exec_builtins(section);
 	else
@@ -178,7 +184,7 @@ int	conductor(t_section **section)
 	savefd[1] = dup(STDOUT_FILENO);
 	if (tmp->deep == 1 && is_builtin(tmp) == 1)
 		exec_builtins(tmp);
-	while (i < (*section)->deep)
+	while (i < (*section)->deep && tmp->deep != 1 && is_builtin(tmp) != 1)
 	{
 		pipe(tmpfd);
 		pid[i] = fork();
