@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 01:33:53 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 18:32:30 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,13 @@ void	fill_dquote(char *str, t_env *env, char *d_quotes)
 		if (str[i] && str[i] != '$')
 			d_quotes[j++] = str[i++];
 	}
-	d_quotes[j] = '\0';
 }
 
 char	*dup_dquotes(int len_tot, char *str, t_env *env)
 {
 	char	*d_quotes;
 
-	d_quotes = malloc(sizeof(char) * len_tot);
+	d_quotes = ft_calloc(len_tot, sizeof(char));
 	if (d_quotes == NULL)
 		return (malloc_error(), NULL);
 	fill_dquote(str, env, d_quotes);

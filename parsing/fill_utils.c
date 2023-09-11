@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 03:32:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 18:31:47 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_token *ft_newtoken(char *str)
 
 	if (str == NULL)
 		return (NULL);  // error fill token
-	new = malloc(sizeof(t_token));
+	new = ft_calloc(1, sizeof(t_token));
 	if (new == NULL)
 		return (malloc_error(), NULL);
 	ft_test_type(str, new);

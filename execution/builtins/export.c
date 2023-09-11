@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 17:37:44 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 18:35:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	add_env(t_env **env, t_token *tok)
 t_env	*create_node(char *name, char *content)
 {
 	t_env	*new;
-	new = malloc(sizeof(t_env));
+
+	new = ft_calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
 	new->content = NULL;
@@ -119,6 +120,7 @@ t_env	*copy_and_sort_env(t_env *env)
 	t_env *tmp;
 
 	tmp = env;
+	sorted_env = NULL;
 	while (tmp != NULL) {
 		t_env *new = create_node(tmp->name, tmp->content);
 		if (!new)
@@ -129,11 +131,10 @@ t_env	*copy_and_sort_env(t_env *env)
 	return (sorted_env);
 }
 
-// Fonction pour imprimer l'environnement trié
 int	print_env_export(t_env **env) {
 	t_env *sorted_env;
 
-	printf("test\n");
+	sorted_env = NULL;
 	sorted_env = copy_and_sort_env(*env);
 	if (!sorted_env)
 		return (ERROR);
@@ -153,30 +154,7 @@ int	print_env_export(t_env **env) {
 		sorted_env = sorted_env->next;
 	}
 	return (free_env(&sorted_env), SUCCESS);
-	// return (SUCCESS);
 }
-
-// void	print_env_export(t_env **env)
-// {
-// 	t_env *tmp;
-
-// 	tmp = *env;
-// 	while(tmp)
-// 	{
-// 		if (tmp->name && tmp->content)
-// 		{
-// 			printf(BOLD YELLOW "export" RESET);
-// 			printf(YELLOW " %s=" RESET, tmp->name);
-// 			printf(CYAN "\"%s\"\n" RESET, tmp->content);
-// 		}
-// 		if (tmp->name && !tmp->content)
-// 		{
-// 			printf(BOLD YELLOW "export" RESET);
-// 			printf(YELLOW " %s\n" RESET, tmp->name);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
 
 t_token	*find_tok(t_token *tok)
 {
