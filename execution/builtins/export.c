@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 18:35:35 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 13:43:02 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,19 @@ int	mod_exist_var(t_env **env, char *line)
 
 int	add_env(t_env **env, t_token *tok)
 {
-	printf("tok->str = %s\n", tok->str);
 	while (tok)
 	{
 		if (tok->type == WORD)
 		{
 			if (existing_var(env, tok->str))
 			{
-				printf("existing_var\n");
+				if (!contain_equal(tok->str))
+					return (SUCCESS);
 				if (mod_exist_var(env, tok->str) == ERROR)
 					return (ERROR);
 			}
 			else if (check_line(tok->str))
 			{
-				printf("check_line ok\n");
 				if (ft_lstadd_back_env(env, fill_new_env(tok->str)))
 					return (malloc_error(), ERROR);
 			}
@@ -84,10 +83,9 @@ t_env	*create_node(char *name, char *content)
 	new = ft_calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->content = NULL;
 	new->name = strdup(name);
 	if (!new->name)
-		return(malloc_error(), free_new_env(new), NULL);
+		return(malloc_error(), free(new), NULL);
 	new->content = strdup(content);
 	if (!new->content)
 		return (malloc_error(), free_new_env(new), NULL);
@@ -131,29 +129,33 @@ t_env	*copy_and_sort_env(t_env *env)
 	return (sorted_env);
 }
 
-int	print_env_export(t_env **env) {
-	t_env *sorted_env;
+int	print_env_export(t_env **env)
+{
+	t_env	*tmp;
+	// t_env *sorted_env;
 
-	sorted_env = NULL;
-	sorted_env = copy_and_sort_env(*env);
-	if (!sorted_env)
-		return (ERROR);
-	while(sorted_env)
+	// sorted_env = NULL;
+	// sorted_env = copy_and_sort_env(*env);
+	// if (!sorted_env)
+	// 	return (ERROR);
+	tmp = *env;
+	while(tmp)
 	{
-		if (sorted_env->name && sorted_env->content)
+		if (tmp->name && tmp->content)
 		{
 			printf(BOLD YELLOW "export" RESET);
-			printf(YELLOW " %s=" RESET, sorted_env->name);
-			printf(CYAN "\"%s\"\n" RESET, sorted_env->content);
+			printf(YELLOW " %s=" RESET, tmp->name);
+			printf(CYAN "\"%s\"\n" RESET, tmp->content);
 		}
-		if (sorted_env->name && !sorted_env->content)
+		if (tmp->name && !tmp->content)
 		{
 			printf(BOLD YELLOW "export" RESET);
-			printf(YELLOW " %s\n" RESET, sorted_env->name);
+			printf(YELLOW " %s\n" RESET, tmp->name);
 		}
-		sorted_env = sorted_env->next;
+		tmp = tmp->next;
 	}
-	return (free_env(&sorted_env), SUCCESS);
+	// return (free_env(&sorted_env), SUCCESS);
+	return (SUCCESS);
 }
 
 t_token	*find_tok(t_token *tok)
@@ -184,8 +186,8 @@ int	cmd_export(t_section *sec)
 		return (ERROR);
 	if (!ft_strcmp(sec->option, "export"))
 		return (nb_export++, print_env_export(sec->env));
-	if (sec->deep > 1)
-		return (SUCCESS);
+	// if (sec->deep > 1)
+	// 	return (SUCCESS);
 	if (add_env(sec->env, find_tok(sec->token)) == ERROR)
 		return (ERROR);//FREE ALL---------------------------------------------------
 	return (SUCCESS);

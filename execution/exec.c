@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 23:08:21 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 16:43:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,10 @@ int	exec(t_section *section, int *pid, int *data, char **arg, char **env)
 	if (is_builtin(section))
 	{
 		if (exec_builtins(section) == ERROR)
-			return (free_matrice(arg), free_matrice(env), ERROR);
+			return (free_matrice(arg), free_matrice(env), exit(127), ERROR);
 	}
+	else if (!section->abs_path)
+		return (free_matrice(env), free_matrice(arg), cmd_not_found(section->cmd), exit(127), SUCCESS);
 	else
 		if (execve(section->abs_path, arg, env) == -1)
 			return (free_matrice(env), free_matrice(arg), perror(section->cmd), exit(127), ERROR);

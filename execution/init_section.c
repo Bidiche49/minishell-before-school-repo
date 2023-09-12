@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/11 23:07:46 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 14:40:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int gathering(t_token *token, t_section **section)
 {
 	t_token *tmp;
 
-
 	tmp = token;
 	while (tmp && tmp->type != PIPE)
 	{
@@ -121,7 +120,6 @@ t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 	if (!new)
 		return (malloc_error(), NULL);
 	init_base_section(token, env, new);
-	printf("\n\n\n\n\n%s\n\n\n\n",new->token->str);
 	if (tmp_token->type == SEPARATOR)
 		tmp_token = tmp_token->next;
 	if (is_word(tmp_token->type))
@@ -159,14 +157,16 @@ void free_list_section(t_section **section)
 	t_section *next;
 
 	current = *section;
-	while (current != NULL)
+	while (current)
 	{
 		next = current->next;
 		free_section(current);
 		current = next;
 	}
-	*section = NULL;
+
+	*section = NULL; // Mettre à NULL après avoir libéré tous les éléments
 }
+
 
 int init_section(t_token *token, t_section **section, t_env **env)
 {

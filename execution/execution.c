@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:23:22 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 23:08:08 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/11 23:28:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ int	execution(t_token *token, t_env **env)
 
 	section = NULL;
 	if (init_section(token, &section, env) == ERROR)
-		return (ERROR);
-	// return_val = find_path(&section);
-	// if (return_val != SUCCESS)
-	// 	return (free_list_section(&section), return_val);
+		return (free_list_section(&section), ERROR);
 	return_val = conductor(&section);
 	if (return_val != SUCCESS)
 		return (free_list_section(&section), return_val);
-	// print_section(section);
 	(void)return_val;
-	return (SUCCESS);
+	return (free_list_section(&section), SUCCESS);
 }

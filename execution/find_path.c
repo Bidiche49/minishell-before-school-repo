@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 23:07:57 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 16:28:09 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,15 @@ int	valid_path(char *path, t_section *tmp)
 		if (return_val == ERROR)
 			return (free_matrice(matrix_path), ERROR);
 		if (return_val == SUCCESS)
-			break;
+			return (free_matrice(matrix_path), SUCCESS);
 		i++;
 	}
-	return (printf("compte pas\n"), free_matrice(matrix_path), return_val);
+	if (tmp->abs_path)
+	{
+		free(tmp->abs_path);
+		tmp->abs_path = NULL;
+	}
+	return (free_matrice(matrix_path), return_val);
 }
 
 char	*ft_get_path(t_env	**env)
@@ -116,7 +121,7 @@ int	find_path(t_section *section)
 	int			return_val;
 	int			final_return;
 
-	final_return = NEWLINE;
+	final_return = NEW_LINE;
 	tmp = section;
 	path = ft_get_path(section->env);
 	if (!path)

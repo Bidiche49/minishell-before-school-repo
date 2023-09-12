@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 21:01:45 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 17:18:21 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	print_envd(char **env)
 	int	i;
 
 	i = 0;
-	printf("\n\n env = \n");
 	while (env[i])
 		printf("%s\n", env[i++]);
 }
@@ -98,6 +97,7 @@ int	main_loop(char *input, t_token **token, t_env **env)
 
 int	end_funct(char *input, t_token **token, t_env **env)
 {
+	free_all(input, token, env);
 	free_all(input, token, env);
 	rl_clear_history();
 	printf(BOLD GREEN "exit\n" RESET);
