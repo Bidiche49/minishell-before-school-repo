@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 01:23:18 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 06:47:01 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main_loop(char *input, t_token **token, t_env **env)
 			return_val = parsing(input, token, env);
 			if (return_val == ERROR)
 				return (free_all(input, token, env), ERROR);
-			print_token(*token);
+			// print_token(*token);
 			if (return_val == SUCCESS)
 				if (execution(*token, env) == ERROR && g_error != EXIT)
 					return (ERROR);
@@ -120,9 +120,9 @@ int	main(int argc, char **argv, char **envd)
 	if (!envd)
 		return (msg(ERR_ENV_KO), ERROR);
 	if (create_env(envd, &env) == ERROR)
-		return (garbage_collect(), ERROR);
+		return (garbage_collect(), rl_clear_history(), ERROR);
 	if (main_loop(input, &token, &env) == ERROR)
-		return (garbage_collect(), g_error);
+		return (garbage_collect(), rl_clear_history(), g_error);
 	return ((void)argv, end_funct(input, &token, &env));
 }
 

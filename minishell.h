@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/12 18:24:23 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 06:54:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 
 # define RESET   "\033[0m"
 # define RED     "\033[31m"
@@ -48,6 +49,8 @@
 # define ERR_QUOTES_OPEN "minishell: Error quote open\n"
 # define ERR_CMD_NOT_FOUND ": command not found\n"
 # define ERR_FORK "minishell: init fork error\n"
+# define ERR_PERM_DENIED ": Permission denied\n"
+# define ERR_NO_FILE ": No such file or directory\n"
 
 extern int				g_error;
 
@@ -167,4 +170,8 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	ft_echo(t_section *section);
 char	*ft_strjoin(char *s1, char *s2);
 
+int		error_redir(char *str, int referal);
+int		ft_countword(char const *s, char c);
+
 #endif
+

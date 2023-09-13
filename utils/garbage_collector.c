@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:42:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 02:52:43 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 06:48:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void tracked_free(void *ptr)
 			free(current->ptr);
 			current->ptr = NULL;
 			free(current);
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;

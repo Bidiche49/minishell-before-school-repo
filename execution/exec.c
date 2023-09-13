@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 05:28:24 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 06:27:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,40 +86,16 @@ char **convert_env(t_env **env)
 	return (env_tmp);
 }
 
-int openfiles(t_token *token)
-{
-	int fd;
-
-	fd = -1;
-	while (token && token->type != PIPE)
-	{
-		if (token->type == OUT || token->type == IN || token->type == APPEND)
-		{
-			if (token->type == OUT)
-				fd = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (token->type == APPEND)
-				fd = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (token->type == IN || token->type == HEREDOC)
-				fd = open(token->str, O_RDONLY);
-			if (fd == -1)
-				exit(1);
-			if (token->type == OUT || token->type == APPEND)
-				dup2(fd, STDOUT_FILENO);
-			else
-				dup2(fd, STDIN_FILENO);
-		}
-		token = token->next;
-	}
-	return (fd);
-}
-
 void redirection(int *data, int last, t_section *section)
 {
 	t_token *token;
 	int redir;
 
 	token = section->token;
-	redir = openfiles(token);
+	if (is_builtin(section) && section->deep == 1)
+		redir = openfiles_builtins(token);
+	else
+		redir = openfiles(token);
 	if (redir >= 0)
 		data[TMP_FD1] = redir;
 	// close(redir);
@@ -130,7 +106,8 @@ void redirection(int *data, int last, t_section *section)
 	}
 	if (data[I] != last)
 		dup2(data[TMP_FD1], STDOUT_FILENO);
-	close(data[TMP_FD0]);
+	if (section->deep != 1)
+		close(data[TMP_FD0]);
 	close(data[TMP_FD1]);
 }
 
@@ -159,10 +136,6 @@ int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 			return (free_matrice(arg), free_matrice(env), exit(EXIT_SUCCESS), ERROR);
 		}
 		garbage_collect();
-		// dup2(data[SAVE_FD0], STDIN_FILENO);
-		// dup2(data[SAVE_FD1], STDOUT_FILENO);
-		// close(data[TMP_FD0]);
-		// close(data[TMP_FD1]);
 		exit(EXIT_SUCCESS);
 	}
 	else if (!section->abs_path)
@@ -206,6 +179,7 @@ int conductor(t_section **section)
 	{
 		data[SAVE_FD0] = dup(STDIN_FILENO);
 		data[SAVE_FD1] = dup(STDOUT_FILENO);
+		redirection(data, (*section)->deep - 1, *section);
 		if (exec_builtins(tmp) == ERROR)
 		{
 			dup2(data[SAVE_FD0], STDIN_FILENO);

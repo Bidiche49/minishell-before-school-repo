@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 09:38:25 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 23:39:11 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 06:49:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ int	exec_builtins(t_section *sec)
 	if (!ft_strcmp(sec->cmd, "env"))
 		return (cmd_env(sec->env));//GERER LA SORTIE !!!!!!!!!!!!!!!!!
 	if (!ft_strcmp(sec->cmd, "exit"))
-		return (g_error = EXIT, ERROR);
+		return (cmd_exit(sec->option), 0);
 	return (1);
 }

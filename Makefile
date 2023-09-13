@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/12 20:17:54 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/13 06:49:59 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,12 +57,14 @@ SRCS =			minishell.c							\
 				$(EXPAND_LOC)clean_token.c			\
 				$(EXPAND_LOC)expand_utils.c			\
 				$(EXPAND_LOC)expand.c				\
+				$(EXEC_LOC)open.c					\
 				$(EXEC_LOC)execution.c				\
 				$(EXEC_LOC)init_section.c			\
 				$(EXEC_LOC)find_path.c				\
 				$(EXEC_LOC)builtins.c				\
 				$(EXEC_LOC)exec.c					\
 				$(BUILTINS_LOC)cmd_env.c			\
+				$(BUILTINS_LOC)exit.c				\
 				$(BUILTINS_LOC)export.c				\
 				$(BUILTINS_LOC)export_utils.c		\
 				$(BUILTINS_LOC)unset.c				\

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:23:22 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 23:28:52 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 05:59:57 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void print_section(t_section *section)
 		printf("%d\t%d\n", section->pipe[0], section->pipe[1]);
 		printf("%d\n", section->deep);
 		// cmd_env(section->env);
-		print_token(section->token);
+		// print_token(section->token);
 		section = section->next;
 	}
 }
