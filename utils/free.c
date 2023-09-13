@@ -6,13 +6,13 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 17:18:36 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/13 02:25:43 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free_list_token(t_token **lst_token)
+void	free_list_token(t_token **lst_token)
 {
 	t_token *tmp;
 
@@ -20,10 +20,9 @@ void free_list_token(t_token **lst_token)
 	while ((*lst_token))
 	{
 		tmp = (*lst_token)->next;
-		// printf("token->str =%s\n", (*lst_token)->str);
 		if ((*lst_token)->str)
-			free((*lst_token)->str);
-		free((*lst_token));
+			tracked_free((*lst_token)->str);
+		tracked_free((*lst_token));
 		(*lst_token) = tmp;
 	}
 }
@@ -37,10 +36,10 @@ void free_env(t_env **env)
 	{
 		tmp = (*env)->next;
 		if ((*env)->name)
-			free((*env)->name);
+			tracked_free((*env)->name);
 		if ((*env)->content)
-			free((*env)->content);
-		free((*env));
+			tracked_free((*env)->content);
+		tracked_free((*env));
 		(*env) = tmp;
 	}
 }
@@ -50,7 +49,7 @@ void	free_all(char *input, t_token **lst_token, t_env **env)
 	// t_token	*tmp;
 
 	if (input)
-		free(input);
+		tracked_free(input);
 	if (lst_token)
 		free_list_token(lst_token);
 	if (env)

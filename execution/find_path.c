@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 16:28:09 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	check_path(char *path, t_section **section)
 	}
 	if ((*section)->abs_path)
 	{
-		free((*section)->abs_path);
+		tracked_free((*section)->abs_path);
 		(*section)->abs_path = NULL;
 	}
 	(*section)->abs_path = ft_strjoin_path(path, (*section)->cmd);
@@ -84,7 +84,7 @@ int	valid_path(char *path, t_section *tmp)
 	}
 	if (tmp->abs_path)
 	{
-		free(tmp->abs_path);
+		tracked_free(tmp->abs_path);
 		tmp->abs_path = NULL;
 	}
 	return (free_matrice(matrix_path), return_val);
@@ -130,10 +130,10 @@ int	find_path(t_section *section)
 	{
 		return_val = valid_path(path, tmp);
 		if (return_val == ERROR)
-			return (free(path), ERROR);
+			return (tracked_free(path), ERROR);
 		else if (return_val == SUCCESS || is_builtin(tmp))
 			final_return = SUCCESS;
 		tmp = tmp->next;
 	}
-	return (free(path), final_return);
+	return (tracked_free(path), final_return);
 }

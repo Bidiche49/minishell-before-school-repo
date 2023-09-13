@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 00:23:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/08/31 10:49:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void	del_word_sep(t_token *operator, t_token *opt)
 	tmp = opt->next;
 	if (operator->next->type == SEPARATOR)
 	{
-		free(operator->next);
-		free(opt->str);
-		free(opt);
+		tracked_free(operator->next);
+		tracked_free(opt->str);
+		tracked_free(opt);
 	}
 	else
 	{
-		free(opt->str);
-		free(opt);
+		tracked_free(opt->str);
+		tracked_free(opt);
 	}
 	operator->next = tmp;
 }

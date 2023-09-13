@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 05:20:10 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	special_case_expand(t_token **token)
 			|| (*token)->str[1] == '$'))
 	{
 		if ((*token)->str[i + 2] == '\0')
-			return (free((*token)->str), (*token)->str = NULL, 0);
+			return (tracked_free((*token)->str), (*token)->str = NULL, 0);
 		while ((*token)->str[i + 1])
 		{
 			(*token)->str[i] = (*token)->str[i + 2];

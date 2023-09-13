@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/11 23:04:41 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:24:23 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ extern int				g_error;
 
 typedef enum e_type			t_type_token;
 typedef struct s_token		t_token;
+typedef struct s_garbage	t_garbage;
 typedef struct s_env		t_env;
 typedef struct s_section	t_section;
 
@@ -66,6 +67,11 @@ enum e_type{
 	HEREDOC,
 	APPEND,
 	PIPE
+};
+
+struct s_garbage{
+	void		*ptr;
+	t_garbage	*next;
 };
 
 struct s_token{
@@ -122,6 +128,14 @@ void	print_token(t_token *list_token);
 int		init_section(t_token *token, t_section **section, t_env **env);
 void	cmd_unset(t_section *sec);
 void	malloc_error(void);
+
+/*********************************/
+/*       garbage_collector       */
+/*********************************/
+void		garbage_collect();
+void		tracked_free(void *ptr);
+t_garbage	**get_garbage(void);
+
 
 /* EXPORT */
 

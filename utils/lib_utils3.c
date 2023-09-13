@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/08/31 12:47:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:24:53 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,22 @@ void	ft_bzero(void *s, size_t n)
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	unsigned char	*dst;
+	unsigned char	*ptr;
+	t_garbage		**garbages;
+	t_garbage		*new;
 
+	garbages = get_garbage();
 	if (size != 0 && nmemb * size / size != nmemb)
 		return (NULL);
-	dst = malloc(size * nmemb);
-	if (!dst)
+	ptr = malloc(size * nmemb);
+	if (!ptr)
 		return (NULL);
-	ft_bzero(dst, (size * nmemb));
-	return (dst);
+	new = malloc(sizeof(t_garbage));
+	if (!new)
+		return (NULL);
+	new->ptr = ptr;
+	new->next = (*garbages);
+	(*garbages) = new;
+	ft_bzero(ptr, (size * nmemb));
+	return (ptr);
 }

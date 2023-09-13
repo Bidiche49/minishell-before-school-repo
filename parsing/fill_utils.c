@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 18:31:47 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_token *ft_newtoken(char *str)
 		return (malloc_error(), NULL);
 	ft_test_type(str, new);
 	if (ft_strdup_remake(str, new) == ERROR)
-		return (malloc_error(), free(new), NULL);
+		return (malloc_error(), tracked_free(new), NULL);
 	new->next = NULL;
 	return (new);
 }

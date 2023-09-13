@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 22:13:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/03 23:46:20 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static int	ft_lenword(const char *s, char c, int i)
 static char	**ft_freemobile(char **res, int k)
 {
 	while (k > 0)
-		free(res[k--]);
-	free(res);
+		tracked_free(res[k--]);
+	tracked_free(res);
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 04:07:24 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:14:12 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,15 @@ int check_end_token(t_token *lst_token)
 
 	tmp = lst_token;
 	if (tmp->next == NULL)
-	// {
-	// 	if (is_operator(tmp) || tmp->type == PIPE)
-	// 		return (NEW_LINE); // FREE
-	// 	else
-			return (SUCCESS);
-	// }
+		return (SUCCESS);
 	while (tmp->next->next)
 		tmp = tmp->next;
 	if (tmp->next->type == SEPARATOR)
 	{
-		free(tmp->next);
+		tracked_free(tmp->next);
 		tmp->next = NULL;
 		return (SUCCESS);
 	}
-	// if (is_operator(tmp->next) || tmp->next->type == PIPE)
-	// 	return (err_end_token(tmp->next), NEW_LINE); // FREE
 	return (SUCCESS);
 }
 

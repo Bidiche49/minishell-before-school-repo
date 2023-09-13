@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 18:32:30 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*dup_dquotes(int len_tot, char *str, t_env *env)
 		return (malloc_error(), NULL);
 	fill_dquote(str, env, d_quotes);
 	if (str)
-		free(str);
+		tracked_free(str);
 	return (d_quotes);
 }
 
@@ -93,7 +93,7 @@ int	expand_d_quotes(t_token **list_token, t_env *env)
 			if (len_tot == 1)
 			{
 				if (tmp->str)
-					free(tmp->str);
+					tracked_free(tmp->str);
 				tmp->str = NULL;
 			}
 			else

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 18:34:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	clean_first_token(t_token **list_token)
 	tmp = *list_token;
 	(*list_token) = (*list_token)->next;
 	if (tmp->str)
-		free(tmp->str);
-	free(tmp);
+		tracked_free(tmp->str);
+	tracked_free(tmp);
 }
 
 void	del_next_token(t_token **token)
@@ -31,8 +31,8 @@ void	del_next_token(t_token **token)
 		return ;
 	tmp = (*token)->next->next;
 	if ((*token)->next->str)
-		free((*token)->next->str);
-	free((*token)->next);
+		tracked_free((*token)->next->str);
+	tracked_free((*token)->next);
 	(*token)->next = tmp;
 }
 
@@ -45,7 +45,7 @@ void	del_all_token(t_token **list_token)
 		del_next_token(&tmp);
 	tmp->type = WORD;
 	if (tmp->str)
-		free(tmp->str);
+		tracked_free(tmp->str);
 	tmp->str = NULL;
 }
 

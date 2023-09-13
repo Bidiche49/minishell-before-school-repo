@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:38:17 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 07:14:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ char	*ft_strcat_dup(char *dest, char *str)
 		free (dest);
 	dest = ft_calloc((ft_strlen(tmp) + ft_strlen(str) + 1), sizeof(char));
 	if (!dest)
-		return (free(tmp), malloc_error(), NULL);
+		return (tracked_free(tmp), malloc_error(), NULL);
 	while (tmp && tmp[j])
 	{
 		dest[j] = tmp[j];
 		j++;
 	}
 	if (tmp)
-		free(tmp);
+		tracked_free(tmp);
 	while (str[i])
 		dest[j++] = str[i++];
 	return (dest);

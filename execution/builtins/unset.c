@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 08:45:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/11 21:03:28 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	del_env_var(t_env **actual)
 
 	tmp2 = (*actual)->next->next;
 	if ((*actual)->next->name)
-		free((*actual)->next->name);
+		tracked_free((*actual)->next->name);
 	if ((*actual)->next->content)
-		free((*actual)->next->content);
-	free((*actual)->next);
+		tracked_free((*actual)->next->content);
+	tracked_free((*actual)->next);
 	(*actual)->next = tmp2;
 }
 
@@ -31,10 +31,10 @@ void	del_first_env_var(t_env **lst)
 
 	tmp2 = (*lst)->next;
 	if ((*lst)->name)
-		free((*lst)->name);
+		tracked_free((*lst)->name);
 	if ((*lst)->content)
-		free((*lst)->content);
-	free((*lst));
+		tracked_free((*lst)->content);
+	tracked_free((*lst));
 	(*lst) = tmp2;
 }
 

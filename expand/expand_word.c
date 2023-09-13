@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:56 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 02:36:20 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	expand_word(t_token **token, t_env **env)
 			return (SUCCESS);
 		else if (is_in_env((*token)->str, tmp_env) == 1)
 		{
-			free((*token)->str);
+			tracked_free((*token)->str);
 			(*token)->str = ft_strdup(tmp_env->content);
 			if (!(*token)->str)
 				return (malloc_error(), ERROR);
@@ -31,7 +31,7 @@ int	expand_word(t_token **token, t_env **env)
 		}
 		tmp_env = tmp_env->next;
 	}
-	free((*token)->str);
+	tracked_free((*token)->str);
 	(*token)->str = NULL;
 	return (SUCCESS);
 }

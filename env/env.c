@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 21:46:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 16:58:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	free_new_env(t_env *env)
 	if (!env)
 		return ;
 	if (env->name)
-		free(env->name);
+		tracked_free(env->name);
 	if (env->content)
-		free(env->content);
-	free(env);
+		tracked_free(env->content);
+	tracked_free(env);
 }
 
 t_env	*fill_new_env(char *line_env)
@@ -39,7 +39,7 @@ t_env	*fill_new_env(char *line_env)
 		return (malloc_error(), NULL);
 	new->name = ft_strdup(name);
 	if (!new->name)
-		return(malloc_error(), free(new), NULL);
+		return(malloc_error(), tracked_free(new), NULL);
 	if (!is_equals)
 		return (new->content = NULL, new->next = NULL, new);
 	new->content = ft_strdup(line_env + len_name + 1);

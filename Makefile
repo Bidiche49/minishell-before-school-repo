@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/12 14:46:51 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/12 20:17:54 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ YELLOW  = \033[33m
 CYAN    = \033[36m
 
 SRCS =			minishell.c							\
+				$(UTILS_LOC)garbage_collector.c		\
 				$(UTILS_LOC)lib_utils.c				\
 				$(UTILS_LOC)lib_utils2.c			\
 				$(UTILS_LOC)lib_utils3.c			\
@@ -73,7 +74,7 @@ OBJS =			$(SRCS:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g3
 CREADLINE = -lreadline
-VALGRIND_OPTIONS = --leak-check=full --show-leak-kinds=all --suppressions=minishell.supp
+VALGRIND_OPTIONS = --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=minishell.supp
 
 
 .PHONY: all clean fclean re

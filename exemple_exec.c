@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exemple_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 23:45:21 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/05 14:34:25 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	*redirection(int fd[2], int index, int last, int prev)
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(fd[1]);
-	
+
 	// pour heredoc / in, out / append
 	// openfiles(	)
 	/*
@@ -82,7 +82,7 @@ int main(int ac, char **av)
 			continue;
 		char **tab = ft_split(str, '|');
 		int nbcmd = ft_countword(str, '|');
-		free(str);
+		tracked_free(str);
 		int i =  0;
 		int *pid = malloc(sizeof(int) * nbcmd);
 		while (i < nbcmd)
@@ -91,7 +91,7 @@ int main(int ac, char **av)
 			pid[i] = fork();
 			if (pid[i] == 0)
 			{
-				free(pid);
+				tracked_free(pid);
 				printf("dans le fork\n");
 				redirection(fd, i, nbcmd - 1, prev);
 				char **arg = ft_split(tab[i], ' ');

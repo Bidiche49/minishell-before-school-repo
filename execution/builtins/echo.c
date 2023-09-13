@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 04:32:57 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/10 11:54:53 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/12 23:41:54 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,13 @@ void	ft_echo(t_section *section)
 	int	i;
 
 	i = 0;
+	if (!section->option)
+		return ;
 	while (section->option[i] && section->option[i] != ' ')
 		i++;
-	i++;
+	if (section->option[i])
+		i++;
 	while (section->option[i] && !is_op_char(section->option[i]))
-		write(1, &section->option[i++], 1);
-	write(1, "\n", 1);
+		write(STDOUT_FILENO, &section->option[i++], 1);
+	write(STDOUT_FILENO, "\n", 1);
 }
