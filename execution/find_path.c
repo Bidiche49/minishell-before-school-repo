@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 07:36:53 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strjoin_path(char *s1, char *s2)
 		return (s1);
 	res = ft_calloc((j + ft_strlen(s2) + 2), sizeof(char));
 	if (!res)
-		return (malloc_error(), NULL);
+		return (NULL);
 	i = -1;
 	while (s1[++i])
 		res[i] = s1[i];
@@ -37,13 +37,14 @@ char	*ft_strjoin_path(char *s1, char *s2)
 
 int	check_path(char *path, t_section **section)
 {
+	// printf("section->cmd = %s\n", (*section)->cmd);
 	if (!access((*section)->cmd, F_OK))
 	{
 		if (!access((*section)->cmd, X_OK))
 		{
 			(*section)->abs_path = ft_strdup((*section)->cmd);
 			if (!(*section)->abs_path)
-				return (malloc_error(), ERROR);
+				return (ERROR);
 			return(SUCCESS);
 		}
 	}
@@ -54,7 +55,7 @@ int	check_path(char *path, t_section **section)
 	}
 	(*section)->abs_path = ft_strjoin_path(path, (*section)->cmd);
 	if (!(*section)->abs_path)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	if (!access((*section)->abs_path, F_OK))
 		if (!access((*section)->abs_path, X_OK))
 			return (SUCCESS);
@@ -70,9 +71,11 @@ int	valid_path(char *path, t_section *tmp)
 	i = 0;
 	if (!path && !is_builtin(tmp))
 		return (NEW_LINE);
+	if (!tmp->cmd)
+		return (SUCCESS);
 	matrix_path = ft_split(path, ':');
 	if (!matrix_path)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	while (matrix_path[i])
 	{
 		return_val = check_path(matrix_path[i], &tmp);
@@ -104,7 +107,7 @@ char	*ft_get_path(t_env	**env)
 		tmp=tmp->next;
 	path = ft_calloc((ft_strlen(tmp->name) + ft_strlen(tmp->content) + 2), sizeof(char));
 	if (!path)
-		return (malloc_error(), NULL); //FREE ALLLLLLL
+		return (NULL); //FREE ALLLLLLL
 	while (tmp->name[j])
 		path[i] = tmp->name[j++];
 	j = 0;

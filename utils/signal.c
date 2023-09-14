@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:50:40 by ntardy            #+#    #+#             */
-/*   Updated: 2023/07/30 00:58:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:20:30 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handler_signal(int sig)
 {
-	if (sig == SIGQUIT) // A SUPPRIMER ??
+	if (sig == SIGQUIT)
 		return ;
 	if (sig == SIGINT)
 	{
@@ -43,5 +43,6 @@ void	signal_heredoc(int sig)
 	(void)sig;
 	close(STDIN_FILENO);
 	g_error = 128;
+	// garbage_collect();
 	return ;
 }

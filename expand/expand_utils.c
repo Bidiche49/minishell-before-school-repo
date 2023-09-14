@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 04:21:36 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 10:06:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int	is_type_wq(t_token *token)
 
 int	cat_word(t_token *token)
 {
-	if (!token->str || !token->next->str)
+	if (!token->str || (token->next && !token->next->str) )
 		return (SUCCESS);
 	token->str = ft_strcat_dup(token->str, token->next->str);
 	if (!token->str)
-		return (msg(ERR_MALLOC_KO), g_error = MALL_KO, ERROR);
+		return (ERROR);
 	del_next_token(&token);
 	return (SUCCESS);
 }

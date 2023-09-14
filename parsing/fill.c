@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 06:00:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:45:34 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,5 @@ int fill_tokens(char *input, t_token **list_token)
 			return (ERROR);
 		tmp_input = next_token(tmp_input);
 	}
-	// print_token(*list_token);
 	return (SUCCESS);
 }

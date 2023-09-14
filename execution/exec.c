@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 06:27:27 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 12:01:30 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,80 +86,115 @@ char **convert_env(t_env **env)
 	return (env_tmp);
 }
 
-void redirection(int *data, int last, t_section *section)
+int	redirection(int *data, int last, t_section *section)
 {
-	t_token *token;
-	int redir;
+	t_token	*token;
+	int		redir;
 
+	redir = 0;
 	token = section->token;
+	if (is_heredoc(token) == 1)
+	{
+		if (all_heredoc(token, *(section->env)) == ERROR)
+			return (tracked_close(data[TMP_FD0]), tracked_close(data[TMP_FD1]), free_list_section(&section), ERROR); // RETURN UNE VRAIE VALEUR
+	}
 	if (is_builtin(section) && section->deep == 1)
 		redir = openfiles_builtins(token);
 	else
 		redir = openfiles(token);
+	if (section->deep == 1 && redir < 0)
+		return (ERROR);
 	if (redir >= 0)
 		data[TMP_FD1] = redir;
-	// close(redir);
 	if (data[I] != 0)
 	{
 		dup2(data[PREV], STDIN_FILENO);
-		close(data[PREV]);
+		tracked_close(data[PREV]);
 	}
 	if (data[I] != last)
 		dup2(data[TMP_FD1], STDOUT_FILENO);
 	if (section->deep != 1)
-		close(data[TMP_FD0]);
-	close(data[TMP_FD1]);
+		tracked_close(data[TMP_FD0]);
+	tracked_close(data[TMP_FD1]);
+	return (SUCCESS);
 }
 
 int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 {
-	// close(pid[data[I]]);
 	tracked_free(pid);
 	find_path(section);
 	redirection(data, section->deep - 1, section);
 	arg = ft_split(section->option, ' ');
 	if (!arg)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	env = convert_env(section->env);
 	if (!env)
-		return (free_matrice(arg), malloc_error(), ERROR);
+		return (free_matrice(arg), ERROR);
 	if (is_builtin(section))
 	{
 		data[SAVE_FD0] = dup(STDIN_FILENO);
 		data[SAVE_FD1] = dup(STDOUT_FILENO);
+		add_fd_garbage(data[SAVE_FD0]);
+		add_fd_garbage(data[SAVE_FD1]);
 		if (exec_builtins(section) == ERROR)
 		{
 			dup2(data[SAVE_FD0], STDIN_FILENO);
 			dup2(data[SAVE_FD1], STDOUT_FILENO);
-			close(data[TMP_FD0]);
-			close(data[TMP_FD1]);
-			return (free_matrice(arg), free_matrice(env), exit(EXIT_SUCCESS), ERROR);
+			tracked_close(data[SAVE_FD0]);
+			tracked_close(data[SAVE_FD1]);
+			// garbage_collect();
+			collect_fd();
+			return (exit(EXIT_SUCCESS), ERROR);
 		}
-		garbage_collect();
-		exit(EXIT_SUCCESS);
+		// garbage_collect();
+		collect_fd();
+		collect_ptr();
+		exit(SUCCESS);
+		// cmd_exit(g_error);//METTRE UNE VRAIE VALEUR
 	}
 	else if (!section->abs_path)
 	{
 		cmd_not_found(section->cmd);
-		close(data[TMP_FD0]);
-		close(data[TMP_FD1]);
-		garbage_collect();
+		// tracked_close(data[TMP_FD0]);
+		// tracked_close(data[TMP_FD1]);
+		// garbage_collect();
+		collect_fd();
 		exit(SUCCESS);
 	}
 	else if (execve(section->abs_path, arg, env) == -1)
-		return (free_matrice(env), free_matrice(arg), perror(section->cmd), exit(127), ERROR);
-	free_matrice(arg);
-	free_matrice(env);
-	exit(130);
+		return (free_matrice(env), free_matrice(arg), exit(127), ERROR);
+	return (SUCCESS);
 }
 
 void end_of_pid(int *data)
 {
-	close(data[TMP_FD1]);
+	tracked_close(data[TMP_FD1]);
 	if (data[I] > 0)
-		close(data[PREV]);
+		tracked_close(data[PREV]);
 	data[PREV] = data[TMP_FD0];
 	// close(data[TMP_FD0]);
+}
+
+void	print_data(int data[6])
+{
+	if (!data)
+		return ;
+	printf("TMP_FD0 = %d\n", data[TMP_FD0]);
+	printf("TMP_FD1 = %d\n", data[TMP_FD1]);
+	printf("I = %d\n", data[I]);
+	printf("PREV = %d\n", data[PREV]);
+	printf("SAVE_FD0 = %d\n", data[SAVE_FD0]);
+	printf("SAVE_FD1 = %d\n", data[SAVE_FD1]);
+}
+
+void	init_data(int data[6])
+{
+	data[PREV] = -1;
+	data[I] = 0;
+	data[TMP_FD0] = 0;
+	data[TMP_FD1] = 0;
+	data[SAVE_FD0] = 0;
+	data[SAVE_FD1] = 0;
 }
 
 int conductor(t_section **section)
@@ -170,8 +205,7 @@ int conductor(t_section **section)
 	char **arg;
 	char **env;
 
-	data[PREV] = -1;
-	data[I] = 0;
+	init_data(data);
 	tmp = *section;
 	arg = NULL;
 	env = NULL;
@@ -179,29 +213,34 @@ int conductor(t_section **section)
 	{
 		data[SAVE_FD0] = dup(STDIN_FILENO);
 		data[SAVE_FD1] = dup(STDOUT_FILENO);
-		redirection(data, (*section)->deep - 1, *section);
+		add_fd_garbage(data[SAVE_FD0]);
+		add_fd_garbage(data[SAVE_FD1]);
+		if (redirection(data, (*section)->deep - 1, *section) == ERROR)
+			return (NEW_LINE);
 		if (exec_builtins(tmp) == ERROR)
 		{
 			dup2(data[SAVE_FD0], STDIN_FILENO);
 			dup2(data[SAVE_FD1], STDOUT_FILENO);
-			close(data[SAVE_FD0]);
-			close(data[SAVE_FD1]);
+			tracked_close(data[SAVE_FD0]);
+			tracked_close(data[SAVE_FD1]);
 			return (ERROR); // tracked_free(pid), ERROR);
 		}
 		dup2(data[SAVE_FD0], STDIN_FILENO);
 		dup2(data[SAVE_FD1], STDOUT_FILENO);
-		close(data[SAVE_FD0]);
-		close(data[SAVE_FD1]);
+		tracked_close(data[SAVE_FD0]);
+		tracked_close(data[SAVE_FD1]);
 		return (SUCCESS);
 	}
 	else
 	{
 		pid = ft_calloc(tmp->deep, sizeof(int));
 		if (!pid)
-			return (malloc_error(), ERROR);
+			return (ERROR);
 		while (data[I] < (*section)->deep) // && (*section)->deep != 1 && is_builtin(tmp) != 1)
 		{
 			pipe(data);
+			add_fd_garbage(data[TMP_FD0]);
+			add_fd_garbage(data[TMP_FD1]);
 			pid[data[I]] = fork();
 			if (pid[data[I]] == 0)
 			{
@@ -222,8 +261,8 @@ int conductor(t_section **section)
 		waitpid(pid[data[I]], NULL, 0);
 		data[I]++;
 	}
-	close(data[TMP_FD0]);
-	close(data[TMP_FD1]);
+	collect_fd();
+	tracked_free(pid);
 	free_list_section(section);
 	return (SUCCESS);
 }

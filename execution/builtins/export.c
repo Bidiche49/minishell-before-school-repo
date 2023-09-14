@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 04:27:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	mod_exist_var(t_env **env, char *line)
 				tracked_free(tmp->content);
 			tmp->content = ft_strdup(line + len_name + 1);
 			if (!tmp->content)
-				return (malloc_error(), ERROR);
+				return (ERROR);
 			return (SUCCESS);
 		}
 		tmp = tmp->next;
@@ -64,7 +64,7 @@ int	add_env(t_env **env, t_token *tok)
 			else if (check_line(tok->str))
 			{
 				if (ft_lstadd_back_env(env, fill_new_env(tok->str)))
-					return (malloc_error(), ERROR);
+					return (ERROR);
 			}
 			tok = tok->next;
 		}
@@ -85,10 +85,10 @@ t_env	*create_node(char *name, char *content)
 		return (NULL);
 	new->name = strdup(name);
 	if (!new->name)
-		return(malloc_error(), tracked_free(new), NULL);
+		return(tracked_free(new), NULL);
 	new->content = strdup(content);
 	if (!new->content)
-		return (malloc_error(), free_new_env(new), NULL);
+		return (free_new_env(new), NULL);
 	new->next = NULL;
 	return (new);
 }

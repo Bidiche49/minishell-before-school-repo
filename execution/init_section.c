@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 11:40:19 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/13 04:32:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:31:13 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,18 @@ int strjoin_gathering(t_section **section, char *str)
 {
 	char *tmp;
 
+	if (!str)
+		return (SUCCESS);
 	tmp = NULL;
 	tmp = ft_strjoin((*section)->option, str);
 	if (tmp == NULL)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	if ((*section)->option)
 		tracked_free((*section)->option);
 	(*section)->option = ft_strdup(tmp);
 	tracked_free(tmp);
 	if ((*section)->option == NULL)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -118,15 +120,17 @@ t_section *new_section(t_token *token, t_token *tmp_token, t_env **env)
 
 	new = ft_calloc(1, sizeof(t_section));
 	if (!new)
-		return (malloc_error(), NULL);
+		return (NULL);
 	init_base_section(token, env, new);
 	while (tmp_token && tmp_token->next && (tmp_token->type == SEPARATOR || tmp_token->type == HEREDOC))
 		tmp_token = tmp_token->next;
-	if (is_word(tmp_token->type))
+	if (is_word(tmp_token->type) && !tmp_token->str)
+		new->cmd = NULL;
+	else if (is_word(tmp_token->type))
 	{
 		new->cmd = ft_strdup(tmp_token->str);
 		if (!new->cmd)
-			return (tracked_free(new), malloc_error(), NULL);
+			return (tracked_free(new), NULL);
 	}
 	if (gathering(tmp_token, &new) == ERROR)
 		return (tracked_free(new), NULL);

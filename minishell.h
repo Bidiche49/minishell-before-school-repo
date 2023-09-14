@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/13 06:54:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 10:51:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ extern int				g_error;
 typedef enum e_type			t_type_token;
 typedef struct s_token		t_token;
 typedef struct s_garbage	t_garbage;
+typedef struct s_fd_garbage	t_fd_garbage;
 typedef struct s_env		t_env;
 typedef struct s_section	t_section;
 
@@ -75,6 +76,11 @@ enum e_type{
 struct s_garbage{
 	void		*ptr;
 	t_garbage	*next;
+};
+
+struct s_fd_garbage{
+	int				fd;
+	t_fd_garbage	*next;
 };
 
 struct s_token{
@@ -131,14 +137,24 @@ void	print_token(t_token *list_token);
 int		init_section(t_token *token, t_section **section, t_env **env);
 void	cmd_unset(t_section *sec);
 void	malloc_error(void);
-
+int		ft_lstadd_back(t_token **lst, t_token *new);
+int		expand_d_quotes(t_token **list_token, t_env *env);
+t_token	*lst_last(t_token *lst);
+int	is_redir(int type);
+char	*ft_itoa(int n);
+void	cmd_exit(char *option);
 /*********************************/
 /*       garbage_collector       */
 /*********************************/
-void		garbage_collect();
-void		tracked_free(void *ptr);
-t_garbage	**get_garbage(void);
-
+void			garbage_collect();
+void			tracked_free(void *ptr);
+void			tracked_close(int fd);
+void			collect_fd();
+void			add_fd_garbage(int fd);
+void			collect_ptr();
+int				tracked_open(char *str, int first, int second, int third);
+t_garbage		**get_garbage(void);
+t_fd_garbage	**get_fd_garbage(void);
 
 /* EXPORT */
 
@@ -153,13 +169,14 @@ int		cmd_export(t_section *sec);
 
 void	config_minishell_signal(void);
 void	config_default_signal(void);
+void	signal_heredoc(int sig);
 
 /* FREE */
 
 void	free_list_token(t_token **lst_token);
 void	free_new_env(t_env *env);
 void	free_env(t_env **env);
-void	free_all(char *input, t_token **lst_token, t_env **env);
+void	free_all(t_token **lst_token, t_env **env);
 
 /* Execution */
 

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:13:19 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 04:39:12 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 01:03:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int		expand_to_token(t_token **list_token, t_env **env);
 /*         expand_dquotes        */
 /*********************************/
 int		copy_var_env(char *dest, char *str, t_env *env);
-int		expand_d_quotes(t_token **list_token, t_env *env);
 char	*dup_dquotes(int len_tot, char *str, t_env *env);
 void	fill_dquote(char *str, t_env *env, char *d_quotes);
 

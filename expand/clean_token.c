@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 10:06:23 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	clean_token(t_token **token)
 	tmp = *token;
 	if (first_tok_null(*token) == 0)
 		clean_first_token(token);
+	tmp = *token;
 	while (tmp)
 	{
 		if (!is_sep_pipe(tmp) && tmp->next && is_type_wq(tmp->next))

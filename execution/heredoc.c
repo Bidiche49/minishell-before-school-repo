@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: audrye <audrye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 14:43:05 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/13 04:27:12 by audrye           ###   ########.fr       */
+/*   Updated: 2023/09/14 10:06:57 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,26 @@ t_token *ft_newheredoc(char *str)
 		return (NULL);
 	new = ft_calloc(1, sizeof(t_token));
 	if (!new)
-		return (malloc_error(), NULL);
+		return (NULL);
 	new->type = D_QUOTES;
-	new->str = NULL;
-	new->str = str;
+	new->str = ft_strdup(str);
+	free(str);
 	if (!new->str)
-		return (free(new), NULL);
+		return(NULL);
 	new->next = NULL;
 	return (new);
 }
 
-int	build_heredoc(t_token *token, t_token *heredoc, t_env *env)
+int	build_heredoc(t_token *token, t_token **heredoc, t_env *env)
 {
 	if (heredoc != NULL)
-		free_list_token(&heredoc);
+		free_list_token(heredoc);
 	while (1)
 	{
-		if (ft_lstadd_back(&heredoc, ft_newheredoc(readline("> "))) == ERROR)
-			return (free_list_token(&heredoc), malloc_error(), ERROR);
-		if (ft_strcmp(token->str, lst_last(heredoc)->str) == 0)
-			return(print_token(heredoc), expand_d_quotes(&heredoc, env),print_token(heredoc), SUCCESS);
+		if (ft_lstadd_back(heredoc, ft_newheredoc(readline("> "))) == ERROR)
+			return (free_list_token(heredoc), ERROR);
+		if (ft_strcmp(token->str, lst_last(*heredoc)->str) == 0)
+			return(expand_d_quotes(heredoc, env), SUCCESS);
 	}
 	return (SUCCESS);
 }
@@ -58,7 +58,7 @@ int	build_heredoc(t_token *token, t_token *heredoc, t_env *env)
 int	list_to_file(t_token *heredoc, t_token *token, int nb_hd)
 {
 	int	fd;
-	
+
 	while (nb_hd > 0)
 	{
 		if (token->type == HEREDOC && token)
@@ -67,25 +67,26 @@ int	list_to_file(t_token *heredoc, t_token *token, int nb_hd)
 			break;
 		token = token->next;
 	}
-	printf("nom du file = %s\n", token->str);
-	fd = open("/tmp/.heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = tracked_open("/tmp/.heredoc", O_WRONLY, O_CREAT, O_TRUNC);
 	printf(" valeur de fd = %d\n", fd);
 	if (fd == -1)
 		return (free_list_token(&heredoc), ERROR);
-	while (heredoc != NULL)
-    {
-        write(fd, heredoc->str, ft_strlen(heredoc->str));
-        write(fd, "\n", 1);
-        heredoc = heredoc->next;
-    }
-	close(fd);
+	// printf("str == %s\n", heredoc->str);
+	printf("str == \n");
+	while (heredoc && heredoc->next)
+	{
+		write(fd, heredoc->str, ft_strlen(heredoc->str));
+		write(fd, "\n", 1);
+		heredoc = heredoc->next;
+	}
+	tracked_close(fd);
 	return (free_list_token(&heredoc), SUCCESS);
 }
 
 int	how_many_heredoc(t_token *token)
 {
 	int	i;
-	
+
 	i = 0;
 	while (token)
 	{
@@ -114,14 +115,13 @@ int	all_heredoc(t_token *token, t_env *env)
 			break;
 		if (tmp_token->type == HEREDOC && tmp_token->str)
 		{
-			if (build_heredoc(tmp_token, heredoc, env) == ERROR)
-				return (free_list_token(&heredoc), malloc_error(), ERROR);
+			if (build_heredoc(tmp_token, &heredoc, env) == ERROR)
+				return (free_list_token(&heredoc), ERROR);
 			nb_heredoc--;
 		}
 		tmp_token = tmp_token->next;
 	}
-	//printf("ecrit dans le fichier = %s\n", heredoc->str);
 	if (list_to_file(heredoc, token, nb_hd) == ERROR)
-		return(malloc_error(), ERROR);
+		return(ERROR);
 	return (SUCCESS);
 }

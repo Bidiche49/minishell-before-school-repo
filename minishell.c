@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 06:47:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 12:19:07 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,35 @@ int	g_error;
 
 void	print_token(t_token *list_token)
 {
-	while (list_token)
+	t_token *tmp;
+
+	tmp = list_token;
+	while (tmp)
 	{
 		printf("[");
-		if (list_token->type == WORD)
+		if (tmp->type == WORD)
 			printf("WORD");
-		if (list_token->type == SEPARATOR)
+		if (tmp->type == SEPARATOR)
 			printf("SEPARATOR");
-		if (list_token->type == D_QUOTES)
+		if (tmp->type == D_QUOTES)
 			printf("D_QUOTES");
-		if (list_token->type == S_QUOTES)
+		if (tmp->type == S_QUOTES)
 			printf("S_QUOTES");
-		if (list_token->type == OUT)
+		if (tmp->type == OUT)
 			printf("OUT");
-		if (list_token->type == IN)
+		if (tmp->type == IN)
 			printf("IN");
-		if (list_token->type == HEREDOC)
+		if (tmp->type == HEREDOC)
 			printf("HEREDOC");
-		if (list_token->type == APPEND)
+		if (tmp->type == APPEND)
 			printf("APPEND");
-		if (list_token->type == PIPE)
+		if (tmp->type == PIPE)
 			printf("PIPE");
 		printf(" =");
-		if (list_token)
-			printf("%s", list_token->str);
+		if (tmp)
+			printf("%s", tmp->str);
 		printf("] ");
-		list_token = list_token->next;
+		tmp = tmp->next;
 	}
 	printf("\n");
 }
@@ -82,15 +85,14 @@ int	main_loop(char *input, t_token **token, t_env **env)
 			add_history(input);
 			return_val = parsing(input, token, env);
 			if (return_val == ERROR)
-				return (free_all(input, token, env), ERROR);
-			// print_token(*token);
+				return (free_all(token, env), ERROR);
 			if (return_val == SUCCESS)
 				if (execution(*token, env) == ERROR && g_error != EXIT)
 					return (ERROR);
 		}
 		if (g_error == EXIT)
 			return (g_error = SUCCESS, SUCCESS);
-		free_all(input, token, NULL);
+		free_all(token, NULL);
 	}
 	return (SUCCESS);
 }
@@ -100,8 +102,14 @@ int	end_funct(char *input, t_token **token, t_env **env)
 	(void)input;
 	(void)token;
 	(void)env;
-	// free_all(input, token, env);
-	garbage_collect();
+	// free_all(token, env);
+	close(0);
+	close(1);
+	close(2);
+	close(3);
+	close(4);
+	// garbage_collect();
+	collect_ptr();
 	rl_clear_history();
 	printf(BOLD GREEN "exit\n" RESET);
 	return (g_error);

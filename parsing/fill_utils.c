@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:41:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int ft_strdup_remake(char *str, t_token *new)
 		str++;
 	new->str = ft_calloc((len + 1), sizeof(char));
 	if (new->str == NULL)
-		return (malloc_error(), ERROR);
+		return (ERROR);
 	while (*str && i < len && *str != c)
 		new->str[i++] = *str++;
 	return (SUCCESS);
@@ -96,13 +96,13 @@ t_token *ft_newtoken(char *str)
 	t_token *new;
 
 	if (str == NULL)
-		return (NULL);  // error fill token
+		return (NULL);
 	new = ft_calloc(1, sizeof(t_token));
 	if (new == NULL)
-		return (malloc_error(), NULL);
+		return (NULL);
 	ft_test_type(str, new);
 	if (ft_strdup_remake(str, new) == ERROR)
-		return (malloc_error(), tracked_free(new), NULL);
+		return (tracked_free(new), NULL);
 	new->next = NULL;
 	return (new);
 }

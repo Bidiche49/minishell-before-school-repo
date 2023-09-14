@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:15:54 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/13 06:47:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:13:15 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int		conductor(t_section **section);
 int		openfiles(t_token *token);
 int		openfiles_builtins(t_token *token);
 int		contain_equal(char *line);
+int		all_heredoc(t_token *token, t_env *env);
+int		is_heredoc(t_token *token);
 char	*ft_strjoin_path(char *s1, char *s2);
 void	cmd_not_found(char *cmd);
 void	free_section(t_section *section);
 void	free_list_section(t_section **section);
-void	cmd_exit(char *option);
-
 
 #endif

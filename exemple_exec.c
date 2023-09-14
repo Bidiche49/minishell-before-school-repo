@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 23:45:21 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/12 18:12:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 10:27:51 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_countword(char const *s, char c);
 char	**ft_split(char const *s, char c);
 
 
-void	malloc_error()
+void
 {
 	fprintf(stderr, "fais pas chier\n");
 }
@@ -88,6 +88,7 @@ int main(int ac, char **av)
 		while (i < nbcmd)
 		{
 			pipe(fd);
+			
 			pid[i] = fork();
 			if (pid[i] == 0)
 			{

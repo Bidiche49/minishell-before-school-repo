@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 06:37:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 06:55:23 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 12:18:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	option_is_digit(char *str)
 	if (str[0] == '-' || str[0] == '+')
 		i++;
 	while (str[++i])
-		if (is_num(str[i]))
+		if (!is_num(str[i]))
 			return (0);
 	return (1);
 }
@@ -54,9 +54,13 @@ int	option_is_digit(char *str)
 void	cmd_exit(char *option)
 {
 	g_error = 0;
-	write(STDERR_FILENO, "exit\n", 5);
+	printf(BOLD GREEN "exit\n" RESET);
 	if (option)
 	{
+		while (*option && *option != ' ')
+			option++;
+		if (*option == ' ')
+			option++;
 		if (!option_is_digit(option))
 		{
 			msg("minishell: exit: ");
@@ -71,8 +75,16 @@ void	cmd_exit(char *option)
 		}
 		if (option_is_digit(option))
 			g_error = ft_atoi(option);
+		printf("g_errror =  %s\n\n", option);
+		printf("return =  %d\n\n", g_error);
 	}
-	garbage_collect();
+	// garbage_collect();
+	close(0);
+	close(1);
+	close(2);
+	close(3);
+	close(4);
+	collect_ptr();
 	rl_clear_history();
 	exit(g_error);
 }

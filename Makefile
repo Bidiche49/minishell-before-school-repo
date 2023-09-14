@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/13 06:49:59 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/14 10:55:07 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ CYAN    = \033[36m
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)garbage_collector.c		\
+				$(UTILS_LOC)ft_itoa.c					\
 				$(UTILS_LOC)lib_utils.c				\
 				$(UTILS_LOC)lib_utils2.c			\
 				$(UTILS_LOC)lib_utils3.c			\
@@ -62,6 +63,7 @@ SRCS =			minishell.c							\
 				$(EXEC_LOC)init_section.c			\
 				$(EXEC_LOC)find_path.c				\
 				$(EXEC_LOC)builtins.c				\
+				$(EXEC_LOC)heredoc.c				\
 				$(EXEC_LOC)exec.c					\
 				$(BUILTINS_LOC)cmd_env.c			\
 				$(BUILTINS_LOC)exit.c				\
@@ -77,7 +79,6 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g3
 CREADLINE = -lreadline
 VALGRIND_OPTIONS = --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=minishell.supp
-
 
 .PHONY: all clean fclean re
 

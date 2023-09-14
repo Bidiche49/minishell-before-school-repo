@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/12 18:14:12 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:45:22 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int parsing(char *input, t_token **token, t_env **env)
 
 	*token = NULL;
 	return_val = fill_tokens(input, token);
+	if (input)
+		free(input);
 	if (return_val == ERROR)
 		return (ERROR);
 	if (return_val == NEW_LINE)

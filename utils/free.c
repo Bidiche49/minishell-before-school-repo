@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 02:25:43 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 04:10:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ void free_env(t_env **env)
 	}
 }
 
-void	free_all(char *input, t_token **lst_token, t_env **env)
+void	free_all(t_token **lst_token, t_env **env)
 {
 	// t_token	*tmp;
 
-	if (input)
-		tracked_free(input);
 	if (lst_token)
 		free_list_token(lst_token);
 	if (env)

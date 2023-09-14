@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 03:58:33 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 01:02:29 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int		fill_tokens(char *input, t_token **list_token);
 int		malloc_option(t_token *list_token, char *input, int i);
 int		ft_strdup_remake(char *str, t_token *new);
 int		is_sep_op(char c);
-int		ft_lstadd_back(t_token **lst, t_token *new);
 int		operator_mod(t_token *lst_token);
 int		ft_isspecial(char c);
 int		is_operator(t_token *token);

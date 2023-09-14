@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 06:06:16 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/13 06:12:02 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 09:02:12 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ int	openfiles(t_token *token)
 	fd = -1;
 	while (token && token->type != PIPE)
 	{
-		if (token->type == OUT || token->type == IN || token->type == APPEND)
+		if (is_redir(token->type))
 		{
 			if (token->type == OUT)
-				fd = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+				fd = tracked_open(token->str, O_CREAT, O_WRONLY, O_TRUNC);
 			if (token->type == APPEND)
-				fd = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (token->type == IN || token->type == HEREDOC)
-				fd = open(token->str, O_RDONLY);
+				fd = tracked_open(token->str, O_CREAT, O_WRONLY, O_APPEND);
+			if (token->type == IN)
+				fd = tracked_open(token->str, O_RDONLY, -1, -1);
+			if (token->type == HEREDOC)
+				fd = tracked_open("/tmp/.heredoc", O_RDONLY, -1, -1);
 			if (fd < 0)
 				return (error_redir(token->str, 1));
 			if (token->type == OUT || token->type == APPEND)
@@ -43,19 +45,21 @@ int	openfiles_builtins(t_token *token)
 {
 	int fd;
 
-	fd = -1;
+	fd = 0;
 	while (token && token->type != PIPE)
 	{
 		if (token->type == OUT || token->type == IN || token->type == APPEND)
 		{
 			if (token->type == OUT)
-				fd = open(token->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+				fd = tracked_open(token->str, O_CREAT, O_WRONLY, O_TRUNC);
 			if (token->type == APPEND)
-				fd = open(token->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (token->type == IN || token->type == HEREDOC)
-				fd = open(token->str, O_RDONLY);
+				fd = tracked_open(token->str, O_CREAT, O_WRONLY, O_APPEND);
+			if (token->type == IN)
+				fd = tracked_open(token->str, O_RDONLY, -1, -1);
+			if (token->type == HEREDOC)
+				fd = tracked_open("/tmp/.heredoc", O_RDONLY, -1, -1);
 			if (fd < 0)
-				return (error_redir(token->str, 0));
+				return (error_redir(token->str, 0), -1);
 			if (token->type == OUT || token->type == APPEND)
 				dup2(fd, STDOUT_FILENO);
 			else
