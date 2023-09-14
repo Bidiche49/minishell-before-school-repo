@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 19:10:55 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 21:47:15 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,20 +118,54 @@ int	redirection(int *data, int last, t_section *section)
 	tracked_close(data[TMP_FD1]);
 	return (SUCCESS);
 }
+
+void	err_cmd_path(char *cmd, char *err)
+{
+	msg("minishell: ");
+	msg(cmd);
+	msg(err);
+	g_error = 1;
+	rl_clear_history();
+	garbage_collect();
+	exit(g_error);
+}
+
 int	is_cmd_path(t_section *sec)
 {
+	int	fd;
+
+	fd = -1;
 	if (sec->cmd && sec->cmd[0] && (sec->cmd[0] == '/' || sec->cmd[0] == '.'))
 	{
-		
+		fd = tracked_open(sec->cmd, O_RDONLY, __O_DIRECTORY, -1);
+		if (fd < 0)
+		{
+			fd = tracked_open(sec->cmd, O_RDONLY, -1, -1);
+			if (fd < 0)
+				return(error_redir(sec->cmd, 1));
+			else
+			{
+				if (!access(sec->cmd, F_OK))
+				{
+					if (!access(sec->cmd, X_OK))
+						return(SUCCESS);
+				}
+				return (err_cmd_path(sec->cmd, ERR_CMD_NOT_FOUND), ERROR);
+			}
+			return (tracked_close(fd), ERROR);
+		}
+		else
+			return (err_cmd_path(sec->cmd, ": Is a directory\n"), ERROR);
 	}
+	return (SUCCESS);
 }
 
 int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 {
+	if (is_cmd_path(section) == ERROR)
+		return (SUCCESS);
 	tracked_free(pid);
 	find_path(section);
-	print_section(section);
-	is_cmd_path(section);
 	redirection(data, section->deep - 1, section);
 	arg = ft_split(section->option, ' ');
 	if (!arg)
@@ -165,15 +199,12 @@ int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 	else if (!section->abs_path)
 	{
 		cmd_not_found(section->cmd);
-		// tracked_close(data[TMP_FD0]);
-		// tracked_close(data[TMP_FD1]);
-		// garbage_collect();
 		collect_fd();
 		collect_ptr();
 		exit(SUCCESS);
 	}
 	else if (execve(section->abs_path, arg, env) == -1)
-		return (free_matrice(env), free_matrice(arg), exit(127), ERROR);
+		return (perror(section->cmd), garbage_collect(), exit(EXIT_FAILURE), ERROR);
 	return (SUCCESS);
 }
 

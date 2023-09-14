@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:42:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 16:18:40 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 21:48:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	collect_fd()
 			close(fd_current->fd);
 		fd_current = fd_current->next;
 	}
+	*get_fd_garbage() = NULL;
 }
 
 void collect_ptr()

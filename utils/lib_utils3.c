@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/14 13:19:40 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 20:11:17 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int	tracked_open(char *str, int first, int second, int third)
 		return (-1);
 	if (second == -1 && third == -1)
 		fd = open(str, first);
+	else if (third == -1)
+		fd = open(str, first | second);
 	else
 		fd = open(str, first | second | third, 0644);
 	if (fd == -1)

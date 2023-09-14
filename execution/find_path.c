@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 07:36:53 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 21:25:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	check_path(char *path, t_section **section)
 	{
 		if (!access((*section)->cmd, X_OK))
 		{
+			printf("cmd = %s\n", (*section)->cmd);
 			(*section)->abs_path = ft_strdup((*section)->cmd);
 			if (!(*section)->abs_path)
 				return (ERROR);

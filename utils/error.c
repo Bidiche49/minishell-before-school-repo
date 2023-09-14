@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 03:40:08 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 11:01:18 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 20:47:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ void	malloc_error(void)
 {
 	g_error = MALL_KO;
 	msg(ERR_MALLOC_KO);
+	rl_clear_history();
 	garbage_collect();
-	cmd_exit("55");
+	exit(MALL_KO);
 }
 
 void	cmd_not_found(char *cmd)
