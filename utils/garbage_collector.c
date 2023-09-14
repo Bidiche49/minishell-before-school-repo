@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:42:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 13:38:52 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 16:18:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	tracked_close(int fd)
 	prev = NULL;
 	while (current)
 	{
-		if (current->fd == fd)
+		if (current && current->fd && current->fd == fd)
 		{
 			if (prev)
 				prev->next = current->next;
@@ -77,6 +77,7 @@ void tracked_free(void *ptr)
 			free(current->ptr);
 			current->ptr = NULL;
 			free(current);
+			current = NULL;
 			return ;
 		}
 		prev = current;
@@ -86,43 +87,36 @@ void tracked_free(void *ptr)
 
 void	collect_fd()
 {
-	t_fd_garbage **fd_garbages;
 	t_fd_garbage *fd_current;
-	t_fd_garbage *fd_tmp;
 
-	printf("test\n");
-	fd_garbages = get_fd_garbage();
-	fd_current = *fd_garbages;
+	fd_current = *get_fd_garbage();
 	while (fd_current)
 	{
-		fd_tmp = fd_current;
-		if (fd_current->next)
-			fd_current = fd_current->next;
-		else
-		{
-			if (is_fd_open(fd_tmp->fd) != 1)
-				close(fd_tmp->fd);
-			break ;
-		}
-		if (is_fd_open(fd_tmp->fd) != 1)
-			close(fd_tmp->fd);
+		if (is_fd_open(fd_current->fd) != 1)
+			close(fd_current->fd);
+		fd_current = fd_current->next;
 	}
 }
 
-void	collect_ptr()
+void collect_ptr()
 {
 	t_garbage *current;
-	t_garbage *tmp;
+	t_garbage *next;
 
-
+	next = NULL;
 	current = *get_garbage();
 	while (current)
 	{
-		tmp = current;
-		current = current->next;
-		free(tmp->ptr);
-		free(tmp);
+		next = current->next;
+		if (current->ptr)
+		{
+			free(current->ptr);
+			current->ptr = NULL;
+		}
+		free(current);
+		current = next;
 	}
+	*get_garbage() = NULL;
 }
 void	garbage_collect()
 {

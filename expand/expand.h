@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:13:19 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 01:03:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 17:06:03 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define EXPAND_H
 
 # include "../minishell.h"
-
-# define ERR_END_TOKEN "syntax error near unexpected token `"
 
 /******************************************/
 /*               Fonctions                */

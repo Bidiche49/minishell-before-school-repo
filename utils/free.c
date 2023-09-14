@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 04:10:40 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 15:43:20 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	free_list_token(t_token **lst_token)
 	t_token *tmp;
 
 	tmp = *lst_token;
+	if ((*lst_token) && !(*lst_token)->next)
+		tracked_free((*lst_token));
 	while ((*lst_token))
 	{
 		tmp = (*lst_token)->next;
@@ -48,7 +50,7 @@ void	free_all(t_token **lst_token, t_env **env)
 {
 	// t_token	*tmp;
 
-	if (lst_token)
+	if ((*lst_token))
 		free_list_token(lst_token);
 	if (env)
 		free_env(env);

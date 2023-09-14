@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/14 13:20:03 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:56:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define ERR_QUOTES_OPEN "minishell: Error quote open\n"
 # define ERR_CMD_NOT_FOUND ": command not found\n"
 # define ERR_FORK "minishell: init fork error\n"
+# define ERR_END_TOKEN "minishell: syntax error near unexpected token `"
 # define ERR_PERM_DENIED ": Permission denied\n"
 # define ERR_NO_FILE ": No such file or directory\n"
 
@@ -156,6 +157,8 @@ int				tracked_open(char *str, int first, int second, int third);
 int				is_fd_open(int fd);
 t_garbage		**get_garbage(void);
 t_fd_garbage	**get_fd_garbage(void);
+
+void print_section(t_section *section);
 
 /* EXPORT */
 

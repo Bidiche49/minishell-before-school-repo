@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 06:37:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 13:00:27 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 15:09:25 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,15 @@ int	option_is_digit(char *str)
 	return (1);
 }
 
+void	clean_prg(void)
+{
+	garbage_collect();
+	close(0);
+	close(1);
+	close(2);
+	rl_clear_history();
+}
+
 void	cmd_exit(char *option)
 {
 	g_error = 0;
@@ -61,28 +70,19 @@ void	cmd_exit(char *option)
 			option++;
 		if (*option == ' ')
 			option++;
-		if (!option_is_digit(option))
+		if (ft_countword(option, ' ') > 1)
+			return (g_error = 1, msg("minishell: exit: too many arguments\n"));
+		else if (!option_is_digit(option))
 		{
 			msg("minishell: exit: ");
 			msg(option);
 			msg(": numeric argument required\n");
 			g_error = 2;
 		}
-		else if (ft_countword(option, ' ') > 1)
-		{
-			g_error = 1;
-			msg("minishell: exit: too many arguments\n");
-		}
 		if (option_is_digit(option))
 			g_error = ft_atoi(option);
-		printf("g_errror =  %s\n\n", option);
-		printf("return =  %d\n\n", g_error);
+		printf("%d\n\n\n", g_error);
 	}
-	garbage_collect();
-	close(0);
-	close(1);
-	close(2);
-	rl_clear_history();
-	exit(g_error);
+	return (clean_prg());
 }
 

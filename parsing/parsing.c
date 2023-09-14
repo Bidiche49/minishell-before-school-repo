@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 09:45:22 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 17:07:56 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,40 @@ int check_end_token(t_token *lst_token)
 	return (SUCCESS);
 }
 
-int parsing(char *input, t_token **token, t_env **env)
+int	is_forbidden_char(char c)
+{
+	if (c == '&' || c == '(' || c == ')' || c == ';')
+		return (1);
+	return (0);
+}
+
+int	check_forbidden_char(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	if (token && (!token->str || token->type != WORD))
+		return (0);
+	while (token->str[i])
+	{
+		if (is_forbidden_char(token->str[i]))
+		{
+			msg(ERR_END_TOKEN);
+			if (token->str[i + 1] && token->str[i + 1] == token->str[i])
+				write(STDERR_FILENO, &token->str[i], 1);
+			write(STDERR_FILENO, &token->str[i], 1);
+			msg("'\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	parsing(char *input, t_token **token, t_env **env)
 {
 	int	return_val;
+	t_token	*tmp;
 
 	*token = NULL;
 	return_val = fill_tokens(input, token);
@@ -68,5 +99,12 @@ int parsing(char *input, t_token **token, t_env **env)
 		return (NEW_LINE);
 	if (operator_mod(*token) == ERROR)
 		return (ERROR);
+	tmp = *token;
+	while (tmp)
+	{
+		if (check_forbidden_char(tmp))
+			return (NEW_LINE);
+		tmp = tmp->next;
+	}
 	return (expand(token, env));
 }

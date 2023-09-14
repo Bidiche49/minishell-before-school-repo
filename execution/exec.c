@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 13:38:57 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 19:10:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,20 @@ int	redirection(int *data, int last, t_section *section)
 	tracked_close(data[TMP_FD1]);
 	return (SUCCESS);
 }
+int	is_cmd_path(t_section *sec)
+{
+	if (sec->cmd && sec->cmd[0] && (sec->cmd[0] == '/' || sec->cmd[0] == '.'))
+	{
+		
+	}
+}
 
 int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 {
 	tracked_free(pid);
 	find_path(section);
+	print_section(section);
+	is_cmd_path(section);
 	redirection(data, section->deep - 1, section);
 	arg = ft_split(section->option, ' ');
 	if (!arg)
@@ -213,6 +222,8 @@ int conductor(t_section **section)
 	env = NULL;
 	if (tmp->deep == 1 && is_builtin(tmp) == 1)
 	{
+		if (!ft_strcmp(tmp->cmd, "exit"))
+			return(cmd_exit(tmp->option), SUCCESS);
 		data[SAVE_FD0] = dup(STDIN_FILENO);
 		data[SAVE_FD1] = dup(STDOUT_FILENO);
 		add_fd_garbage(data[SAVE_FD0]);
@@ -242,9 +253,7 @@ int conductor(t_section **section)
 		{
 			pipe(data);
 			add_fd_garbage(data[TMP_FD0]);
-			// printf("%d\n\n\n", data[TMP_FD0]);
 			add_fd_garbage(data[TMP_FD1]);
-			// printf("%d\n\n\n", data[TMP_FD1]);
 			pid[data[I]] = fork();
 			if (pid[data[I]] == 0)
 			{

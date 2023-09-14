@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 10:06:23 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 17:00:13 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,11 @@ int	if_forest_clean_token(t_token *tok)
 		del_next_token(&tok);
 	if (is_op(tok) && ((!tok->next && !tok->str)|| (tok->next
 				&& !tok->next->next && tok->next->type == SEPARATOR)))
+	{
+		if (tok->type == PIPE)
+			return (err_end_token(tok), NEW_LINE);
 		return (err_end_token(NULL), NEW_LINE);
+	}
 	if (dble_op(tok))
 		return (err_end_token(tok), NEW_LINE);
 	return (SUCCESS);
@@ -78,6 +82,8 @@ int	clean_token(t_token **token)
 	tmp = *token;
 	if (first_tok_null(*token) == 0)
 		clean_first_token(token);
+	if ((*token) && (*token)->type == PIPE)
+		return (err_end_token((*token)), NEW_LINE);
 	tmp = *token;
 	while (tmp)
 	{
