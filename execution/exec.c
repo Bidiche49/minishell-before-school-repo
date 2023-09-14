@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 12:01:30 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:38:57 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 	env = convert_env(section->env);
 	if (!env)
 		return (free_matrice(arg), ERROR);
+	collect_fd();
 	if (is_builtin(section))
 	{
 		data[SAVE_FD0] = dup(STDIN_FILENO);
@@ -159,6 +160,7 @@ int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 		// tracked_close(data[TMP_FD1]);
 		// garbage_collect();
 		collect_fd();
+		collect_ptr();
 		exit(SUCCESS);
 	}
 	else if (execve(section->abs_path, arg, env) == -1)
@@ -240,7 +242,9 @@ int conductor(t_section **section)
 		{
 			pipe(data);
 			add_fd_garbage(data[TMP_FD0]);
+			// printf("%d\n\n\n", data[TMP_FD0]);
 			add_fd_garbage(data[TMP_FD1]);
+			// printf("%d\n\n\n", data[TMP_FD1]);
 			pid[data[I]] = fork();
 			if (pid[data[I]] == 0)
 			{
@@ -261,7 +265,7 @@ int conductor(t_section **section)
 		waitpid(pid[data[I]], NULL, 0);
 		data[I]++;
 	}
-	collect_fd();
+	// collect_fd();
 	tracked_free(pid);
 	free_list_section(section);
 	return (SUCCESS);

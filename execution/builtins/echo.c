@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 04:32:57 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/12 23:41:54 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:10:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,26 @@ int	is_op_char(char c)
 	return (0);
 }
 
-void	ft_echo(t_section *section)
+void	ft_echo(char *opt)
 {
 	int	i;
+	int	n;
 
+	n = 1;
 	i = 0;
-	if (!section->option)
+	if (!opt)
 		return ;
-	while (section->option[i] && section->option[i] != ' ')
+	while (opt[i] && opt[i] != ' ')
 		i++;
-	if (section->option[i])
+	if (opt[i])
 		i++;
-	while (section->option[i] && !is_op_char(section->option[i]))
-		write(STDOUT_FILENO, &section->option[i++], 1);
-	write(STDOUT_FILENO, "\n", 1);
+	if (opt[i] && opt[i] == '-' && opt[i + 1] && opt[i + 1] == 'n' && opt[i + 2] && opt[i + 2] == ' ')
+	{
+		i += 3;
+		n = 0;
+	}
+	while (opt[i] && !is_op_char(opt[i]))
+		write(STDOUT_FILENO, &opt[i++], 1);
+	if (n)
+		write(STDOUT_FILENO, "\n", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/14 10:51:40 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:20:03 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void			collect_fd();
 void			add_fd_garbage(int fd);
 void			collect_ptr();
 int				tracked_open(char *str, int first, int second, int third);
+int				is_fd_open(int fd);
 t_garbage		**get_garbage(void);
 t_fd_garbage	**get_fd_garbage(void);
 
@@ -184,7 +185,7 @@ int	execution(t_token *token, t_env **env);
 
 int		cmd_env(t_env **env);
 int		ft_strcmp(const char *s1, const char *s2);
-void	ft_echo(t_section *section);
+void	ft_echo(char *opt);
 char	*ft_strjoin(char *s1, char *s2);
 
 int		error_redir(char *str, int referal);

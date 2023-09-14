@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 06:37:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 12:18:35 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:00:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,10 @@ void	cmd_exit(char *option)
 		printf("g_errror =  %s\n\n", option);
 		printf("return =  %d\n\n", g_error);
 	}
-	// garbage_collect();
+	garbage_collect();
 	close(0);
 	close(1);
 	close(2);
-	close(3);
-	close(4);
-	collect_ptr();
 	rl_clear_history();
 	exit(g_error);
 }

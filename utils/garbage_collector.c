@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:42:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 12:15:47 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:38:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	tracked_close(int fd)
 	t_fd_garbage *current;
 	t_fd_garbage *prev ;
 
-	if (!fd)
+	if (!fd || is_fd_open(fd) == 1)
 		return ;
 	fd_garbages = get_fd_garbage();
 	current = *fd_garbages;
@@ -39,11 +39,8 @@ void	tracked_close(int fd)
 				(*fd_garbages) = current->next;
 			if (current)
 			{
-				if (current->fd && current->fd != -1)
-				{
+				if (current->fd && is_fd_open(current->fd) != 1)
 					close(current->fd);
-					current->fd = -1;
-				}
 			}
 			return ;
 		}
@@ -93,6 +90,7 @@ void	collect_fd()
 	t_fd_garbage *fd_current;
 	t_fd_garbage *fd_tmp;
 
+	printf("test\n");
 	fd_garbages = get_fd_garbage();
 	fd_current = *fd_garbages;
 	while (fd_current)
@@ -102,13 +100,12 @@ void	collect_fd()
 			fd_current = fd_current->next;
 		else
 		{
-			close(fd_tmp->fd);
-			// free(fd_tmp);
-			fd_garbages = NULL;
+			if (is_fd_open(fd_tmp->fd) != 1)
+				close(fd_tmp->fd);
 			break ;
 		}
-		close(fd_tmp->fd);
-		// free(fd_tmp);
+		if (is_fd_open(fd_tmp->fd) != 1)
+			close(fd_tmp->fd);
 	}
 }
 
@@ -129,6 +126,6 @@ void	collect_ptr()
 }
 void	garbage_collect()
 {
-	collect_ptr();
 	collect_fd();
+	collect_ptr();
 }

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:02:11 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 12:19:07 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:01:56 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,10 @@ int	end_funct(char *input, t_token **token, t_env **env)
 	(void)input;
 	(void)token;
 	(void)env;
-	// free_all(token, env);
 	close(0);
 	close(1);
 	close(2);
-	close(3);
-	close(4);
-	// garbage_collect();
-	collect_ptr();
+	garbage_collect();
 	rl_clear_history();
 	printf(BOLD GREEN "exit\n" RESET);
 	return (g_error);

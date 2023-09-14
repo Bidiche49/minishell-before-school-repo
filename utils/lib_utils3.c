@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 04:36:31 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/14 12:11:34 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 13:19:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,9 @@ int	tracked_open(char *str, int first, int second, int third)
 		return (-1);
 	add_fd_garbage(fd);
 	return (fd);
+}
+
+int	is_fd_open(int fd)
+{
+	return (!access("/proc/self/fd/%d", fd));
 }
