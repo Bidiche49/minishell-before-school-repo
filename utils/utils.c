@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/29 08:45:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 21:05:13 by ntardy           ###   ########.fr       */
+/*   Created: 2023/09/15 19:06:49 by ntardy            #+#    #+#             */
+/*   Updated: 2023/09/15 19:09:45 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../execution.h"
+#include "../minishell.h"
 
-void	cmd_unset(t_section *sec)
+int	is_num(char c)
 {
-	t_token	*tok;
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
 
-	g_error = 0;
-	tok = sec->token;
-	if (sec->deep > 1)
-		return ;
-	if (tok && tok->next && tok->next->next && tok->next->next->type == WORD)
-		return (del_var_env(sec->env, tok->next->next));
-	return ;
+int	is_alnum_und(char c)
+{
+	if (is_num(c) || (c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z') || c == '_')
+		return (1);
+	return (0);
+}
+
+t_token	*lst_last(t_token *lst)
+{
+	t_token	*tmp;
+
+	tmp = lst;
+	while (tmp && tmp->next)
+		tmp = tmp->next;
+	return (tmp);
 }

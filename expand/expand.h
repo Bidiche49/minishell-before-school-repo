@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:13:19 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 22:49:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 23:04:39 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int		cat_word(t_token *token);
 int		is_type_wq(t_token *token);
 int		is_sep_pipe(t_token *token);
 int		is_in_env(char *env_var, t_env *env);
-void	err_end_token(int type);
 
 /*********************************/
 /*          expand_word          */

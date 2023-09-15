@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:30:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 15:18:00 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 22:42:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,10 @@ int	print_env_export(t_env **env)
 	t_env	*tmp;
 	t_env	*sorted_env;
 
-	sorted_env = NULL;
 	sorted_env = copy_and_sort_env(*env);
 	if (!sorted_env)
 		return (ERROR);
-	tmp = *env;
+	tmp = sorted_env;
 	while (tmp)
 	{
 		if (tmp->name && tmp->content)
@@ -92,7 +91,6 @@ int	print_env_export(t_env **env)
 		tmp = tmp->next;
 	}
 	return (free_env(&sorted_env), SUCCESS);
-	return (SUCCESS);
 }
 
 t_token	*find_tok(t_token *tok)
@@ -113,12 +111,10 @@ t_token	*find_tok(t_token *tok)
 
 int	cmd_export(t_section *sec)
 {
-	static int	nb_export = 0;
-
 	if (!sec->option)
 		return (ERROR);
 	if (!ft_strcmp(sec->option, "export"))
-		return (nb_export++, print_env_export(sec->env));
+		return (g_error = 0, print_env_export(sec->env));
 	if (add_env(sec->env, find_tok(sec->token)) == ERROR)
 		return (ERROR);
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 14:44:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 15:21:45 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 21:48:17 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	del_var_env(t_env **env, t_token *tok)
 		return ;
 	while (tok)
 	{
-		if (tok->type == WORD)
-			return (del_in_env(env, tok), (void)SUCCESS);
+		if (tok->type == WORD && tok->str)
+			del_in_env(env, tok);
 		if (tok && tok->next && tok->next->type == SEPARATOR
 			&& tok->next->next && tok->next->next->type == WORD)
 			tok = tok->next->next;

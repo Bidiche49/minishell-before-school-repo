@@ -6,39 +6,39 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 04:27:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 23:14:09 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-int	copy_var_env(char *dest, char *str, t_env *env)
+int	copy_str(char *dest, char *str)
 {
 	int	i;
 
 	i = 0;
-	while (env)
+	while (str[i])
 	{
-		if (str[i + 1] == '?')
-		{
-			dest[i] = '0';
-			return (2);
-		}
-		if ((str[i + 1] == '\0' || str[i + 1] == ' '
-				|| str[i + 1] == '$' || !is_alnum_und(str[i + 1])))
-			return (0);
-		if (is_in_env(str, env) == 1)
-		{
-			while (env->content[i])
-			{
-				dest[i] = env->content[i];
-				i++;
-			}
-			return (i);
-		}
-		env = env->next;
+		dest[i] = str[i];
+		i++;
 	}
 	return (i);
+}
+
+int	copy_var_env(char *dest, char *str, t_env *env)
+{
+	while (env)
+	{
+		if (str[1] == '?')
+			return (copy_str(dest, ft_itoa(g_error)));
+		if ((str[1] == '\0' || str[1] == ' '
+				|| str[1] == '$' || !is_alnum_und(str[1])))
+			return (0);
+		if (is_in_env(str, env) == 1)
+			return (copy_str(dest, env->content));
+		env = env->next;
+	}
+	return (0);
 }
 
 void	fill_dquote(char *str, t_env *env, char *d_quotes)

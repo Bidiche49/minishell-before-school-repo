@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 01:34:24 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 23:08:12 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	calc_len_tot(char *str, t_env *env)
 		if (str[i] == '$' && str[i + 1] && is_alnum_und(str[i + 1]))
 			len_tot += (count_len_var_content(str + i, env)
 					- count_len_var_name(str + i));
+		if (str[i] == '$' && str[i + 1] && str[i + 1] == '?')
+			len_tot += (ft_strlen(ft_itoa(g_error)) - 2);
 		i++;
 	}
 	len_tot += i + 1 - count_dble_d(str);

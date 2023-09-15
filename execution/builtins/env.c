@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/29 08:45:45 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 21:05:13 by ntardy           ###   ########.fr       */
+/*   Created: 2023/08/26 17:17:52 by ntardy            #+#    #+#             */
+/*   Updated: 2023/09/15 21:05:40 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../execution.h"
+#include "../execution.h"
 
-void	cmd_unset(t_section *sec)
+int	cmd_env(t_env **env)
 {
-	t_token	*tok;
+	t_env	*tmp;
 
-	g_error = 0;
-	tok = sec->token;
-	if (sec->deep > 1)
-		return ;
-	if (tok && tok->next && tok->next->next && tok->next->next->type == WORD)
-		return (del_var_env(sec->env, tok->next->next));
-	return ;
+	tmp = *env;
+	while (tmp)
+	{
+		if (tmp->name && tmp->content)
+		{
+			printf(BOLD YELLOW "%s=" RESET, tmp->name);
+			printf(CYAN "%s\n" RESET, tmp->content);
+		}
+		tmp = tmp->next;
+	}
+	return (g_error = 0, SUCCESS);
 }

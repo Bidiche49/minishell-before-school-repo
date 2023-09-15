@@ -6,83 +6,111 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/15 12:46:26 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/15 20:51:24 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =			minishell
+NAME				=	minishell
+CC					=	gcc
 
-CC =			gcc
+#*********************************#
+#*             FLAGS             *#
+#*********************************#
+CFLAGS				=	-Wall -Werror -Wextra -g3
+CREADLINE			=	-lreadline
+VALGRIND_OPTIONS	=	--leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=minishell.supp
 
-CREADLINE=		-lreadline
+#*********************************#
+#*          PATH_FILES           *#
+#*********************************#
+PARS_PATH =		parsing/
+UTILS_PATH =	utils/
+ERROR_PATH =	$(UTILS_PATH)error/
+GARBAGE_PATH =	$(UTILS_PATH)garbages_collector/
+EXEC_PATH =		execution/
+BUILTINS_PATH =	$(EXEC_PATH)builtins/
+EXPAND_PATH =	expand/
+ENV_PATH =		env/
+EXPORT_PATH =	$(BUILTINS_PATH)export/
+UNSET_PATH =	$(BUILTINS_PATH)unset/
 
-CFLAGS =		-Wall -Werror -Wextra -g3
+#*********************************#
+#*             FILES             *#
+#*********************************#
+FILES_UTILS =	$(UTILS_PATH)atoi.c					\
+				$(UTILS_PATH)free.c					\
+				$(UTILS_PATH)utils.c				\
+				$(UTILS_PATH)split.c				\
+				$(ERROR_PATH)error.c				\
+				$(ERROR_PATH)error2.c				\
+				$(UTILS_PATH)signal.c				\
+				$(UTILS_PATH)ft_itoa.c				\
+				$(UTILS_PATH)ft_calloc.c			\
+				$(UTILS_PATH)utils_str.c			\
+				$(UTILS_PATH)utils_malloc_str.c		\
+				$(GARBAGE_PATH)garbage_fd.c			\
+				$(GARBAGE_PATH)garbage_collector.c
 
-PARS_LOC =		parsing/
-UTILS_LOC =		utils/
-EXEC_LOC =		execution/
-BUILTINS_LOC =	$(EXEC_LOC)builtins/
-EXPAND_LOC =	expand/
-ENV_LOC =		env/
+FILES_PARS =	$(PARS_PATH)fill.c					\
+				$(PARS_PATH)parsing.c				\
+				$(PARS_PATH)fill_utils.c			\
+				$(PARS_PATH)pars_utils.c			\
+				$(PARS_PATH)operator_mod.c			\
+				$(PARS_PATH)ft_strlen_remake.c
 
-# Couleurs
-RESET   = \033[0m
-GREEN   = \033[32m
-RED     = \033[31m
-YELLOW  = \033[33m
-CYAN    = \033[36m
+FILES_ENV =		$(ENV_PATH)env.c					\
+				$(ENV_PATH)env_utils.c
+
+FILES_EXPAND =	$(EXPAND_PATH)expand.c				\
+				$(EXPAND_PATH)clean_token.c			\
+				$(EXPAND_PATH)expand_word.c			\
+				$(EXPAND_PATH)expand_utils.c		\
+				$(EXPAND_PATH)expand_dquotes.c		\
+				$(EXPAND_PATH)is_token_clean.c		\
+				$(EXPAND_PATH)check_is_expand.c		\
+				$(EXPAND_PATH)expand_dquotes_utils.c
+
+FILES_EXEC =	$(EXEC_PATH)exec.c					\
+				$(EXEC_PATH)open.c					\
+				$(EXEC_PATH)heredoc.c				\
+				$(EXEC_PATH)builtins.c				\
+				$(EXEC_PATH)find_path.c				\
+				$(EXEC_PATH)execution.c				\
+				$(EXEC_PATH)init_section.c
+
+FILES_BUILTIN =	$(UNSET_PATH)unset.c				\
+				$(UNSET_PATH)unset_var.c			\
+				$(EXPORT_PATH)export.c				\
+				$(EXPORT_PATH)export_sort.c			\
+				$(EXPORT_PATH)export_utils.c		\
+				$(BUILTINS_PATH)exit.c				\
+				$(BUILTINS_PATH)echo.c				\
+				$(BUILTINS_PATH)env.c
 
 SRCS =			minishell.c							\
-				$(UTILS_LOC)garbage_collector.c		\
-				$(UTILS_LOC)atoi.c					\
-				$(UTILS_LOC)ft_itoa.c				\
-				$(UTILS_LOC)lib_utils.c				\
-				$(UTILS_LOC)lib_utils2.c			\
-				$(UTILS_LOC)lib_utils3.c			\
-				$(UTILS_LOC)split.c					\
-				$(UTILS_LOC)free.c					\
-				$(UTILS_LOC)error.c					\
-				$(UTILS_LOC)signal.c				\
-				$(PARS_LOC)parsing.c				\
-				$(PARS_LOC)pars_utils.c				\
-				$(PARS_LOC)operator_mod.c			\
-				$(PARS_LOC)error.c					\
-				$(PARS_LOC)ft_strlen_remake.c		\
-				$(PARS_LOC)fill.c					\
-				$(PARS_LOC)fill_utils.c				\
-				$(ENV_LOC)env_utils.c				\
-				$(ENV_LOC)env.c						\
-				$(EXPAND_LOC)expand_word.c			\
-				$(EXPAND_LOC)expand_dquotes.c		\
-				$(EXPAND_LOC)expand_dquotes_utils.c	\
-				$(EXPAND_LOC)check_is_expand.c		\
-				$(EXPAND_LOC)is_token_clean.c		\
-				$(EXPAND_LOC)clean_token.c			\
-				$(EXPAND_LOC)expand_utils.c			\
-				$(EXPAND_LOC)expand.c				\
-				$(EXEC_LOC)open.c					\
-				$(EXEC_LOC)execution.c				\
-				$(EXEC_LOC)init_section.c			\
-				$(EXEC_LOC)find_path.c				\
-				$(EXEC_LOC)builtins.c				\
-				$(EXEC_LOC)heredoc.c				\
-				$(EXEC_LOC)exec.c					\
-				$(BUILTINS_LOC)cmd_env.c			\
-				$(BUILTINS_LOC)exit.c				\
-				$(BUILTINS_LOC)export.c				\
-				$(BUILTINS_LOC)export_utils.c		\
-				$(BUILTINS_LOC)unset.c				\
-				$(BUILTINS_LOC)echo.c
+				$(FILES_ENV)						\
+				$(FILES_PARS)						\
+				$(FILES_EXEC)						\
+				$(FILES_UTILS)						\
+				$(FILES_EXPAND)						\
+				$(FILES_BUILTIN)					\
+				$(UTILS_PATH)print_struct.c
 
 OBJS =			$(SRCS:.c=.o)
 
-# Options de compilation
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g3
-CREADLINE = -lreadline
-VALGRIND_OPTIONS = --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=minishell.supp
+#*********************************#
+#*            COLORS             *#
+#*********************************#
+RESET	= \033[0m
+GREEN	= \033[32m
+RED		= \033[31m
+YELLOW	= \033[33m
+CYAN	= \033[36m
 
-.PHONY: all clean fclean re
+#*********************************#
+#*           COMMANDS            *#
+#*********************************#
+.PHONY: all clean fclean re valgrind
 
 all: $(NAME)
 

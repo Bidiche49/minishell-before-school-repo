@@ -6,15 +6,28 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 12:55:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 15:43:20 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 20:32:19 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	free_matrice(char **matrice)
+{
+	int	i;
+
+	i = 0;
+	if (!matrice)
+		return ;
+	while (matrice[i])
+		tracked_free(matrice[i++]);
+	tracked_free(matrice);
+	matrice = NULL;
+}
+
 void	free_list_token(t_token **lst_token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = *lst_token;
 	if ((*lst_token) && !(*lst_token)->next)
@@ -29,9 +42,9 @@ void	free_list_token(t_token **lst_token)
 	}
 }
 
-void free_env(t_env **env)
+void	free_env(t_env **env)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = *env;
 	while ((*env))
@@ -48,8 +61,6 @@ void free_env(t_env **env)
 
 void	free_all(t_token **lst_token, t_env **env)
 {
-	// t_token	*tmp;
-
 	if ((*lst_token))
 		free_list_token(lst_token);
 	if (env)

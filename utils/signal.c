@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:50:40 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 09:20:30 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 20:30:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,5 @@ void	signal_heredoc(int sig)
 	(void)sig;
 	close(STDIN_FILENO);
 	g_error = 128;
-	// garbage_collect();
 	return ;
 }

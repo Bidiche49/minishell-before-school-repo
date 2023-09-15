@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:16:15 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 22:51:30 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 23:17:02 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	del_all_token(t_token **list_token)
 int	if_forest_clean_token(t_token *tok)
 {
 	if (tok->next && tok->next->type == SEPARATOR && ((!tok->next->next)
-		|| (tok->next->next && tok->next->next->type == PIPE)))
+			|| (tok->next->next && tok->next->next->type == PIPE)))
 		del_next_token(&tok);
 	if (tok->next && tok->next->type == WORD && !tok->next->str)
 		del_next_token(&tok);
@@ -63,14 +63,15 @@ int	if_forest_clean_token(t_token *tok)
 	if (tok->next && tok->type == SEPARATOR
 		&& tok->next->type == SEPARATOR)
 		del_next_token(&tok);
-	if (is_op(tok) && ((!tok->next && !tok->str)|| (tok->next
+	if (is_op(tok) && ((!tok->next && !tok->str) || (tok->next
 				&& !tok->next->next && tok->next->type == SEPARATOR)))
 	{
 		if (tok->type == PIPE)
 			return (err_end_token(tok->type), NEW_LINE);
 		return (err_end_token(-1), NEW_LINE);
 	}
-	if (dble_op(tok) && ((tok->next && tok->next->type == PIPE) || tok->type ==PIPE))
+	if (dble_op(tok) && ((tok->next && tok->next->type == PIPE)
+			|| tok->type == PIPE))
 		return (err_end_token(PIPE), NEW_LINE);
 	if (dble_op(tok))
 		return (err_end_token(tok->type), NEW_LINE);

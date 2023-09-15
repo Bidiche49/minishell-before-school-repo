@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 02:34:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 15:20:17 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 22:31:58 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	check_line(char *line)
 
 	i = check_var_name(line);
 	if (i == 0)
-		return (error_export(line), 0);
-	return (1);
+		return (g_error = 1, error_export(line), 0);
+	return (g_error = 0, 1);
 }
 
 int	check_var_name(char *line)

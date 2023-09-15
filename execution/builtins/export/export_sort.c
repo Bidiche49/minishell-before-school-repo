@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 13:50:01 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 15:20:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 21:33:07 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	insert_sorted(t_env **env, t_env *new)
 {
 	t_env	*tmp;
 
-	if (*env == NULL || ft_strcmp(new->name, (*env)->name) < 0)
+	if (*env == NULL || (new && ft_strcmp(new->name, (*env)->name) < 0))
 	{
 		new->next = *env;
 		*env = new;
@@ -61,6 +61,7 @@ t_env	*copy_and_sort_env(t_env *env)
 
 	tmp = env;
 	new = NULL;
+	sorted_env = NULL;
 	while (tmp != NULL)
 	{
 		new = create_node(tmp->name, tmp->content);
