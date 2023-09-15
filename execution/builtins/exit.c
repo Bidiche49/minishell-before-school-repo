@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 06:37:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 02:43:42 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 15:23:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	clean_prg(void)
 
 void	cmd_exit(char *option)
 {
-	g_error = 0;
 	printf(BOLD GREEN "exit\n" RESET);
 	if (option)
 	{
@@ -58,4 +57,3 @@ void	cmd_exit(char *option)
 	}
 	return (clean_prg(), exit(g_error));
 }
-
