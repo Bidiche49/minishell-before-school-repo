@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 12:43:48 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 15:38:49 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,17 @@ void	ft_test_type(char *str, t_token *new)
 		new->type = WORD;
 }
 
-
-int ft_strdup_remake(char *str, t_token *new)
+int	ft_strdup_remake(char *str, t_token *new)
 {
-	int i;
-	int len;
-	char c;
+	int		i;
+	int		len;
+	char	c;
 
 	i = 0;
 	c = 0;
 	if (str[0] == '$' && str[1] && str[1] == '$')
 		return (new->type = WORD, new->str = NULL, SUCCESS);
-	if (new->type == WORD )
+	if (new->type == WORD)
 		c = ' ';
 	else if (new->type == S_QUOTES)
 		c = '\'';
@@ -64,9 +63,9 @@ int ft_strdup_remake(char *str, t_token *new)
 	return (SUCCESS);
 }
 
-t_token *ft_newtoken(char *str)
+t_token	*ft_newtoken(char *str)
 {
-	t_token *new;
+	t_token	*new;
 
 	if (str == NULL)
 		return (NULL);
@@ -82,7 +81,7 @@ t_token *ft_newtoken(char *str)
 
 int	ft_lstadd_back(t_token **lst, t_token *new)
 {
-	t_token *actu;
+	t_token	*actu;
 
 	if (new == NULL)
 		return (ERROR);

@@ -6,22 +6,23 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 12:09:19 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 17:24:16 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int space_only(char *input)
+int	space_only(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (input != NULL)
 	{
-		if (input[0] && input[1] && !input[2] && input[0] == '\\' && input[1] == 'n')
+		if (input[0] && input[1] && !input[2] && input[0] == '\\'
+			&& input[1] == 'n')
 			return (1);
-		if(input[0] && ft_isspecial(input[0]))
+		if (input[0] && ft_isspecial(input[0]))
 			return (1);
 		while (input[i])
 		{
@@ -36,9 +37,9 @@ int space_only(char *input)
 		return (1);
 }
 
-int check_end_token(t_token *lst_token)
+int	check_end_token(t_token *lst_token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = lst_token;
 	if (tmp->next == NULL)
@@ -87,7 +88,7 @@ int	check_forbidden_char(t_token *token)
 
 int	parsing(char *input, t_token **token, t_env **env)
 {
-	int	return_val;
+	int		return_val;
 	t_token	*tmp;
 
 	*token = NULL;
@@ -107,6 +108,5 @@ int	parsing(char *input, t_token **token, t_env **env)
 			return (NEW_LINE);
 		tmp = tmp->next;
 	}
-	print_token(*token);
 	return (expand(token, env));
 }

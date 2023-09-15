@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 00:23:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 04:27:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 15:46:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,37 @@ void	del_word_sep(t_token *operator, t_token *opt)
 	operator->next = tmp;
 }
 
+int	if_op_mod(t_token *operator)
+{
+	t_token	*opt;
+
+	opt = operator;
+	if (is_word_quote(opt->next))
+		opt = opt->next;
+	else if (opt->next->type == SEPARATOR
+		&& is_word_quote(opt->next->next))
+		opt = opt->next->next;
+	if (is_word_quote(opt))
+	{
+		operator->str = ft_strdup(opt->str);
+		if (operator->str == NULL)
+			return (ERROR);
+		del_word_sep(operator, opt);
+	}
+	return (SUCCESS);
+}
+
 int	operator_mod(t_token *lst_token)
 {
 	t_token	*operator;
-	t_token	*opt;
 
 	operator = lst_token;
-	while(operator->next)
+	while (operator->next)
 	{
-		if (is_operator(operator))
-		{
-			opt = operator;
-			if (is_word_quote(opt->next))
-				opt = opt->next;
-			else if (opt->next->type == SEPARATOR && is_word_quote(opt->next->next))
-				opt = opt->next->next;
-			if (is_word_quote(opt))
-			{
-				operator->str = ft_strdup(opt->str);
-				if (operator->str == NULL)
-					return (ERROR); // malloc error
-				del_word_sep(operator, opt);
-			}
-		}
+		if (is_operator(operator) && if_op_mod(operator) == ERROR)
+			return (ERROR);
 		operator = operator->next;
-		if(!operator)
+		if (!operator)
 			return (SUCCESS);
 	}
 	return (SUCCESS);

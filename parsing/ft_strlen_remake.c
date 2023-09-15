@@ -6,12 +6,11 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 12:43:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 12:43:51 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 15:39:19 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
 
 int	ft_strlen_quotes(char *str)
 {
@@ -37,7 +36,7 @@ int	ft_strlen_word(char *str)
 	if (str[0] == '$')
 		i++;
 	if (str[i] == '?')
-		return(++i);
+		return (++i);
 	while (str[i] && !is_sep_op(str[i]))
 	{
 		if (str[0] == '$' && str[i] && !is_alnum_und(str[i]))
@@ -47,9 +46,9 @@ int	ft_strlen_word(char *str)
 	return (i);
 }
 
-int ft_strlen_remake(char *str)
+int	ft_strlen_remake(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)

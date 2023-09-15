@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 21:44:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/06 03:56:45 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 18:37:26 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,31 @@ int	ft_isspace(char c)
 
 int	is_sep_op(char c)
 {
-	if (c == '\0' || c == '|' || c == '<' || c == '>' || c == ' '|| c == '$' || c == '"' || c == '\'')
+	if (c == '\0' || c == '|' || c == '<' || c == '>'
+		|| c == ' ' || c == '$' || c == '"' || c == '\'')
 		return (1);
 	return (0);
 }
 
 int	is_operator(t_token *token)
 {
-	if (token->type == IN || token->type == OUT || token->type == APPEND || token->type == HEREDOC)
+	if (token->type == IN || token->type == OUT
+		|| token->type == APPEND || token->type == HEREDOC)
 		return (1);
 	return (0);
 }
+
 int	is_word_quote(t_token *token)
 {
-	if (token->type == WORD || token->type == D_QUOTES || token->type == S_QUOTES)
+	if (token->type == WORD || token->type == D_QUOTES
+		|| token->type == S_QUOTES)
 		return (1);
 	return (0);
 }
 
 int	ft_isspecial(char c)
 {
-	if (c == '!' || c == '@' || c == '#')
+	if (c == '!' || c == '@' || c == '#' || c == ':')
 		return (1);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 12:16:36 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 15:25:52 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	fill_tokens(char *input, t_token **list_token)
 	{
 		new_token = ft_newtoken(tmp_input);
 		if (ft_strlen_remake(tmp_input) == -1)
-			return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN)), NEW_LINE);
+			return (write(0, ERR_QUOTES_OPEN, ft_strlen(ERR_QUOTES_OPEN))
+				, NEW_LINE);
 		if (ft_lstadd_back(list_token, new_token) == ERROR)
 			return (ERROR);
 		tmp_input = next_token(tmp_input);
