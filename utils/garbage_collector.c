@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 17:42:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 21:48:26 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 02:19:31 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void collect_ptr()
 			current->ptr = NULL;
 		}
 		free(current);
+		current = NULL;
 		current = next;
 	}
 	*get_garbage() = NULL;

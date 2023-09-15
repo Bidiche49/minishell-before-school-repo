@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 18:31:21 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 16:44:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 06:00:37 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*next_token(char *str)
 		str++;
 		if (*str == '$')
 			return (++str);
-		while (*str && !is_sep_op(*str))
+		while (*str && !is_sep_op(*str) && is_alnum_und(*str))
 			str++;
 		return (str);
 	}

@@ -6,37 +6,11 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 06:37:12 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 15:09:25 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 02:43:42 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
-
-int	ft_atoi(const char *str)
-{
-	int	result;
-	int	sign;
-	int	i;
-
-	result = 0;
-	sign = 1;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (is_num(str[i]))
-	{
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	return (result *= sign);
-}
-
 
 int	option_is_digit(char *str)
 {
@@ -81,8 +55,7 @@ void	cmd_exit(char *option)
 		}
 		if (option_is_digit(option))
 			g_error = ft_atoi(option);
-		printf("%d\n\n\n", g_error);
 	}
-	return (clean_prg());
+	return (clean_prg(), exit(g_error));
 }
 

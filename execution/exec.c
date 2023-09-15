@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 21:47:15 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 10:59:36 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,11 @@ int	is_cmd_path(t_section *sec)
 	int	fd;
 
 	fd = -1;
+	printf("cmd_path start\n\n\n");
+	if (sec->cmd && sec->cmd[0] && sec->cmd[0] == '.' && !sec->cmd[1])
+		return (err_cmd_path(sec->cmd, ": filename argument required\n"), ERROR);
+	if (sec->cmd && sec->cmd[0] && sec->cmd[0] == '.' && sec->cmd[1] && sec->cmd[1] == '.' && !sec->cmd[2])
+		return (err_cmd_path(sec->cmd, ERR_CMD_NOT_FOUND), ERROR);
 	if (sec->cmd && sec->cmd[0] && (sec->cmd[0] == '/' || sec->cmd[0] == '.'))
 	{
 		fd = tracked_open(sec->cmd, O_RDONLY, __O_DIRECTORY, -1);
@@ -148,7 +153,12 @@ int	is_cmd_path(t_section *sec)
 				if (!access(sec->cmd, F_OK))
 				{
 					if (!access(sec->cmd, X_OK))
+					{
+						sec->abs_path = ft_strdup(sec->cmd);
+						if (!sec->abs_path)
+							return (ERROR);
 						return(SUCCESS);
+					}
 				}
 				return (err_cmd_path(sec->cmd, ERR_CMD_NOT_FOUND), ERROR);
 			}
@@ -157,14 +167,15 @@ int	is_cmd_path(t_section *sec)
 		else
 			return (err_cmd_path(sec->cmd, ": Is a directory\n"), ERROR);
 	}
-	return (SUCCESS);
+	printf("cmd_path end\n\n\n");
+	return (fd);
 }
 
 int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 {
+	tracked_free(pid);
 	if (is_cmd_path(section) == ERROR)
 		return (SUCCESS);
-	tracked_free(pid);
 	find_path(section);
 	redirection(data, section->deep - 1, section);
 	arg = ft_split(section->option, ' ');
@@ -194,10 +205,10 @@ int exec(t_section *section, int *pid, int *data, char **arg, char **env)
 		collect_fd();
 		collect_ptr();
 		exit(SUCCESS);
-		// cmd_exit(g_error);//METTRE UNE VRAIE VALEUR
 	}
 	else if (!section->abs_path)
 	{
+		printf("cmd_nt_found\n\n\n");
 		cmd_not_found(section->cmd);
 		collect_fd();
 		collect_ptr();

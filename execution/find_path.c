@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:31:49 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 21:25:40 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 11:27:47 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	valid_path(char *path, t_section *tmp)
 	matrix_path = ft_split(path, ':');
 	if (!matrix_path)
 		return (ERROR);
+	printf("matrix[0] = %s\n\n\n", matrix_path[0]);
 	while (matrix_path[i])
 	{
 		return_val = check_path(matrix_path[i], &tmp);
@@ -94,7 +95,7 @@ int	valid_path(char *path, t_section *tmp)
 	return (free_matrice(matrix_path), return_val);
 }
 
-char	*ft_get_path(t_env	**env)
+char	*ft_get_env_line(t_env	**env, char *name)
 {
 	char	*path;
 	t_env	*tmp;
@@ -104,8 +105,10 @@ char	*ft_get_path(t_env	**env)
 	i = 0;
 	j = 0;
 	tmp = *env;
-	while (tmp && ft_strcmp(tmp->name, "PATH") != 0)
+	while (tmp && ft_strcmp(tmp->name, name) != 0)
 		tmp=tmp->next;
+	if (!tmp)
+		return (NULL);
 	path = ft_calloc((ft_strlen(tmp->name) + ft_strlen(tmp->content) + 2), sizeof(char));
 	if (!path)
 		return (NULL); //FREE ALLLLLLL
@@ -127,7 +130,7 @@ int	find_path(t_section *section)
 
 	final_return = NEW_LINE;
 	tmp = section;
-	path = ft_get_path(section->env);
+	path = ft_get_env_line(section->env, "PATH");
 	if (!path)
 		return (ERROR);
 	while (tmp)

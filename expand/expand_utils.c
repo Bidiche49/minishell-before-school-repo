@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 01:16:41 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 16:30:46 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:50:59 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@ int	cat_word(t_token *token)
 	return (SUCCESS);
 }
 
-void	err_end_token(t_token *token)
+void	err_end_token(int type)
 {
 	msg(ERR_END_TOKEN);
-	if (!token)
+	if (type == -1)
 		msg("newline'\n");
-	else if (token->type == PIPE)
+	else if (type == PIPE)
 		msg("|'\n");
-	else if (token->type == IN)
+	else if (type == IN)
 		msg("<'\n");
-	else if (token->type == OUT)
+	else if (type == OUT)
 		msg(">'\n");
-	else if (token->type == APPEND)
+	else if (type == APPEND)
 		msg(">>'\n");
-	else if (token->type == HEREDOC)
+	else if (type == HEREDOC)
 		msg("<<'\n");
 	g_error = 1;
 }

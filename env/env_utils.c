@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 22:06:32 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/02 04:32:22 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 03:17:17 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,28 @@ int	is_in_env(char *env_var, t_env *env)
 			|| env_var[i + 1] == '\\'))
 		return (1);
 	return (0);
+}
+
+int	atoi_shlvl(t_env **env)
+{
+	t_env	*tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->name, "SHLVL"))
+			return (ft_atoi(tmp->content));
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int	increment_shlvl(t_env **env)
+{
+	char	*shlvl_str;
+
+	shlvl_str = ft_strjoin("SHLVL=", ft_itoa(atoi_shlvl(env) + 1));
+	if (shlvl_str == NULL)
+		return (0);
+	return (mod_exist_var(env, shlvl_str));
 }

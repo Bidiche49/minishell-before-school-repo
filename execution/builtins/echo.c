@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 04:32:57 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/14 13:10:49 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:46:55 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,22 @@ void	ft_echo(char *opt)
 		return ;
 	while (opt[i] && opt[i] != ' ')
 		i++;
-	if (opt[i])
+	if (opt[i] == ' ')
 		i++;
-	if (opt[i] && opt[i] == '-' && opt[i + 1] && opt[i + 1] == 'n' && opt[i + 2] && opt[i + 2] == ' ')
+	if (opt[i] && opt[i] == '-' && opt[i + 1] && opt[i + 1] == 'n')
 	{
-		i += 3;
+		if (opt[i + 2] && opt[i + 2] == ' ')
+			i += 3;
+		if (opt[i])
+		{
+			i += 1;
+			while(opt[i] == 'n')
+				i++;
+			if (opt[i] && opt[i] == ' ')
+				i++;
+		}
+		else
+			return ;
 		n = 0;
 	}
 	while (opt[i] && !is_op_char(opt[i]))

@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 17:07:56 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:20:05 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ int	check_forbidden_char(t_token *token)
 		if (is_forbidden_char(token->str[i]))
 		{
 			msg(ERR_END_TOKEN);
-			if (token->str[i + 1] && token->str[i + 1] == token->str[i])
+			if (token->str[i + 1] && token->str[i + 1] == token->str[i]
+				&& token->str[i] != '(' && token->str[i] != ')')
 				write(STDERR_FILENO, &token->str[i], 1);
 			write(STDERR_FILENO, &token->str[i], 1);
 			msg("'\n");

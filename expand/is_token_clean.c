@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 01:17:14 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/09 18:34:58 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:58:34 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	is_token_ok(t_token *tok)
 	if (is_type_wq(tok))
 		tok->type = WORD;
 	if (first_tok_null(tok) == 0)
+		return (0);
+	if (tok && tok->type == PIPE)
 		return (0);
 	while (tok)
 	{

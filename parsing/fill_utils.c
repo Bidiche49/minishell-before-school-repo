@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 09:41:27 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 06:01:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ int ft_strlen_remake(char *str)
 		if (str[0] == '$')
 			i++;
 		while (str[i] && !is_sep_op(str[i]))
+		{
+			if (str[0] == '$' && str[i] && !is_alnum_und(str[i]))
+				return (i);
 			i++;
+		}
 	}
 	else
 	{

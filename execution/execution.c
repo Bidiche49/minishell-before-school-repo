@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 06:23:22 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 18:55:17 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:19:44 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	execution(t_token *token, t_env **env)
 	section = NULL;
 	if (init_section(token, &section, env) == ERROR)
 		return (free_list_section(&section), ERROR);
-	print_section(section);
 	return_val = conductor(&section);
 	if (return_val != SUCCESS)
 		return (free_list_section(&section), return_val);

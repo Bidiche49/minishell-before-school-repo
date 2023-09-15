@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/14 10:55:07 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/15 02:48:47 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ CYAN    = \033[36m
 
 SRCS =			minishell.c							\
 				$(UTILS_LOC)garbage_collector.c		\
-				$(UTILS_LOC)ft_itoa.c					\
+				$(UTILS_LOC)atoi.c					\
+				$(UTILS_LOC)ft_itoa.c				\
 				$(UTILS_LOC)lib_utils.c				\
 				$(UTILS_LOC)lib_utils2.c			\
 				$(UTILS_LOC)lib_utils3.c			\
@@ -114,7 +115,6 @@ $(NAME): $(OBJS)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
-
 
 clean:
 	@echo "$(YELLOW)Removing object files...$(RESET)"

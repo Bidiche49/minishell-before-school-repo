@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/14 18:56:49 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 02:53:32 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,11 @@ t_token	*lst_last(t_token *lst);
 int	is_redir(int type);
 char	*ft_itoa(int n);
 void	cmd_exit(char *option);
+void	cmd_not_found(char *cmd);
+char	*ft_get_env_line(t_env	**env, char *name);
+int		ft_atoi(const char *str);
+int	mod_exist_var(t_env **env, char *line);
+
 /*********************************/
 /*       garbage_collector       */
 /*********************************/

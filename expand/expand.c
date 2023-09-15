@@ -6,11 +6,39 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 03:08:54 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 10:07:01 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 04:03:43 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
+
+// int	i;
+// 	char	*tmp;
+
+// 	i = 0;
+// 	tmp = NULL;
+// 	if ((*token)->str && (*token)->str[1] == '?')
+// 	{
+// 		tmp = ft_strjoin(ft_itoa(g_error), (*token)->str + 2);
+// 		if (!tmp)
+// 			return (0);
+// 		tracked_free((*token)->str);
+// 		(*token)->str = tmp;
+// 		printf("str = %s\n", (*token)->str);
+// 	}
+// 	else if ((*token)->str && (is_num((*token)->str[1]) == 1
+// 			|| (*token)->str[1] == '$'))
+// 	{
+// 		if ((*token)->str[i + 2] == '\0')
+// 			return (tracked_free((*token)->str), (*token)->str = NULL, 0);
+// 		while ((*token)->str[i + 1])
+// 		{
+// 			(*token)->str[i] = (*token)->str[i + 2];
+// 			i++;
+// 		}
+// 		return (0);
+// 	}
+// 	return (1);
 
 int	special_case_expand(t_token **token)
 {
@@ -62,6 +90,8 @@ void	check_heredoc(t_token **token)
 
 int	expand(t_token **token, t_env **env)
 {
+	if (!(*token)->next && (*token)->str ==NULL)
+		return (cmd_not_found((*token)->str), SUCCESS);
 	check_heredoc(token);
 	if (expand_d_quotes(token, *env) == ERROR)
 		return (ERROR);
