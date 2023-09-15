@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 20:02:53 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 01:02:29 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 12:44:18 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,9 @@ int		ft_strlen_remake(char *str);
 void	free_list_token(t_token **token);
 void	err_end_token(t_token *token);
 t_token	*ft_newtoken(char *str);
+
+int ft_strlen_remake(char *str);
+int	ft_strlen_word(char *str);
+int	ft_strlen_quotes(char *str);
 
 #endif

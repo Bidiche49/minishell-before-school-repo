@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:59 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 06:01:32 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 12:43:48 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,6 @@ void	ft_test_type(char *str, t_token *new)
 		new->type = WORD;
 }
 
-int ft_strlen_remake(char *str)
-{
-	int i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	if (str[0] != '\'' && str[0] != '"')
-	{
-		if (str[0] == '$')
-			i++;
-		while (str[i] && !is_sep_op(str[i]))
-		{
-			if (str[0] == '$' && str[i] && !is_alnum_und(str[i]))
-				return (i);
-			i++;
-		}
-	}
-	else
-	{
-		if (str[0] == '\'')
-			while (str[i + 1] && str[i + 1] != '\'')
-				i++;
-		else if (str[0] == '"')
-			while (str[i + 1] && str[i + 1] != '"')
-				i++;
-		if (!str[i + 1])
-			return (-1);
-	}
-	return (i);
-}
 
 int ft_strdup_remake(char *str, t_token *new)
 {

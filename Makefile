@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/15 02:48:47 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/15 12:46:26 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS =			minishell.c							\
 				$(PARS_LOC)pars_utils.c				\
 				$(PARS_LOC)operator_mod.c			\
 				$(PARS_LOC)error.c					\
+				$(PARS_LOC)ft_strlen_remake.c		\
 				$(PARS_LOC)fill.c					\
 				$(PARS_LOC)fill_utils.c				\
 				$(ENV_LOC)env_utils.c				\

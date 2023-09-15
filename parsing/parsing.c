@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 19:56:24 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/14 23:20:05 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/15 12:09:19 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,6 @@ int	parsing(char *input, t_token **token, t_env **env)
 			return (NEW_LINE);
 		tmp = tmp->next;
 	}
+	print_token(*token);
 	return (expand(token, env));
 }
