@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 18:31:41 by augustindry       #+#    #+#             */
-/*   Updated: 2023/09/15 23:25:29 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/16 00:12:00 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@
 /*********************************/
 /*          error_msg            */
 /*********************************/
-# define ERR_MANY_ARG "minishell: too many arguments\n"
-# define ERR_ENV_KO "minishell: Error while retrieving the environment.\n"
-# define ERR_MALLOC_KO "minishell: Error malloc\n"
-# define ERR_QUOTES_OPEN "minishell: Error quote open\n"
-# define ERR_CMD_NOT_FOUND ": command not found\n"
-# define ERR_FORK "minishell: init fork error\n"
-# define ERR_END_TOKEN "minishell: syntax error near unexpected token `"
 # define ERR_PERM_DENIED ": Permission denied\n"
+# define ERR_FORK "minishell: init fork error\n"
+# define ERR_MALLOC_KO "minishell: Error malloc\n"
+# define ERR_CMD_NOT_FOUND ": command not found\n"
 # define ERR_NO_FILE ": No such file or directory\n"
+# define ERR_MANY_ARG "minishell: too many arguments\n"
+# define ERR_QUOTES_OPEN "minishell: Error quote open\n"
+# define ERR_END_TOKEN "minishell: syntax error near unexpected token `"
+# define ERR_ENV_KO "minishell: Error while retrieving the environment.\n"
 
 extern int				g_error;
 

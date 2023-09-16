@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 22:38:54 by audrye            #+#    #+#             */
-/*   Updated: 2023/09/15 20:05:46 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/16 00:54:35 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_strlen(const char *str)
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i])
+	while (str[i] != '\0')
 		i++;
 	return (i);
 }

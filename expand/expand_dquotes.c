@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 00:33:29 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 23:14:09 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/16 01:16:27 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,16 @@ void	fill_dquote(char *str, t_env *env, char *d_quotes)
 		{
 			j += copy_var_env(d_quotes + j, str + i, env);
 			i += count_len_var_name(str + i);
-			if (str[i] && str[i] == '$' && str[i + 1] != '$'
+			if ((str[i] && str[i] == '$' && str[i + 1] != '$' && str[i + 1] != '?')
 				&& (!is_alnum_und(str[i + 1])))
 			{
 				d_quotes[j++] = '$';
 				i++;
 			}
 		}
-		if (str[i] && str[i] != '$')
-			d_quotes[j++] = str[i++];
+		printf("str[i] = %c\n", str[i]);
+		// if (str[i] && str[i] != '$' && str[i] != '?')
+		// 	d_quotes[j++] = str[i++];
 	}
 }
 

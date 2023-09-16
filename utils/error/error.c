@@ -6,7 +6,7 @@
 /*   By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 03:40:08 by ntardy            #+#    #+#             */
-/*   Updated: 2023/09/15 22:03:59 by ntardy           ###   ########.fr       */
+/*   Updated: 2023/09/16 00:08:48 by ntardy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,3 @@ int	error_redir(char *str, int referal)
 	else
 		return (ERROR);
 }
-
-// void	err_end_token(int type)
-// {
-// 	msg(ERR_END_TOKEN);
-// 	if (type == -1)
-// 		msg("newline'\n");
-// 	else if (type == PIPE)
-// 		msg("|'\n");
-// 	else if (type == IN)
-// 		msg("<'\n");
-// 	else if (type == OUT)
-// 		msg(">'\n");
-// 	else if (type == APPEND)
-// 		msg(">>'\n");
-// 	else if (type == HEREDOC)
-// 		msg("<<'\n");
-// 	g_error = 1;
-// }

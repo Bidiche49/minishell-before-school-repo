@@ -6,7 +6,7 @@
 #    By: ntardy <ntardy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 18:59:08 by ntardy            #+#    #+#              #
-#    Updated: 2023/09/15 20:51:24 by ntardy           ###   ########.fr        #
+#    Updated: 2023/09/16 00:16:16 by ntardy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,8 +93,7 @@ SRCS =			minishell.c							\
 				$(FILES_EXEC)						\
 				$(FILES_UTILS)						\
 				$(FILES_EXPAND)						\
-				$(FILES_BUILTIN)					\
-				$(UTILS_PATH)print_struct.c
+				$(FILES_BUILTIN)
 
 OBJS =			$(SRCS:.c=.o)
 
