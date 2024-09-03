@@ -2,7 +2,7 @@
 
 
 Start le server\n
-```./ircserv 6667 go``` Start le server\n
+```./ircserv 6667 go``` Start le server/n
  ```./aug.sh``` ```./alex.sh``` ```./bidiche.sh``` Log des clients dans des terminaux différents.\n
 
 Commandes de base :\n
